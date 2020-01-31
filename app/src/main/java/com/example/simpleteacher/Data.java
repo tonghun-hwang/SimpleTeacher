@@ -1,6 +1,7 @@
 package com.example.simpleteacher;
 
 import android.app.Application;
+import android.database.Cursor;
 
 public class Data extends Application {
 
@@ -9,8 +10,6 @@ public class Data extends Application {
     public static String nameErrorcategory = "Error Category";
 
     public static int session;
-
-
 
     // FragmentOneFive 11111111111111111
     public static int trainAll1 = 1;
@@ -167,6 +166,17 @@ public class Data extends Application {
     public static void setNameStudent(String name){
         nameStudent = name;
     }
+    public void getAllWords(){}
+    public void getAllTries(){}
+    public void getWrongWords(){}
+    public void getWrongTries(){
+
+
+    }
+    public void getWrongErrorWords(){}
+    public void getNochmal(){}
+    public void getARadierer(){}
+    public void getAllesRadierer(){}
 
 
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,7 +29,7 @@ import com.example.simpleteacher.main.MainFragment;
 import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity {
-    private static final String[] admin = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
+    private static final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
             "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
             "Planet1", "Planet2", "Planet3", "Planet4","Planet5", "Planet6", "Planet7", "Planet8", "Planet9",
             "Planet10", "Planet11", "Planet12", "Planet13", "Planet14", "Planet15","Planet16","Planet17","Planet18",
@@ -110,8 +111,11 @@ public class ItemActivity extends AppCompatActivity {
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
                 Log.i("Id_Reading", "ID is read.");
+
                 Data.setNameStudent(strText);
                 setTrainingDB(Data.nameStudent);
+
+                getWrongTries(Data.nameStudent);
 
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
 
@@ -138,10 +142,21 @@ public class ItemActivity extends AppCompatActivity {
         String url = host + "/HOT-T/Results/" + stName + "/" + dbName;
 
         mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
-        mUserTrainingDB = mUserDBHelper.getWritableDatabase();
+        mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
 
         readTrainingURL(url, dbName, mReadTrainingUrlTask);
     }
+
+    public void getWrongTries(String stName) {
+
+        stName = "Admin1"; // TODO: delete this line.
+        Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                " WHERE EVENT = 'mistakeDlg'", null);
+        int res = c.getCount();
+        Log.d(TAG, "getWrongTries: " + res);
+
+    }
+
 
     private void readInfoURL(String urlName, ReadInfoURLTask tempTask) {
         Log.d(TAG, "readURL: " + urlName);
@@ -152,6 +167,8 @@ public class ItemActivity extends AppCompatActivity {
         tempTask = new ReadInfoURLTask(this, urlName);
         tempTask.execute((Void) null);
     }
+
+
 
     private void readTrainingURL(String urlName, String dbName, ReadTrainingURLTask tempTask) {
         Log.d(TAG, "readTrainingURL: " + urlName);
@@ -186,6 +203,9 @@ public class ItemActivity extends AppCompatActivity {
 
         editor.commit();
     }
+
+
+
 }
 
 

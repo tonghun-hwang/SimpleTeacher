@@ -55,8 +55,6 @@ public class FragmentLastGraph extends Fragment {
         // enable scaling and dragging
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
-        // chart.setScaleXEnabled(true);
-        // chart.setScaleYEnabled(true);
 
         // force pinch zoom along both axis
         chart.setPinchZoom(true);
