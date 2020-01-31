@@ -1,29 +1,29 @@
 package com.example.simpleteacher;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.simpleteacher.main.FragmentElevenFifteen;
+import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
+import com.example.simpleteacher.helper.userDBHelper;
 import com.example.simpleteacher.main.FragmentLastGraph;
 import com.example.simpleteacher.main.FragmentOneFive;
-import com.example.simpleteacher.main.FragmentSixTen;
-import com.example.simpleteacher.main.FragmentSixteen;
 import com.example.simpleteacher.main.MainFragment;
+
+import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String[] admin = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
@@ -53,6 +53,19 @@ public class ItemActivity extends AppCompatActivity {
     Intent secondIntent;
     RadioGroup radioGroup;
     String strText;
+
+    // added by Hwang TODO: delete this comment
+    public userDBHelper mUserDBHelper;
+    public SQLiteDatabase mUserDB = null;
+
+    public ArrayList<String[]> mUserDataList;
+    public boolean is_Started = false;
+    public static SharedPreferences pref;
+    public static ReadInfoURLTask mReadInfoUrlTask = null;
+    private String remoteDBUserData;
+    private String severUserData;
+    private String TAG = "ItemActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +76,22 @@ public class ItemActivity extends AppCompatActivity {
 
         ListView listview = (ListView) findViewById(R.id.student_list) ;
         listview.setAdapter(adapter);
+
+        // added by Hwang TODO: delete this comment
+        pref = getApplicationContext().getSharedPreferences("Mypref", 0);
+        if (is_Started == false) {
+            createPreferences();
+            is_Started = true;
+        }
+
+        mUserDBHelper = new userDBHelper(this, 1);
+        mUserDB = mUserDBHelper.getWritableDatabase();
+        mUserDataList = new ArrayList<>();
+
+        remoteDBUserData = ItemActivity.pref.getString("dbUser", "");
+        severUserData = ItemActivity.pref.getString("userData", "");
+        Log.d(TAG, "file " + remoteDBUserData);
+        readInfoURL(remoteDBUserData, mReadInfoUrlTask);
 
         // TODO : use strText
 
@@ -89,7 +118,40 @@ public class ItemActivity extends AppCompatActivity {
 
         }
 
+    private void readInfoURL(String urlName, ReadInfoURLTask tempTask) {
+        Log.d(TAG, "readURL: " + urlName);
+
+        if (tempTask != null) {
+            return;
+        }
+        tempTask = new ReadInfoURLTask(this, urlName);
+        tempTask.execute((Void) null);
     }
+
+    private void createPreferences() {
+        SharedPreferences.Editor editor = pref.edit();
+        String exStoragePath = Environment.getExternalStorageDirectory().getPath();
+        String host = "https://seafile.projekt.uni-hannover.de/dav/sportwiss-errorlesslearning";
+        editor.putString("root", exStoragePath + "/");
+        editor.putString("server", "https://seafile.projekt.uni-hannover.de/");
+        editor.putString("name", "hottsportwiss");
+        editor.putString("email", "hottsportwiss@gmail.com");
+        editor.putString("token", "fc4c019d18a3fb01e37e7159e5969651bf0aec7a");
+        editor.putString("host", host);
+        editor.putString("rootPic", exStoragePath + "/HOT-T/Pictures_all/");
+        editor.putString("DownPath", exStoragePath + "/Download/");
+        editor.putString("csvPath", exStoragePath + "/HOT-T/");
+        editor.putString("picPath", exStoragePath + "/Download/HOT-T/Pictures_all/");
+        editor.putString("userDir", "/PERSONAL_DATA");
+        editor.putString("userCategory", host + "/PERSONAL_DATA/UserCategory.csv");
+        editor.putString("userData", host + "/PERSONAL_DATA/UserInfo.csv");
+
+        editor.putString("dbCategory", host + "/PERSONAL_DATA/userCategory.db");
+        editor.putString("dbUser", host + "/PERSONAL_DATA/userInfo.db");
+
+        editor.commit();
+    }
+}
 
 
 
