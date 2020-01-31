@@ -18,7 +18,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
+import com.example.simpleteacher.asyncTask.ReadTrainingURLTask;
 import com.example.simpleteacher.helper.userDBHelper;
+import com.example.simpleteacher.helper.userTrainingDBHelper;
 import com.example.simpleteacher.main.FragmentLastGraph;
 import com.example.simpleteacher.main.FragmentOneFive;
 import com.example.simpleteacher.main.MainFragment;
@@ -56,12 +58,17 @@ public class ItemActivity extends AppCompatActivity {
 
     // added by Hwang TODO: delete this comment
     public userDBHelper mUserDBHelper;
+    public userTrainingDBHelper mUserTrainingDBHelper;
     public SQLiteDatabase mUserDB = null;
+    public SQLiteDatabase mUserTrainingDB = null;
 
     public ArrayList<String[]> mUserDataList;
+    public ArrayList<String[]> mUserTrainingList;
+
     public boolean is_Started = false;
     public static SharedPreferences pref;
     public static ReadInfoURLTask mReadInfoUrlTask = null;
+    public static ReadTrainingURLTask mReadTrainingUrlTask = null;
     private String remoteDBUserData;
     private String severUserData;
     private String TAG = "ItemActivity";
@@ -84,6 +91,7 @@ public class ItemActivity extends AppCompatActivity {
             is_Started = true;
         }
 
+        // userInfo.db
         mUserDBHelper = new userDBHelper(this, 1);
         mUserDB = mUserDBHelper.getWritableDatabase();
         mUserDataList = new ArrayList<>();
@@ -103,7 +111,10 @@ public class ItemActivity extends AppCompatActivity {
                 strText = (String) parent.getItemAtPosition(position);
                 Log.i("Id_Reading", "ID is read.");
                 Data.setNameStudent(strText);
+                setTrainingDB(Data.nameStudent);
+
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
+
                 // TODO : use strText
                 FragmentManager fm = getSupportFragmentManager();
                 Log.i("Fragments open", "Fragment are called");
@@ -116,7 +127,21 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
-        }
+    }
+
+    public void setTrainingDB(String stName) {
+        // userTraining.db
+
+        stName = "Admin1";
+        String dbName = "training_" + stName + "_" + 14 + ".db";
+        String host = ItemActivity.pref.getString("host", "");
+        String url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+
+        mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
+        mUserTrainingDB = mUserDBHelper.getWritableDatabase();
+
+        readTrainingURL(url, dbName, mReadTrainingUrlTask);
+    }
 
     private void readInfoURL(String urlName, ReadInfoURLTask tempTask) {
         Log.d(TAG, "readURL: " + urlName);
@@ -125,6 +150,16 @@ public class ItemActivity extends AppCompatActivity {
             return;
         }
         tempTask = new ReadInfoURLTask(this, urlName);
+        tempTask.execute((Void) null);
+    }
+
+    private void readTrainingURL(String urlName, String dbName, ReadTrainingURLTask tempTask) {
+        Log.d(TAG, "readTrainingURL: " + urlName);
+
+        if (tempTask != null) {
+            return;
+        }
+        tempTask = new ReadTrainingURLTask(this, urlName, dbName);
         tempTask.execute((Void) null);
     }
 
