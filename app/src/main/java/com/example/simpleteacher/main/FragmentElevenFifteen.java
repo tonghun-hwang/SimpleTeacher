@@ -71,16 +71,6 @@ public class FragmentElevenFifteen extends Fragment {
         // set listeners
         grafikA.setDrawGridBackground(false);
 
-        // create marker to display box when values are selected
-        //MyMarkerView mvA = new MyMarkerView(getContext(), R.layout.custom_marker_view);
-
-        // Set the marker to the chart
-        //mvA.setChartView(grafikA);
-        //grafikA.setMarker(mvA);
-        // Set the marker to the chart
-        //mvA.setChartView(grafikA);
-        //grafikA.setMarker(mvA);
-
         // enable scaling and dragging
         grafikA.setDragEnabled(true);
         grafikA.setScaleEnabled(true);
@@ -160,21 +150,9 @@ public class FragmentElevenFifteen extends Fragment {
         // set listeners
         grafikB.setDrawGridBackground(false);
 
-        // create marker to display box when values are selected
-        //MyMarkerView mvB = new MyMarkerView(getContext(), R.layout.custom_marker_view);
-
-        // Set the marker to the chart
-        //mvB.setChartView(grafikB);
-        //grafikB.setMarker(mvB);
-        // Set the marker to the chart
-        //mvB.setChartView(grafikB);
-        //grafikB.setMarker(mvB);
-
         // enable scaling and dragging
         grafikB.setDragEnabled(true);
         grafikB.setScaleEnabled(true);
-        // chart.setScaleXEnabled(true);
-        // chart.setScaleYEnabled(true);
 
         // force pinch zoom along both axis
         grafikB.setPinchZoom(true);
@@ -237,10 +215,6 @@ public class FragmentElevenFifteen extends Fragment {
         //grafikC
 
         grafikC = inf.findViewById(R.id.chart3);
-
-        // background color
-        //   chart.setBackgroundColor(Color.WHITE);
-
         // disable description text
         grafikC.getDescription().setEnabled(false);
 
@@ -250,22 +224,9 @@ public class FragmentElevenFifteen extends Fragment {
         // set listeners
         grafikC.setDrawGridBackground(false);
 
-        // create marker to display box when values are selected
-        //MyMarkerView mvC = new MyMarkerView(getContext(), R.layout.custom_marker_view);
-
-        // Set the marker to the chart
-        //mvC.setChartView(grafikC);
-        //grafikC.setMarker(mvC);
-        // Set the marker to the chart
-        //mvC.setChartView(grafikC);
-        //grafikC.setMarker(mvC);
-
         // enable scaling and dragging
         grafikC.setDragEnabled(true);
         grafikC.setScaleEnabled(true);
-        // chart.setScaleXEnabled(true);
-        // chart.setScaleYEnabled(true);
-
         // force pinch zoom along both axis
         grafikC.setPinchZoom(true);
 
