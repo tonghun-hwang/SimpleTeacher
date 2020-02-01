@@ -29,7 +29,7 @@ import com.example.simpleteacher.main.MainFragment;
 import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity {
-    private static final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
+    private final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
             "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
             "Planet1", "Planet2", "Planet3", "Planet4","Planet5", "Planet6", "Planet7", "Planet8", "Planet9",
             "Planet10", "Planet11", "Planet12", "Planet13", "Planet14", "Planet15","Planet16","Planet17","Planet18",
@@ -37,25 +37,25 @@ public class ItemActivity extends AppCompatActivity {
             "Alien1","Alien2","Alien3","Alien4","Alien5","Alien6","Alien7","Alien8","Alien9","Alien10","Alien11",
             "Alien12","Alien13","Alien14","Alien15","Alien16","Alien17","Alien18","Alien14","Alien15","Alien16","Alien17","Alien18",
             "Alien19","Alien20","Alien21","Alien22"};
-    private static final String[] ADM1 = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5"};
-    private static final String[] AUN1 = {"Ufo6", "Ufo7", "Ufo8"};
-    private static final String[] ASB1 = {"Ufo9", "Ufo10", "Ufo11", "Ufo12"};
-    private static final String[] BSR1 = {"Komet1", "Komet2", "Komet3"};
-    private static final String[] BBH1 = {"Komet4", "Komet5", "Komet6", "Komet7"};
-    private static final String[] ASE2 = {"Planet1", "Planet2", "Planet3", "Planet4"};
-    private static final String[] ABR2 = {"Planet5", "Planet6", "Planet7", "Planet8", "Planet9"};
-    private static final String[] AFT2 = {"Planet10", "Planet11", "Planet12", "Planet13", "Planet14",
+    private final String[] ADM1 = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5"};
+    private final String[] AUN1 = {"Ufo6", "Ufo7", "Ufo8"};
+    private final String[] ASB1 = {"Ufo9", "Ufo10", "Ufo11", "Ufo12"};
+    private final String[] BSR1 = {"Komet1", "Komet2", "Komet3"};
+    private final String[] BBH1 = {"Komet4", "Komet5", "Komet6", "Komet7"};
+    private final String[] ASE2 = {"Planet1", "Planet2", "Planet3", "Planet4"};
+    private final String[] ABR2 = {"Planet5", "Planet6", "Planet7", "Planet8", "Planet9"};
+    private final String[] AFT2 = {"Planet10", "Planet11", "Planet12", "Planet13", "Planet14",
             "Planet15","Planet16","Planet17","Planet18"};
-    private static final String[] ABT2 = {"Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24"};
-    private static final String[] ASH2 = {"Planet25", "Planet26", "Planet27", "Planet28", "Planet29"};
-    private static final String[] BLR2 = {"Alien1","Alien2","Alien3","Alien4","Alien5"};
-    private static final String[] BJN2 = {"Alien6","Alien7","Alien8","Alien9","Alien10","Alien11"};
-    private static final String[] BWR2 = {"Alien12","Alien13"};
-    private static final String[] BBM2 = {"Alien14","Alien15","Alien16","Alien17","Alien18"};
-    private static final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
+    private final String[] ABT2 = {"Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24"};
+    private final String[] ASH2 = {"Planet25", "Planet26", "Planet27", "Planet28", "Planet29"};
+    private final String[] BLR2 = {"Alien1","Alien2","Alien3","Alien4","Alien5"};
+    private final String[] BJN2 = {"Alien6","Alien7","Alien8","Alien9","Alien10","Alien11"};
+    private final String[] BWR2 = {"Alien12","Alien13"};
+    private final String[] BBM2 = {"Alien14","Alien15","Alien16","Alien17","Alien18"};
+    private final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
     Intent secondIntent;
     RadioGroup radioGroup;
-    String strText;
+    public String strText;
 
     // added by Hwang TODO: delete this comment
     public userDBHelper mUserDBHelper;
@@ -101,7 +101,6 @@ public class ItemActivity extends AppCompatActivity {
         severUserData = ItemActivity.pref.getString("userData", "");
         Log.d(TAG, "file " + remoteDBUserData);
         readInfoURL(remoteDBUserData, mReadInfoUrlTask);
-
         // TODO : use strText
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,15 +109,13 @@ public class ItemActivity extends AppCompatActivity {
 
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
-                Log.i("Id_Reading", "ID is read.");
-
                 Data.setNameStudent(strText);
+                Log.i("Id_Reading", "ID is read.");
                 setTrainingDB(Data.nameStudent);
-
                 getWrongTries(Data.nameStudent);
 
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
-
+                Data.calDaten();
                 // TODO : use strText
                 FragmentManager fm = getSupportFragmentManager();
                 Log.i("Fragments open", "Fragment are called");
@@ -135,28 +132,28 @@ public class ItemActivity extends AppCompatActivity {
 
     public void setTrainingDB(String stName) {
         // userTraining.db
-
-        stName = "Admin1";
-        String dbName = "training_" + stName + "_" + 14 + ".db";
-        String host = ItemActivity.pref.getString("host", "");
-        String url = host + "/HOT-T/Results/" + stName + "/" + dbName;
-
-        mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
-        mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
-
-        readTrainingURL(url, dbName, mReadTrainingUrlTask);
+        String dbName;
+        String host;
+        String url;
+        for (int i = 1; i <= 16; i++){
+            dbName = "training_" + stName + "_" + i + ".db";
+            host = ItemActivity.pref.getString("host", "");
+            url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+            mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
+            mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
+            readTrainingURL(url, dbName, mReadTrainingUrlTask);
+        }
     }
 
     public void getWrongTries(String stName) {
 
-        stName = "Admin1"; // TODO: delete this line.
+
         Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                 " WHERE EVENT = 'mistakeDlg'", null);
         int res = c.getCount();
         Log.d(TAG, "getWrongTries: " + res);
 
     }
-
 
     private void readInfoURL(String urlName, ReadInfoURLTask tempTask) {
         Log.d(TAG, "readURL: " + urlName);

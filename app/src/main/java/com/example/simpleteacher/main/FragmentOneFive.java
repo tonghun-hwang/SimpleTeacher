@@ -40,14 +40,13 @@ public class FragmentOneFive extends Fragment {
 
         // category 2)
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
-        numAllWords.setText(Integer.toString(Data.numAllWords1));
+        numAllWords.setText(Integer.toString(Data.numAllWords[0]));
 
         numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
-        numProzWrongAll.setText(Double.toString(Data.prozAllWrong1));
+        numProzWrongAll.setText(Double.toString(Data.prozAllTrainWrong[0]));
 
         numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
-        numProzWrongError.setText(Double.toString(Data.prozAllWrongError1));
-
+        numProzWrongError.setText(Double.toString(Data.prozAllTrainWrong[0]));
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
         numNochmal.setText(Integer.toString(Data.numNochmal1));
 
@@ -83,11 +82,11 @@ public class FragmentOneFive extends Fragment {
         grafikA.setPinchZoom(true);
 
         List<Entry> entriesA = new ArrayList<>();
-        entriesA.add(new Entry(1, (float) Data.trainAll1));
-        entriesA.add(new Entry(2, (float) Data.trainAll2));
-        entriesA.add(new Entry(3, (float) Data.trainAll3));
-        entriesA.add(new Entry(4, (float) Data.trainAll4));
-        entriesA.add(new Entry(5, (float) Data.trainAll5));
+        entriesA.add(new Entry(1, (float) Data.trainAll[0]));
+        entriesA.add(new Entry(2, (float) Data.trainAll[1]));
+        entriesA.add(new Entry(3, (float) Data.trainAll[2]));
+        entriesA.add(new Entry(4, (float) Data.trainAll[3]));
+        entriesA.add(new Entry(5, (float) Data.trainAll[4]));
 
         // X Axis
         ValueFormatter xAxisFormatterA = new FragmentOneFive.DayAxisValueFormatter(grafikA);
@@ -159,11 +158,11 @@ public class FragmentOneFive extends Fragment {
         grafikB.setPinchZoom(true);
 
         List<Entry> entriesB = new ArrayList<>();
-        entriesB.add(new Entry(1, (float) Data.trainWrong1));
-        entriesB.add(new Entry(2, (float) Data.trainWrong2));
-        entriesB.add(new Entry(3, (float) Data.trainWrong3));
-        entriesB.add(new Entry(4, (float) Data.trainWrong4));
-        entriesB.add(new Entry(5, (float) Data.trainWrong5));
+        entriesB.add(new Entry(1, (float) Data.prozTrainWrong[0]));
+        entriesB.add(new Entry(2, (float) Data.prozTrainWrong[1]));
+        entriesB.add(new Entry(3, (float) Data.prozTrainWrong[2]));
+        entriesB.add(new Entry(4, (float) Data.prozTrainWrong[3]));
+        entriesB.add(new Entry(5, (float) Data.prozTrainWrong[4]));
 
         // X Axis
         ValueFormatter xAxisFormatterB = new FragmentOneFive.DayAxisValueFormatter(grafikB);
@@ -237,11 +236,11 @@ public class FragmentOneFive extends Fragment {
         grafikC.setPinchZoom(true);
 
         List<Entry> entriesC = new ArrayList<>();
-        entriesC.add(new Entry(1, (float) Data.trainWrongError1));
-        entriesC.add(new Entry(2, (float) Data.trainWrongError2));
-        entriesC.add(new Entry(3, (float) Data.trainWrongError3));
-        entriesC.add(new Entry(4, (float) Data.trainWrongError4));
-        entriesC.add(new Entry(5, (float) Data.trainWrongError5));
+        entriesC.add(new Entry(1, (float) Data.prozTrainWrongError[0]));
+        entriesC.add(new Entry(2, (float) Data.prozTrainWrongError[1]));
+        entriesC.add(new Entry(3, (float) Data.prozTrainWrongError[2]));
+        entriesC.add(new Entry(4, (float) Data.prozTrainWrongError[3]));
+        entriesC.add(new Entry(5, (float) Data.prozTrainWrongError[4]));
 
         // X Axis
         ValueFormatter xAxisFormatterC = new FragmentOneFive.DayAxisValueFormatter(grafikC);

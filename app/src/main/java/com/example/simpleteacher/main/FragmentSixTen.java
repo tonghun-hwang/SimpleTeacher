@@ -41,13 +41,13 @@ public class FragmentSixTen extends Fragment {
         inf = inflater.inflate(R.layout.fragment_sixten, container, false);
 
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
-        numAllWords.setText(Integer.toString(Data.numAllWords6));
+        numAllWords.setText(Integer.toString(Data.numAllWords[1]));
 
         numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
-        numProzWrongAll.setText(Double.toString(Data.prozAllWrong6));
+        numProzWrongAll.setText(Double.toString(Data.prozAllTrainWrong[1]));
 
         numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
-        numProzWrongError.setText(Double.toString(Data.prozAllWrongError6));
+        numProzWrongError.setText(Double.toString(Data.prozAllTrainWrongError[1]));
 
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
         numNochmal.setText(Integer.toString(Data.numNochmal6));
@@ -80,11 +80,11 @@ public class FragmentSixTen extends Fragment {
         grafikA.setPinchZoom(true);
 
         List<Entry> entriesA = new ArrayList<>();
-        entriesA.add(new Entry(1, (float) Data.trainAll6));
-        entriesA.add(new Entry(2, (float) Data.trainAll7));
-        entriesA.add(new Entry(3, (float) Data.trainAll8));
-        entriesA.add(new Entry(4, (float) Data.trainAll9));
-        entriesA.add(new Entry(5, (float) Data.trainAll10));
+        entriesA.add(new Entry(1, (float) Data.trainAll[5]));
+        entriesA.add(new Entry(2, (float) Data.trainAll[6]));
+        entriesA.add(new Entry(3, (float) Data.trainAll[7]));
+        entriesA.add(new Entry(4, (float) Data.trainAll[8]));
+        entriesA.add(new Entry(5, (float) Data.trainAll[9]));
 
         // X Axis
         ValueFormatter xAxisFormatterA = new FragmentSixTen.DayAxisValueFormatter(grafikA);
@@ -158,11 +158,11 @@ public class FragmentSixTen extends Fragment {
         grafikB.setPinchZoom(true);
 
         List<Entry> entriesB = new ArrayList<>();
-        entriesB.add(new Entry(1, (float) Data.trainWrong6));
-        entriesB.add(new Entry(2, (float) Data.trainWrong7));
-        entriesB.add(new Entry(3, (float) Data.trainWrong8));
-        entriesB.add(new Entry(4, (float) Data.trainWrong9));
-        entriesB.add(new Entry(5, (float) Data.trainWrong10));
+        entriesB.add(new Entry(1, (float) Data.prozTrainWrong[5]));
+        entriesB.add(new Entry(2, (float) Data.prozTrainWrong[6]));
+        entriesB.add(new Entry(3, (float) Data.prozTrainWrong[7]));
+        entriesB.add(new Entry(4, (float) Data.prozTrainWrong[8]));
+        entriesB.add(new Entry(5, (float) Data.prozTrainWrong[9]));
 
         // X Axis
         ValueFormatter xAxisFormatterB = new FragmentSixTen.DayAxisValueFormatter(grafikB);
@@ -235,11 +235,11 @@ public class FragmentSixTen extends Fragment {
         grafikC.setPinchZoom(true);
 
         List<Entry> entriesC = new ArrayList<>();
-        entriesC.add(new Entry(1, (float) Data.trainWrongError6));
-        entriesC.add(new Entry(2, (float) Data.trainWrongError7));
-        entriesC.add(new Entry(3, (float) Data.trainWrongError8));
-        entriesC.add(new Entry(4, (float) Data.trainWrongError9));
-        entriesC.add(new Entry(5, (float) Data.trainWrongError10));
+        entriesC.add(new Entry(1, (float) Data.prozTrainWrongError[5]));
+        entriesC.add(new Entry(2, (float) Data.prozTrainWrongError[6]));
+        entriesC.add(new Entry(3, (float) Data.prozTrainWrongError[7]));
+        entriesC.add(new Entry(4, (float) Data.prozTrainWrongError[8]));
+        entriesC.add(new Entry(5, (float) Data.prozTrainWrongError[9]));
 
         // X Axis
         ValueFormatter xAxisFormatterC = new FragmentSixTen.DayAxisValueFormatter(grafikC);

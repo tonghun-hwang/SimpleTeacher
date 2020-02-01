@@ -1,5 +1,6 @@
 package com.example.simpleteacher.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.simpleteacher.Data;
+import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.R;
 
 public class MainFragment extends Fragment {
@@ -36,6 +38,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         inf = inflater.inflate(R.layout.main_fragment, container, false);
         nameStudent = (TextView) inf.findViewById(R.id.idStudent);
         nameStudent.setText(Data.nameStudent);

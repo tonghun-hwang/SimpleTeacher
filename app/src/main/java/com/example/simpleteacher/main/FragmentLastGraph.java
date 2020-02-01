@@ -60,22 +60,9 @@ public class FragmentLastGraph extends Fragment {
         chart.setPinchZoom(true);
 
         List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, (float) Data.prozTrainWrong1));
-        entries.add(new Entry(2, (float) Data.prozTrainWrong2));
-        entries.add(new Entry(3, (float) Data.prozTrainWrong3));
-        entries.add(new Entry(4, (float )Data.prozTrainWrong4));
-        entries.add(new Entry(5, (float) Data.prozTrainWrong5));
-        entries.add(new Entry(6, (float) Data.prozTrainWrong6));
-        entries.add(new Entry(7, (float) Data.prozTrainWrong7));
-        entries.add(new Entry(8, (float) Data.prozTrainWrong8));
-        entries.add(new Entry(9, (float) Data.prozTrainWrong9));
-        entries.add(new Entry(10, (float) Data.prozTrainWrong10));
-        entries.add(new Entry(11, (float) Data.prozTrainWrong11));
-        entries.add(new Entry(12, (float) Data.prozTrainWrong12));
-        entries.add(new Entry(13, (float) Data.prozTrainWrong13));
-        entries.add(new Entry(14, (float) Data.prozTrainWrong14));
-        entries.add(new Entry(15, (float) Data.prozTrainWrong15));
-        entries.add(new Entry(16, (float) Data.prozTrainWrong16));
+        for(int i = 0; i < 16; i++){
+            entries.add(new Entry(i+1, (float) Data.prozTrainWrong[i]));
+        }
         // X Axis
         ValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
         XAxis xAxis = chart.getXAxis();
