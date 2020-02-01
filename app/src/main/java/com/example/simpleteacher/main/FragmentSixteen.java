@@ -39,13 +39,13 @@ public class FragmentSixteen extends Fragment {
 
         inf = inflater.inflate(R.layout.fragment_sixteen, container, false);
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
-        numAllWords.setText(Integer.toString(Data.numAllWords16));
+        numAllWords.setText(Integer.toString(Data.numAllWords[3]));
 
         numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
-        numProzWrongAll.setText(Double.toString(Data.prozAllWrong16));
+        numProzWrongAll.setText(Double.toString(Data.prozAllTrainWrong[3]));
 
         numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
-        numProzWrongError.setText(Double.toString(Data.prozAllWrongError16));
+        numProzWrongError.setText(Double.toString(Data.prozAllTrainWrongError[3]));
 
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
         numNochmal.setText(Integer.toString(Data.numNochmal16));
@@ -82,7 +82,7 @@ public class FragmentSixteen extends Fragment {
         grafikA.setPinchZoom(true);
 
         List<Entry> entriesA = new ArrayList<>();
-        entriesA.add(new Entry(1, (float) Data.trainAll16));
+        entriesA.add(new Entry(1, (float) Data.trainAll[15]));
         //entriesA.add(new Entry(2, (float) Data.trainAll2));
         //entriesA.add(new Entry(3, (float) Data.trainAll3));
         //entriesA.add(new Entry(4, (float) Data.trainAll4));
@@ -159,7 +159,7 @@ public class FragmentSixteen extends Fragment {
         grafikB.setPinchZoom(true);
 
         List<Entry> entriesB = new ArrayList<>();
-        entriesB.add(new Entry(1, (float) Data.trainWrong16));
+        entriesB.add(new Entry(1, (float) Data.prozTrainWrong[15]));
         //entriesB.add(new Entry(2, (float) Data.trainWrong2));
         // entriesB.add(new Entry(3, (float) Data.trainWrong3));
         //entriesB.add(new Entry(4, (float) Data.trainWrong4));
@@ -236,7 +236,7 @@ public class FragmentSixteen extends Fragment {
         grafikC.setPinchZoom(true);
 
         List<Entry> entriesC = new ArrayList<>();
-        entriesC.add(new Entry(1, (float) Data.trainWrongError16));
+        entriesC.add(new Entry(1, (float) Data.prozTrainWrongError[15]));
         //entriesC.add(new Entry(2, (float) Data.trainWrongError2));
         //entriesC.add(new Entry(3, (float) Data.trainWrongError3));
         //entriesC.add(new Entry(4, (float) Data.trainWrongError4));

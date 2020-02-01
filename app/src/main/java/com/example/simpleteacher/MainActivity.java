@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String[] admin = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
+    private static final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
             "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
             "Planet1", "Planet2", "Planet3", "Planet4","Planet5", "Planet6", "Planet7", "Planet8", "Planet9",
             "Planet10", "Planet11", "Planet12", "Planet13", "Planet14", "Planet15","Planet16","Planet17","Planet18",
@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //ID and Password for teachers
         account.put("admin", "admin1");
         account.put("ADM1", "mda1");
         account.put("AUN1", "nua1");
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         account.put("BWR2", "rwb2");
         account.put("BBM2", "mbb2");
         account.put("BBG2", "gbb2");
+
         final Intent intent = new Intent(this, ItemActivity.class);
         id = (EditText) findViewById(R.id.ID);
         password = (EditText) findViewById(R.id.password);
