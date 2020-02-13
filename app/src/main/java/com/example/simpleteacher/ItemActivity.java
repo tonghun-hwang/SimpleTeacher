@@ -115,6 +115,8 @@ public class ItemActivity extends AppCompatActivity {
                 getWrongTries(Data.nameStudent);
 
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
+                Data.setTrainAll(3, 45);
+                Data.setTrainAll(15, 0);
                 Data.calDaten();
                 // TODO : use strText
                 FragmentManager fm = getSupportFragmentManager();
@@ -127,8 +129,8 @@ public class ItemActivity extends AppCompatActivity {
 
             }
         });
-
     }
+
 
     public void setTrainingDB(String stName) {
         // userTraining.db
@@ -146,13 +148,10 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     public void getWrongTries(String stName) {
-
-
         Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                 " WHERE EVENT = 'mistakeDlg'", null);
         int res = c.getCount();
         Log.d(TAG, "getWrongTries: " + res);
-
     }
 
     private void readInfoURL(String urlName, ReadInfoURLTask tempTask) {
