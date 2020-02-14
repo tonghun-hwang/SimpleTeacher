@@ -52,12 +52,17 @@ public class Data extends Application {
     public int[] numAllWrongError;
     public double[] prozAllTrainWrong;
     public double[] prozAllTrainWrongError;
+    public int[] numNochmal;
+    public int[] numAErase;
+    public int[] numAllErase;
+    public int[] arrNochmal;
+    public int[] arrAErase;
+    public int[] arrAllErase;
 
     // FragmentOneFive
     public int numNochmal1;
     public int numARadierer1;
     public int numAllRadierer1;
-
 
     //FragmentSixTen
     public int numNochmal6;
@@ -73,6 +78,17 @@ public class Data extends Application {
     public int numNochmal16;
     public int numARadierer16;
     public int numAllRadierer16;
+
+    public static final String TRAIN_ALL = "incWIdx";
+    public static final String TRAIN_WRONG = "mistakeDlg";
+    public static final String TRAIN_KEYBOARD = "pushChar";
+    public static final String TRAIN_ERASE = "eraseOne";
+    public static final String TRAIN_ERASE_ALL = "eraseAll";
+    public static final String TRAIN_STILL_THERE = "stillThereDlg";
+    public static final String TRAIN_SPEAK_WORD = "speak";
+    public static final String TRAIN_BUTTON_EAR = "btEar";
+    private static final String TAG = "Data";
+
 
     @Override
     public void onCreate(){
@@ -98,6 +114,12 @@ public class Data extends Application {
         numAllWrongError = new int[4];
         prozAllTrainWrong = new double[4];
         prozAllTrainWrongError = new double[4];
+        numNochmal = new int[16];
+        numAllErase = new int[16];
+        numAErase = new int[16];
+        arrAErase = new int[4];
+        arrAllErase = new int[4];
+        arrNochmal = new int[4];
 
         numNochmal1 = 0;
         numARadierer1 = 0;
@@ -132,6 +154,12 @@ public class Data extends Application {
         fill(numAllWords,0);
         fill(numAllWrong,0);
         fill(numAllWrongError,0);
+        fill(numNochmal,0);
+        fill(numAErase,0);
+        fill(numAllErase,0);
+        fill(arrAErase,0);
+        fill(arrAllErase,0);
+        fill(arrNochmal,0);
 
     }
 
@@ -141,26 +169,34 @@ public class Data extends Application {
     public void setNameErrorcategory(String nameErrorcategory) {
         this.nameErrorcategory = nameErrorcategory;
     }
+
+    public void setNumNochmal(int index, int value) {
+        this.numNochmal[index] = value;
+    }
+
+    public void setNumAErase(int index, int value) {
+        this.numAErase[index] = value;
+    }
+
+    public void setNumAllErase(int index, int value) {
+        this.numAllErase[index] = value;
+    }
+
     public void setTrainAll(int index, int value) {
         this.trainAll[index] = value;
     }
-
     public void setTrainAllTries(int index, int value) {
         this.trainAllTries[index] = value;
     }
-
     public void setTrainWrong(int index, int value) {
         this.trainWrong[index] = value;
     }
-
     public void setTrainWrongError(int index, int value) {
         this.trainWrongError[index] = value;
     }
-
     public void setTrainWrongTries(int index, int value) {
         this.trainWrongTries[index] = value;
     }
-
     public void setTrainWrongErrorTries(int index, int value) {
         this.trainWrongErrorTries[index] = value;
     }
