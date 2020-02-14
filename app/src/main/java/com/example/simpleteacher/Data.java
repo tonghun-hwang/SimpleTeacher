@@ -159,23 +159,35 @@ public class Data extends Application {
         // View => numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         int count = 0;
         for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 5; j++)
-            numAllWords[i] += trainAll[count];
-            count++;
-        }
+            for(int j = 0; j < 5; j++){
+                numAllWords[i] += trainAll[count];
+                count++;
+            }
+                    }
         numAllWords[3] = trainAll[15];
         count = 0;
 
 
         // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
         for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 5; j++)
+            for(int j = 0; j < 5; j++){
                 numAllWrong[i] += trainWrong[count];
-            count++;
+                count++;
+            }
         }
         numAllWrong[3] = trainWrong[15];
         count = 0;
-        ;
+
+        // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 5; j++){
+                numAllWrongError[i] += trainWrongError[count];
+                count++;
+            }
+        }
+        numAllWrongError[3] = trainWrongError[15];
+        count = 0;
+
         for(int i = 0; i < 4; i++){
             if(numAllWords[i] == 0) {
                 prozAllTrainWrong[i] = 0;
@@ -188,11 +200,12 @@ public class Data extends Application {
 
         // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
         for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 5; j++)
+            for(int j = 0; j < 5; j++) {
                 numAllWrongError[i] += trainWrongError[count];
-            count++;
+                count++;
+            }
         }
-        numAllWrongError[3] = trainWrongError[15];
+        //numAllWrongError[3] = trainWrongError[15];
         count = 0;
 
         for(int i = 0; i < 4; i++){

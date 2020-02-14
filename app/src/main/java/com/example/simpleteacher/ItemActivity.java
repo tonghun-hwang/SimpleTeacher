@@ -28,6 +28,8 @@ import com.example.simpleteacher.main.MainFragment;
 
 import java.util.ArrayList;
 
+import static java.util.Arrays.fill;
+
 public class ItemActivity extends AppCompatActivity {
     private final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
             "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
@@ -128,7 +130,19 @@ public class ItemActivity extends AppCompatActivity {
                 Log.i("Id_Reading", "ID is read.");
                 setTrainingDB(mData.nameStudent);
                 getWrongTries(mData.nameStudent);
+                /*
+                if(mData.nameStudent.contains("Ufo")) {
+                    mData.setTrainAll(3,56);
+                } else if(mData.nameStudent.contains("Komet")) {
+                    fill(mData.numAllWords, 30);
+                    mData.setTrainAll(15,32);
+                    Log.d("Data-test", "numAllWords[3] = " + mData.numAllWords[3]);
 
+                } else if(mData.nameStudent.contains("Planet")) {
+                    fill(mData.prozAllTrainWrong, 63);
+                    Log.d("Data-test", "prozAllTrainWrong[3] = " + mData.prozTrainWrongError[3]);
+                }
+                */
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
                 mData.calDaten();
                 // TODO : use strText
