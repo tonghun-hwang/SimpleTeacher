@@ -129,7 +129,7 @@ public class ItemActivity extends AppCompatActivity {
                 mData.setDaten();
                 Log.i("Id_Reading", "ID is read.");
                 setTrainingDB(mData.nameStudent);
-                getWrongTries(mData.nameStudent);
+
                 /*
                 if(mData.nameStudent.contains("Ufo")) {
                     mData.setTrainAll(3,56);

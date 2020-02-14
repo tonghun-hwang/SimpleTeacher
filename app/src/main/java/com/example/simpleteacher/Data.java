@@ -39,39 +39,40 @@ public class Data extends Application {
 
     public String nameErrorcategory = "Error Category";
 
-    public int[] trainAll = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public int[] trainAll;
     public int[] trainAllTries;
-    public int[] trainWrong = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    public int[] trainWrongError = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public int[] trainWrong;
+    public int[] trainWrongError;
     public int[] trainWrongTries;
     public int[] trainWrongErrorTries;
-    public double[] prozTrainWrong = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    public double[] prozTrainWrongError = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    public int[] numAllWords = new int[4];
-    public int[] numAllWrong = new int[4];
-    public int[] numAllWrongError = new int[4];
-    public double[] prozAllTrainWrong = new double[4];
-    public double[] prozAllTrainWrongError = new double[4];
+    public double[] prozTrainWrong;
+    public double[] prozTrainWrongError;
+    public int[] numAllWords;
+    public int[] numAllWrong;
+    public int[] numAllWrongError;
+    public double[] prozAllTrainWrong;
+    public double[] prozAllTrainWrongError;
 
     // FragmentOneFive
-    public int numNochmal1 = 0;
-    public int numARadierer1 = 0;
-    public int numAllRadierer1 = 0;
+    public int numNochmal1;
+    public int numARadierer1;
+    public int numAllRadierer1;
+
 
     //FragmentSixTen
-    public int numNochmal6 = 0;
-    public int numARadierer6 = 0;
-    public int numAllRadierer6 = 0;
+    public int numNochmal6;
+    public int numARadierer6;
+    public int numAllRadierer6;
 
     //FragmentElevenFifteen
-    public int numNochmal11 = 0;
-    public int numARadierer11 = 0;
-    public int numAllRadierer11 = 0;
+    public int numNochmal11;
+    public int numARadierer11;
+    public int numAllRadierer11;
 
     //FragmentSixteen
-    public int numNochmal16 = 0;
-    public int numARadierer16 = 0;
-    public int numAllRadierer16 = 0;
+    public int numNochmal16;
+    public int numARadierer16;
+    public int numAllRadierer16;
 
     @Override
     public void onCreate(){
@@ -133,12 +134,40 @@ public class Data extends Application {
         fill(numAllWrongError,0);
 
     }
+
+    public void setNameStudent(String nameStudent){
+        this.nameStudent = nameStudent;
+    }
+    public void setNameErrorcategory(String nameErrorcategory) {
+        this.nameErrorcategory = nameErrorcategory;
+    }
     public void setTrainAll(int index, int value) {
-        trainAll[index] = value;
+        this.trainAll[index] = value;
+    }
+
+    public void setTrainAllTries(int index, int value) {
+        this.trainAllTries[index] = value;
+    }
+
+    public void setTrainWrong(int index, int value) {
+        this.trainWrong[index] = value;
+    }
+
+    public void setTrainWrongError(int index, int value) {
+        this.trainWrongError[index] = value;
+    }
+
+    public void setTrainWrongTries(int index, int value) {
+        this.trainWrongTries[index] = value;
+    }
+
+    public void setTrainWrongErrorTries(int index, int value) {
+        this.trainWrongErrorTries[index] = value;
     }
 
     public void calDaten(){
 
+        // prozTrainWrong
         for(int i = 0; i < 16; i++){
             if(trainAll[i] == 0){
                 prozTrainWrong[i] = 0;
@@ -148,6 +177,7 @@ public class Data extends Application {
 
         }
 
+        // prozTrainWrongError
         for(int i = 0; i < 16; i++){
             if(trainAll[i] == 0){
                 prozTrainWrongError[i] = 0;
@@ -178,7 +208,6 @@ public class Data extends Application {
         numAllWrong[3] = trainWrong[15];
         count = 0;
 
-        // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++){
                 numAllWrongError[i] += trainWrongError[count];
@@ -188,6 +217,8 @@ public class Data extends Application {
         numAllWrongError[3] = trainWrongError[15];
         count = 0;
 
+
+        // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
         for(int i = 0; i < 4; i++){
             if(numAllWords[i] == 0) {
                 prozAllTrainWrong[i] = 0;
@@ -197,15 +228,13 @@ public class Data extends Application {
 
         }
 
-
-        // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++) {
                 numAllWrongError[i] += trainWrongError[count];
                 count++;
             }
         }
-        //numAllWrongError[3] = trainWrongError[15];
+        numAllWrongError[3] = trainWrongError[15];
         count = 0;
 
         for(int i = 0; i < 4; i++){
@@ -219,8 +248,52 @@ public class Data extends Application {
 
     }
 
-    public void setNameStudent(String name){
-        nameStudent = name;
+    public void setNumNochmal1(int numNochmal1) {
+        this.numNochmal1 = numNochmal1;
+    }
+
+    public void setNumARadierer1(int numARadierer1) {
+        this.numARadierer1 = numARadierer1;
+    }
+
+    public void setNumAllRadierer1(int numAllRadierer1) {
+        this.numAllRadierer1 = numAllRadierer1;
+    }
+
+    public void setNumNochmal6(int numNochmal6) {
+        this.numNochmal6 = numNochmal6;
+    }
+
+    public void setNumARadierer6(int numARadierer6) {
+        this.numARadierer6 = numARadierer6;
+    }
+
+    public void setNumAllRadierer6(int numAllRadierer6) {
+        this.numAllRadierer6 = numAllRadierer6;
+    }
+
+    public void setNumNochmal11(int numNochmal11) {
+        this.numNochmal11 = numNochmal11;
+    }
+
+    public void setNumARadierer11(int numARadierer11) {
+        this.numARadierer11 = numARadierer11;
+    }
+
+    public void setNumAllRadierer11(int numAllRadierer11) {
+        this.numAllRadierer11 = numAllRadierer11;
+    }
+
+    public void setNumNochmal16(int numNochmal16) {
+        this.numNochmal16 = numNochmal16;
+    }
+
+    public void setNumARadierer16(int numARadierer16) {
+        this.numARadierer16 = numARadierer16;
+    }
+
+    public void setNumAllRadierer16(int numAllRadierer16) {
+        this.numAllRadierer16 = numAllRadierer16;
     }
 
     @Override
