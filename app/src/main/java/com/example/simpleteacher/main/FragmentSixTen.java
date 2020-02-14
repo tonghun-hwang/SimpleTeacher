@@ -1,5 +1,6 @@
 package com.example.simpleteacher.main;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.simpleteacher.Data;
+import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.R;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
@@ -34,6 +36,17 @@ public class FragmentSixTen extends Fragment {
         // Required empty public constructor
     }
 
+    private ItemActivity activity;
+    private Data mData;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //이 메소드가 호출될떄는 프래그먼트가 엑티비티위에 올라와있는거니깐 getActivity메소드로 엑티비티참조가능
+        activity = (ItemActivity) getActivity();
+        mData = (Data) getActivity().getApplication();
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,22 +54,22 @@ public class FragmentSixTen extends Fragment {
         inf = inflater.inflate(R.layout.fragment_sixten, container, false);
 
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
-        numAllWords.setText(Integer.toString(Data.numAllWords[1]));
+        numAllWords.setText(Integer.toString(mData.numAllWords[1]));
 
         numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
-        numProzWrongAll.setText(Double.toString(Data.prozAllTrainWrong[1]));
+        numProzWrongAll.setText(Double.toString(mData.prozAllTrainWrong[1]));
 
         numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
-        numProzWrongError.setText(Double.toString(Data.prozAllTrainWrongError[1]));
+        numProzWrongError.setText(Double.toString(mData.prozAllTrainWrongError[1]));
 
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
-        numNochmal.setText(Integer.toString(Data.numNochmal6));
+        numNochmal.setText(Integer.toString(mData.numNochmal6));
 
         numARadierer = (TextView) inf.findViewById(R.id.numARadierer);
-        numARadierer.setText(Integer.toString(Data.numARadierer6));
+        numARadierer.setText(Integer.toString(mData.numARadierer6));
 
         numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
-        numALLRadierer.setText(Integer.toString(Data.numAllRadierer6));
+        numALLRadierer.setText(Integer.toString(mData.numAllRadierer6));
 
 
         // category 3)
@@ -80,11 +93,11 @@ public class FragmentSixTen extends Fragment {
         grafikA.setPinchZoom(true);
 
         List<Entry> entriesA = new ArrayList<>();
-        entriesA.add(new Entry(1, (float) Data.trainAll[5]));
-        entriesA.add(new Entry(2, (float) Data.trainAll[6]));
-        entriesA.add(new Entry(3, (float) Data.trainAll[7]));
-        entriesA.add(new Entry(4, (float) Data.trainAll[8]));
-        entriesA.add(new Entry(5, (float) Data.trainAll[9]));
+        entriesA.add(new Entry(1, (float) mData.trainAll[5]));
+        entriesA.add(new Entry(2, (float) mData.trainAll[6]));
+        entriesA.add(new Entry(3, (float) mData.trainAll[7]));
+        entriesA.add(new Entry(4, (float) mData.trainAll[8]));
+        entriesA.add(new Entry(5, (float) mData.trainAll[9]));
 
         // X Axis
         ValueFormatter xAxisFormatterA = new FragmentSixTen.DayAxisValueFormatter(grafikA);
@@ -158,11 +171,11 @@ public class FragmentSixTen extends Fragment {
         grafikB.setPinchZoom(true);
 
         List<Entry> entriesB = new ArrayList<>();
-        entriesB.add(new Entry(1, (float) Data.prozTrainWrong[5]));
-        entriesB.add(new Entry(2, (float) Data.prozTrainWrong[6]));
-        entriesB.add(new Entry(3, (float) Data.prozTrainWrong[7]));
-        entriesB.add(new Entry(4, (float) Data.prozTrainWrong[8]));
-        entriesB.add(new Entry(5, (float) Data.prozTrainWrong[9]));
+        entriesB.add(new Entry(1, (float) mData.prozTrainWrong[5]));
+        entriesB.add(new Entry(2, (float) mData.prozTrainWrong[6]));
+        entriesB.add(new Entry(3, (float) mData.prozTrainWrong[7]));
+        entriesB.add(new Entry(4, (float) mData.prozTrainWrong[8]));
+        entriesB.add(new Entry(5, (float) mData.prozTrainWrong[9]));
 
         // X Axis
         ValueFormatter xAxisFormatterB = new FragmentSixTen.DayAxisValueFormatter(grafikB);
@@ -235,11 +248,11 @@ public class FragmentSixTen extends Fragment {
         grafikC.setPinchZoom(true);
 
         List<Entry> entriesC = new ArrayList<>();
-        entriesC.add(new Entry(1, (float) Data.prozTrainWrongError[5]));
-        entriesC.add(new Entry(2, (float) Data.prozTrainWrongError[6]));
-        entriesC.add(new Entry(3, (float) Data.prozTrainWrongError[7]));
-        entriesC.add(new Entry(4, (float) Data.prozTrainWrongError[8]));
-        entriesC.add(new Entry(5, (float) Data.prozTrainWrongError[9]));
+        entriesC.add(new Entry(1, (float) mData.prozTrainWrongError[5]));
+        entriesC.add(new Entry(2, (float) mData.prozTrainWrongError[6]));
+        entriesC.add(new Entry(3, (float) mData.prozTrainWrongError[7]));
+        entriesC.add(new Entry(4, (float) mData.prozTrainWrongError[8]));
+        entriesC.add(new Entry(5, (float) mData.prozTrainWrongError[9]));
 
         // X Axis
         ValueFormatter xAxisFormatterC = new FragmentSixTen.DayAxisValueFormatter(grafikC);

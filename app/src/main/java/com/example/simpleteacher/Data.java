@@ -29,59 +29,116 @@ package com.example.simpleteacher;
 * @author HyangGi Jang
 * */
 import android.app.Application;
+import android.util.Log;
+
+import static java.util.Arrays.fill;
 
 public class Data extends Application {
 
-    public static String nameStudent;
+    public String nameStudent;
 
-    public static String nameErrorcategory = "Error Category";
+    public String nameErrorcategory = "Error Category";
 
-    public static int[] trainAll = {75,75,75,75,75,63,63,20,63,20,78,78,30,30,78,30};
-    public static int[] trainAllTries;
-    public static int[] trainWrong = {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5};
-    public static int[] trainWrongError = {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3};
-    public static int[] trainWrongTries;
-    public static int[] trainWrongErrorTries;
-    public static double[] prozTrainWrong;
-    public static double[] prozTrainWrongError;
-    public static int[] numAllWords;
-    public static int[] numAllWrong;
-    public static int[] numAllWrongError;
-    public static double[] prozAllTrainWrong;
-    public static double[] prozAllTrainWrongError;
+    public int[] trainAll = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public int[] trainAllTries;
+    public int[] trainWrong = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public int[] trainWrongError = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public int[] trainWrongTries;
+    public int[] trainWrongErrorTries;
+    public double[] prozTrainWrong = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public double[] prozTrainWrongError = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public int[] numAllWords = new int[4];
+    public int[] numAllWrong = new int[4];
+    public int[] numAllWrongError = new int[4];
+    public double[] prozAllTrainWrong = new double[4];
+    public double[] prozAllTrainWrongError = new double[4];
 
     // FragmentOneFive
-    // Result
-    public static int numNochmal1 = 1;
-    public static int numARadierer1 = 1;
-    public static int numAllRadierer1 = 1;
-
+    public int numNochmal1 = 0;
+    public int numARadierer1 = 0;
+    public int numAllRadierer1 = 0;
 
     //FragmentSixTen
-    // Result
-    public static int numNochmal6 = 6;
-    public static int numARadierer6 = 6;
-    public static int numAllRadierer6 = 6;
-
+    public int numNochmal6 = 0;
+    public int numARadierer6 = 0;
+    public int numAllRadierer6 = 0;
 
     //FragmentElevenFifteen
-    public static int numNochmal11 = 11;
-    public static int numARadierer11 = 11;
-    public static int numAllRadierer11 = 11;
+    public int numNochmal11 = 0;
+    public int numARadierer11 = 0;
+    public int numAllRadierer11 = 0;
 
     //FragmentSixteen
-    // Result
-    public static int numNochmal16 = 16;
-    public static int numARadierer16 = 16;
-    public static int numAllRadierer16 = 16;
+    public int numNochmal16 = 0;
+    public int numARadierer16 = 0;
+    public int numAllRadierer16 = 0;
 
-    public static void setTrainAll(int index, int value) {
+    @Override
+    public void onCreate(){
+        super.onCreate();
+        Log.d("Data_Class", "initialize Data class");
+
+        nameStudent = "";
+
+        nameErrorcategory = "Error Category";
+
+        trainAll = new int[16];
+        trainAllTries = new int[16];
+        trainWrongTries = new int[16];
+        trainWrongErrorTries = new int[16];
+        trainWrong = new int[16];
+        trainWrongError = new int[16];
+        trainWrongTries = new int[16];
+        trainWrongErrorTries = new int[16];
+        prozTrainWrong = new double[16];
+        prozTrainWrongError = new double[16];
+        numAllWords = new int[4];
+        numAllWrong = new int[4];
+        numAllWrongError = new int[4];
+        prozAllTrainWrong = new double[4];
+        prozAllTrainWrongError = new double[4];
+
+        numNochmal1 = 0;
+        numARadierer1 = 0;
+        numAllRadierer1 = 0;
+
+        numNochmal6 = 0;
+        numARadierer6 = 0;
+        numAllRadierer6 = 0;
+
+        numNochmal11 = 0;
+        numARadierer11 = 0;
+        numAllRadierer11 = 0;
+
+        numNochmal16 = 0;
+        numARadierer16 = 0;
+        numAllRadierer16 = 0;
+
+    }
+
+    public void setDaten(){
+
+        fill(trainAll,0);
+        fill(trainAllTries,0);
+        fill(trainWrong,0);
+        fill(trainWrongTries,0);
+        fill(trainWrongError,0);
+        fill(trainWrongErrorTries,0);
+        fill(prozAllTrainWrong,0);
+        fill(prozAllTrainWrongError,0);
+        fill(prozTrainWrong,0);
+        fill(prozTrainWrongError,0);
+        fill(numAllWords,0);
+        fill(numAllWrong,0);
+        fill(numAllWrongError,0);
+
+    }
+    public void setTrainAll(int index, int value) {
         trainAll[index] = value;
     }
 
-    public static void calDaten(){
+    public void calDaten(){
 
-        prozTrainWrong = new double[16];
         for(int i = 0; i < 16; i++){
             if(trainAll[i] == 0){
                 prozTrainWrong[i] = 0;
@@ -90,8 +147,6 @@ public class Data extends Application {
             }
 
         }
-
-        prozTrainWrongError = new double[16];
 
         for(int i = 0; i < 16; i++){
             if(trainAll[i] == 0){
@@ -103,7 +158,6 @@ public class Data extends Application {
 
         // View => numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         int count = 0;
-        numAllWords = new int[4];
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++)
             numAllWords[i] += trainAll[count];
@@ -113,9 +167,7 @@ public class Data extends Application {
         count = 0;
 
 
-
         // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
-        numAllWrong = new int[4];
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++)
                 numAllWrong[i] += trainWrong[count];
@@ -123,8 +175,7 @@ public class Data extends Application {
         }
         numAllWrong[3] = trainWrong[15];
         count = 0;
-
-        prozAllTrainWrong = new double[4];
+        ;
         for(int i = 0; i < 4; i++){
             if(numAllWords[i] == 0) {
                 prozAllTrainWrong[i] = 0;
@@ -136,7 +187,6 @@ public class Data extends Application {
 
 
         // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
-        numAllWrongError = new int[4];
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++)
                 numAllWrongError[i] += trainWrongError[count];
@@ -145,7 +195,6 @@ public class Data extends Application {
         numAllWrongError[3] = trainWrongError[15];
         count = 0;
 
-        prozAllTrainWrongError = new double[4];
         for(int i = 0; i < 4; i++){
             if( numAllWords[i] == 0) {
                 prozAllTrainWrongError[i] = 0;
@@ -155,21 +204,16 @@ public class Data extends Application {
 
         }
 
-
     }
 
-
-
-
-
-    @Override
-    public void onCreate(){
-        super.onCreate();
-    }
-
-    public static void setNameStudent(String name){
+    public void setNameStudent(String name){
         nameStudent = name;
     }
 
+    @Override
+    public void onTerminate() {
+        // TODO Auto-generated method stub
+        super.onTerminate();
+    }
 
 }
