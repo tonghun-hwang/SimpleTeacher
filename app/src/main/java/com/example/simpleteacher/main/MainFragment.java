@@ -30,9 +30,18 @@ public class MainFragment extends Fragment {
     TextView nameTeacher, nameStudent, errorCategory;
 
 
-    public MainFragment() {
+    public MainFragment() { }
 
+    private ItemActivity activity;
+    private Data mData;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //이 메소드가 호출될떄는 프래그먼트가 엑티비티위에 올라와있는거니깐 getActivity메소드로 엑티비티참조가능
+        activity = (ItemActivity) getActivity();
+        mData = (Data) getActivity().getApplication();
     }
+
 
     @Nullable
     @Override
@@ -41,10 +50,10 @@ public class MainFragment extends Fragment {
 
         inf = inflater.inflate(R.layout.main_fragment, container, false);
         nameStudent = (TextView) inf.findViewById(R.id.idStudent);
-        nameStudent.setText(Data.nameStudent);
+        nameStudent.setText(mData.nameStudent);
 
         errorCategory = (TextView) inf.findViewById(R.id.Errorcategory);
-        errorCategory.setText(Data.nameErrorcategory);
+        errorCategory.setText(mData.nameErrorcategory);
 
         btnoneToFive = inf.findViewById(R.id.btnOneFive);
         btnsixToTen = inf.findViewById(R.id.btnSixTen);

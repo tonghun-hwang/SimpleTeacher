@@ -1,5 +1,6 @@
 package com.example.simpleteacher.main;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import com.example.simpleteacher.Data;
+import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.R;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
@@ -31,6 +33,16 @@ public class FragmentLastGraph extends Fragment {
 
     public FragmentLastGraph() {
         // Required empty public constructor
+    }
+
+    private ItemActivity activity;
+    private Data mData;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //이 메소드가 호출될떄는 프래그먼트가 엑티비티위에 올라와있는거니깐 getActivity메소드로 엑티비티참조가능
+        activity = (ItemActivity) getActivity();
+        mData = (Data) getActivity().getApplication();
     }
 
     @Override
@@ -61,7 +73,7 @@ public class FragmentLastGraph extends Fragment {
 
         List<Entry> entries = new ArrayList<>();
         for(int i = 0; i < 16; i++){
-            entries.add(new Entry(i+1, (float) Data.prozTrainWrong[i]));
+            entries.add(new Entry(i+1, (float) mData.prozTrainWrong[i]));
         }
         // X Axis
         ValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);

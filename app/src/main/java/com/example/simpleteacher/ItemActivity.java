@@ -74,12 +74,26 @@ public class ItemActivity extends AppCompatActivity {
     private String severUserData;
     private String TAG = "ItemActivity";
 
+    public static final int INTRODUCTION = 0;
+    public static final int TRIAL = 1;
+    public static final int DIAGNOSTIC = 2;
+    public static final int TRAINING = 3;
+    public static final int SYNC = 4;
+
+    private Data mData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         secondIntent = getIntent();
 
+        try{
+            mData = (Data) getApplication();
+
+
+        }catch(ClassCastException e){
+            Log.d("Dataclass", "Dataclass error");
+        }
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, secondIntent.getStringArrayExtra("ID"));
 
         ListView listview = (ListView) findViewById(R.id.student_list) ;
@@ -109,15 +123,14 @@ public class ItemActivity extends AppCompatActivity {
 
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
-                Data.setNameStudent(strText);
+                mData.setNameStudent(strText);
+                mData.setDaten();
                 Log.i("Id_Reading", "ID is read.");
-                setTrainingDB(Data.nameStudent);
-                getWrongTries(Data.nameStudent);
+                setTrainingDB(mData.nameStudent);
+                getWrongTries(mData.nameStudent);
 
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
-                Data.setTrainAll(3, 45);
-                Data.setTrainAll(15, 0);
-                Data.calDaten();
+                mData.calDaten();
                 // TODO : use strText
                 FragmentManager fm = getSupportFragmentManager();
                 Log.i("Fragments open", "Fragment are called");
