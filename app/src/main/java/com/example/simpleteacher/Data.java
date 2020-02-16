@@ -292,5 +292,4 @@ public class Data extends Application {
         Log.v(TAG,"onLowMemory()");
         super.onLowMemory();
     }
-
 }
