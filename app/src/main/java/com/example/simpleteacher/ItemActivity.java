@@ -128,7 +128,8 @@ public class ItemActivity extends AppCompatActivity {
         Log.d(TAG, "file " + remoteDBUserData);
         readInfoURL(remoteDBUserData, mReadInfoUrlTask);
         // TODO : use strText
-
+        mWDBHelper = new wordDBHelper(this, BASE_DATABASE_NAME);
+        initWordList();
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -137,7 +138,7 @@ public class ItemActivity extends AppCompatActivity {
                 strText = (String) parent.getItemAtPosition(position);
                 mData.setNameStudent(strText);
                 mData.setDaten();
-                Log.i("Id_Reading", "ID is read.");
+                Log.i("Id_Reading", "ID "+ strText + " is read.");
                 setTrainingDB(mData.nameStudent);
 
                 /*
@@ -174,8 +175,11 @@ public class ItemActivity extends AppCompatActivity {
         String dbName;
         String host;
         String url;
+
+        mWDB = mWDBHelper.getWritableDatabase();
+
         for (int i = 1; i <= 16; i++){
-            Log.d(TAG,"readDatabank");
+            Log.d(TAG,"readDatabank:" + i);
             dbName = "training_" + stName + "_" + i + ".db";
             host = ItemActivity.pref.getString("host", "");
             url = host + "/HOT-T/Results/" + stName + "/" + dbName;
@@ -186,12 +190,19 @@ public class ItemActivity extends AppCompatActivity {
             mData.setTrainAll(i-1, getNumTotalWords(mData.nameStudent)); // all words
             mData.setTrainWrongError(i-1,getNumTotallyWrongWordsInCategory(mData.nameStudent)); // wrong words
             mData.setTrainWrong(i-1, getNumTotallyWrongWords(mData.nameStudent));
+            mData.setNumNochmal(i-1, getNumButtonEar(mData.nameStudent));
+            mData.setNumAErase(i-1, getNumEraseOne(mData.nameStudent));
+            mData.setNumAllErase(i-1, getNumEraseAll(mData.nameStudent));
 
             getNumTotalTries(mData.nameStudent);
             getNumTotalTriesInCategory(mData.nameStudent);
 
-
+            if(mUserTrainingDB.isOpen()) {
+                mUserTrainingDB.close();
+            }
         }
+
+
     }
 
 
@@ -255,45 +266,70 @@ public class ItemActivity extends AppCompatActivity {
 
     // count words
     public int getNumTotalWords(String stName) {
-        Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
-        int res = c.getCount() + 1;
-        Log.d(TAG, "getNumTotalWords: " + res);
-        c.close();
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
+            // TODO
+            res = c.getCount() + 1;
+            Log.d(TAG, "getNumTotalWords: " + res);
+            c.close();
+        }
+        cAll.close();
         return res;
     }
 
     // wrong wrote at all 3 times && easy words inclusive
     public int getNumTotallyWrongWords(String stName) {
-        Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                " WHERE EVENT = '" + mData.TRAIN_ALL + "'" +
-                " AND (REPEAT_COUNT == 4)", null);
-        int res = c.getCount() + 1;
-        Log.d(TAG, "getNumTotallyWrongWords: " + res);
-        c.close();
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'" +
+                    " AND (REPEAT_COUNT == 4)", null);
+            res = c.getCount() + 1;
+            Log.d(TAG, "getNumTotallyWrongWords: " + res);
+            c.close();
+        }
+        cAll.close();
         return res;
     }
 
     // all words inclusive error category
     public int getNumTotalWordsInCategory(String stName) {
-        Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
-        int categorisedWord = getNumCategorizedWords(c);
-        int res = categorisedWord + 1;
-        Log.d(TAG, "getNumTotalWords: " + res);
-        c.close();
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
+            int categorisedWord = getNumCategorizedWords(c);
+            res = categorisedWord + 1;
+            Log.d(TAG, "getNumTotalWords: " + res);
+            c.close();
+        }
+        cAll.close();
         return res;
     }
 
     // wrong wrote at all 3 times && easy words inclusive
     public int getNumTotallyWrongWordsInCategory(String stName) {
-        Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                " WHERE EVENT = '" + mData.TRAIN_ALL + "'" +
-                " AND (REPEAT_COUNT == 4)", null);
-        int categorisedWord = getNumCategorizedWords(c);
-        int res = categorisedWord + 1;
-        Log.d(TAG, "getNumTotallyWrongWords: " + res);
-        c.close();
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'" +
+                    " AND (REPEAT_COUNT == 4)", null);
+            int categorisedWord = getNumCategorizedWords(c);
+            res = categorisedWord + 1;
+            Log.d(TAG, "getNumTotallyWrongWords: " + res);
+            c.close();
+        }
+        cAll.close();
         return res;
     }
 
@@ -406,7 +442,37 @@ public class ItemActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    private void initWordList() {
+        Log.d(TAG, "getWordLists() ");
+        Log.d(TAG, "initWordList()");
 
+        String envPath = Environment.getExternalStorageDirectory().toString();
+        String hottPath = envPath + "/HOT-T";
+
+        String server = "https://seafile.projekt.uni-hannover.de";
+        String hostPath = server + "/dav/sportwiss-errorlesslearning";
+        String urlHottPath = hostPath + "/HOT-T";
+
+        String csvPath = hottPath + "/master-wordlist_intro_9-q.csv";
+        String urlPath = urlHottPath + "/master-wordlist_intro_9-q.csv";
+        initFirstWordListThread = new initFirstWordListsTask(this, wordDBHelper.TABLE_TRIAL);
+        initFirstWordListThread.execute(urlPath, csvPath);
+
+        csvPath = hottPath + "/master-wordlist_diagnostic_9-q.csv";
+        urlPath = urlHottPath + "/master-wordlist_diagnostic_9-q.csv";
+        initFirstWordListThread2 = new initFirstWordListsTask(this, wordDBHelper.TABLE_DIAGNOSTIC);
+        initFirstWordListThread2.execute(urlPath, csvPath);
+
+        csvPath = hottPath + "/master-wordlist_training_9-q.csv";
+        urlPath = urlHottPath + "/master-wordlist_training_9-q.csv";
+        initFirstWordListThread3 = new initFirstWordListsTask(this, wordDBHelper.TABLE_TRAINING);
+        initFirstWordListThread3.execute(urlPath, csvPath);
+
+        csvPath = hottPath + "/master-wordlist_easywords_9-q.csv";
+        urlPath = urlHottPath + "/master-wordlist_easywords_9-q.csv";
+        initFirstWordListThread4 = new initFirstWordListsTask(this, wordDBHelper.TABLE_EASY);
+        initFirstWordListThread4.execute(urlPath, csvPath);
+    }
 
 }
 

@@ -59,13 +59,13 @@ public class FragmentElevenFifteen extends Fragment {
         numProzWrongError.setText(Double.toString(mData.prozAllTrainWrongError[2]));
 
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
-        numNochmal.setText(Integer.toString(mData.numNochmal11));
+        numNochmal.setText(Integer.toString(mData.arrNochmal[2]));
 
         numARadierer = (TextView) inf.findViewById(R.id.numARadierer);
-        numARadierer.setText(Integer.toString(mData.numARadierer11));
+        numARadierer.setText(Integer.toString(mData.arrAErase[2]));
 
         numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
-        numALLRadierer.setText(Integer.toString(mData.numAllRadierer11));
+        numALLRadierer.setText(Integer.toString(mData.arrAllErase[2]));
 
         // category 3)
         // grafik a

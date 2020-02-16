@@ -59,26 +59,6 @@ public class Data extends Application {
     public int[] arrAErase;
     public int[] arrAllErase;
 
-    // FragmentOneFive
-    public int numNochmal1;
-    public int numARadierer1;
-    public int numAllRadierer1;
-
-    //FragmentSixTen
-    public int numNochmal6;
-    public int numARadierer6;
-    public int numAllRadierer6;
-
-    //FragmentElevenFifteen
-    public int numNochmal11;
-    public int numARadierer11;
-    public int numAllRadierer11;
-
-    //FragmentSixteen
-    public int numNochmal16;
-    public int numARadierer16;
-    public int numAllRadierer16;
-
     public static final String TRAIN_ALL = "incWIdx";
     public static final String TRAIN_WRONG = "mistakeDlg";
     public static final String TRAIN_KEYBOARD = "pushChar";
@@ -93,7 +73,7 @@ public class Data extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
-        Log.d("Data_Class", "initialize Data class");
+        Log.d(TAG, "initialize Data class");
 
         nameStudent = "";
 
@@ -120,23 +100,6 @@ public class Data extends Application {
         arrAErase = new int[4];
         arrAllErase = new int[4];
         arrNochmal = new int[4];
-
-        numNochmal1 = 0;
-        numARadierer1 = 0;
-        numAllRadierer1 = 0;
-
-        numNochmal6 = 0;
-        numARadierer6 = 0;
-        numAllRadierer6 = 0;
-
-        numNochmal11 = 0;
-        numARadierer11 = 0;
-        numAllRadierer11 = 0;
-
-        numNochmal16 = 0;
-        numARadierer16 = 0;
-        numAllRadierer16 = 0;
-
     }
 
     public void setDaten(){
@@ -222,7 +185,7 @@ public class Data extends Application {
             }
         }
 
-        // View => numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
+        // View => numAllWords = (TextView) inf.findViewById(R.id.numAllWords); 2.1
         int count = 0;
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++){
@@ -234,7 +197,7 @@ public class Data extends Application {
         count = 0;
 
 
-        // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
+        // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll); 2.2
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++){
                 numAllWrong[i] += trainWrong[count];
@@ -244,28 +207,18 @@ public class Data extends Application {
         numAllWrong[3] = trainWrong[15];
         count = 0;
 
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 5; j++){
-                numAllWrongError[i] += trainWrongError[count];
-                count++;
-            }
-        }
-        numAllWrongError[3] = trainWrongError[15];
-        count = 0;
-
-
-        // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
         for(int i = 0; i < 4; i++){
             if(numAllWords[i] == 0) {
                 prozAllTrainWrong[i] = 0;
             } else {
                 prozAllTrainWrong[i] = (numAllWrong[i]*100) / numAllWords[i];
             }
-
         }
 
+
+        // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError); 2.3
         for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 5; j++) {
+            for(int j = 0; j < 5; j++){
                 numAllWrongError[i] += trainWrongError[count];
                 count++;
             }
@@ -279,57 +232,39 @@ public class Data extends Application {
             } else {
                 prozAllTrainWrongError[i]= (numAllWrongError[i]*100) / numAllWords[i];
             }
-
         }
 
-    }
+        // View => numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 5; j++){
+                arrNochmal[i] += numNochmal[count];
+                count++;
+            }
+        }
+        arrNochmal[3] = numNochmal[15];
+        count = 0;
 
-    public void setNumNochmal1(int numNochmal1) {
-        this.numNochmal1 = numNochmal1;
-    }
+        // View => numARadierer = (TextView) inf.findViewById(R.id.numARadierer);
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 5; j++){
+                arrAErase[i] += numAErase[count];
+                count++;
+            }
+        }
+        arrAErase[3] = numAErase[15];
+        count = 0;
 
-    public void setNumARadierer1(int numARadierer1) {
-        this.numARadierer1 = numARadierer1;
-    }
+        // View => numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 5; j++){
+                arrAllErase[i] += numAllErase[count];
+                count++;
+            }
+        }
+        arrAllErase[3] = numAllErase[15];
+        count = 0;
 
-    public void setNumAllRadierer1(int numAllRadierer1) {
-        this.numAllRadierer1 = numAllRadierer1;
-    }
 
-    public void setNumNochmal6(int numNochmal6) {
-        this.numNochmal6 = numNochmal6;
-    }
-
-    public void setNumARadierer6(int numARadierer6) {
-        this.numARadierer6 = numARadierer6;
-    }
-
-    public void setNumAllRadierer6(int numAllRadierer6) {
-        this.numAllRadierer6 = numAllRadierer6;
-    }
-
-    public void setNumNochmal11(int numNochmal11) {
-        this.numNochmal11 = numNochmal11;
-    }
-
-    public void setNumARadierer11(int numARadierer11) {
-        this.numARadierer11 = numARadierer11;
-    }
-
-    public void setNumAllRadierer11(int numAllRadierer11) {
-        this.numAllRadierer11 = numAllRadierer11;
-    }
-
-    public void setNumNochmal16(int numNochmal16) {
-        this.numNochmal16 = numNochmal16;
-    }
-
-    public void setNumARadierer16(int numARadierer16) {
-        this.numARadierer16 = numARadierer16;
-    }
-
-    public void setNumAllRadierer16(int numAllRadierer16) {
-        this.numAllRadierer16 = numAllRadierer16;
     }
 
     @Override

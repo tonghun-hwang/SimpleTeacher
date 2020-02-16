@@ -63,13 +63,13 @@ public class FragmentSixTen extends Fragment {
         numProzWrongError.setText(Double.toString(mData.prozAllTrainWrongError[1]));
 
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
-        numNochmal.setText(Integer.toString(mData.numNochmal6));
+        numNochmal.setText(Integer.toString(mData.arrNochmal[1]));
 
         numARadierer = (TextView) inf.findViewById(R.id.numARadierer);
-        numARadierer.setText(Integer.toString(mData.numARadierer6));
+        numARadierer.setText(Integer.toString(mData.arrAErase[1]));
 
         numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
-        numALLRadierer.setText(Integer.toString(mData.numAllRadierer6));
+        numALLRadierer.setText(Integer.toString(mData.arrAllErase[1]));
 
 
         // category 3)
