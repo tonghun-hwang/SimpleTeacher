@@ -104,7 +104,7 @@ public class ItemActivity extends AppCompatActivity {
         try {
             mData = (Data) getApplication();
         } catch(ClassCastException e){
-            Log.d("Dataclass", "Dataclass error");
+            Log.d("Data class", "Dataclass error");
         }
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, secondIntent.getStringArrayExtra("ID"));
 
@@ -138,24 +138,12 @@ public class ItemActivity extends AppCompatActivity {
                 strText = (String) parent.getItemAtPosition(position);
                 mData.setNameStudent(strText);
                 mData.setDaten();
-                Log.i("Id_Reading", "ID "+ strText + " is read.");
+                Log.i(TAG, "ID "+ strText + " is read.");
                 setTrainingDB(mData.nameStudent);
 
-                /*
-                if(mData.nameStudent.contains("Ufo")) {
-                    mData.setTrainAll(3,56);
-                } else if(mData.nameStudent.contains("Komet")) {
-                    fill(mData.numAllWords, 30);
-                    mData.setTrainAll(15,32);
-                    Log.d("Data-test", "numAllWords[3] = " + mData.numAllWords[3]);
-
-                } else if(mData.nameStudent.contains("Planet")) {
-                    fill(mData.prozAllTrainWrong, 63);
-                    Log.d("Data-test", "prozAllTrainWrong[3] = " + mData.prozTrainWrongError[3]);
-                }
-                */
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
                 mData.calDaten();
+
                 // TODO : use strText
                 FragmentManager fm = getSupportFragmentManager();
                 Log.i("Fragments open", "Fragment are called");
