@@ -103,6 +103,7 @@ public class Data extends Application {
     }
 
     public void setDaten(){
+        Log.i(TAG, "initialize data to 0.");
 
         fill(trainAll,0);
         fill(trainAllTries,0);
@@ -127,44 +128,56 @@ public class Data extends Application {
     }
 
     public void setNameStudent(String nameStudent){
+        Log.i(TAG, "set a name in nameStudent: " + nameStudent);
         this.nameStudent = nameStudent;
     }
     public void setNameErrorcategory(String nameErrorcategory) {
+        Log.i(TAG, "set a category in Errorcategorz: " + nameErrorcategory);
         this.nameErrorcategory = nameErrorcategory;
     }
 
     public void setNumNochmal(int index, int value) {
+        Log.i(TAG, "numNochmal: Set a value: numNochmal[" + index +"] = " + value);
         this.numNochmal[index] = value;
     }
 
     public void setNumAErase(int index, int value) {
+        Log.i(TAG, "numAErase: Set a value: numAErase[" + index +"] = " + value);
         this.numAErase[index] = value;
     }
 
     public void setNumAllErase(int index, int value) {
+        Log.i(TAG, "numAllErase: Set a value: numAllErase[" + index +"] = " + value);
         this.numAllErase[index] = value;
     }
 
     public void setTrainAll(int index, int value) {
+        Log.i(TAG, "trainAll: Set a value: trainAll[" + index +"] = " + value);
         this.trainAll[index] = value;
     }
     public void setTrainAllTries(int index, int value) {
+        Log.i(TAG, "trainAllTries: Set a value: trainAllTries[" + index +"] = " + value);
         this.trainAllTries[index] = value;
     }
     public void setTrainWrong(int index, int value) {
+        Log.i(TAG, "trainWrong: Set a value: trainWrong[" + index +"] = " + value);
         this.trainWrong[index] = value;
     }
     public void setTrainWrongError(int index, int value) {
+        Log.i(TAG, "trainWrongError: Set a value: trainWrongError[" + index +"] = " + value);
         this.trainWrongError[index] = value;
     }
     public void setTrainWrongTries(int index, int value) {
+        Log.i(TAG, "trainWrongTries: Set a value: trainWrongTries[" + index +"] = " + value);
         this.trainWrongTries[index] = value;
     }
     public void setTrainWrongErrorTries(int index, int value) {
+        Log.i(TAG, "trainWrongErrorTries: Set a value: trainWrongErrorTries[" + index +"] = " + value);
         this.trainWrongErrorTries[index] = value;
     }
 
     public void calDaten(){
+        Log.i(TAG, "calculate the data");
 
         // prozTrainWrong
         for(int i = 0; i < 16; i++){
