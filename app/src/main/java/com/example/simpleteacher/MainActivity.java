@@ -2,6 +2,7 @@ package com.example.simpleteacher;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] BBM2 = {"Alien14","Alien15","Alien16","Alien17","Alien18"};
     private static final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
 
+    private String TAG = "MainActivity";
     HashMap<String, String> account = new HashMap<String, String>();
     EditText id;
     EditText password;
@@ -121,5 +123,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
+        this.finish();
+    }
 
 }
