@@ -163,7 +163,7 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        // TODO Auto-generated method stub
+        Log.i(TAG,"onBackPressed() for logout");
         //super.onBackPressed(); //run this function without this code
 
         AlertDialog.Builder d = new AlertDialog.Builder(this);
