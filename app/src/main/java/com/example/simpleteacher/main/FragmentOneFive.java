@@ -60,14 +60,15 @@ public class FragmentOneFive extends Fragment {
 
         numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
         numProzWrongError.setText(Double.toString(mData.prozAllTrainWrong[0]));
+
         numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
-        numNochmal.setText(Integer.toString(mData.numNochmal1));
+        numNochmal.setText(Integer.toString(mData.arrNochmal[0]));
 
         numARadierer = (TextView) inf.findViewById(R.id.numARadierer);
-        numARadierer.setText(Integer.toString(mData.numARadierer1));
+        numARadierer.setText(Integer.toString(mData.arrAErase[0]));
 
         numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
-        numALLRadierer.setText(Integer.toString(mData.numAllRadierer1));
+        numALLRadierer.setText(Integer.toString(mData.arrAllErase[0]));
 
 
         // category 3)
