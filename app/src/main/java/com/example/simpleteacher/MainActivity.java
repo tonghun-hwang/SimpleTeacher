@@ -132,16 +132,18 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG, "onDestroy");
         this.finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     public void onBackPressed() {
         super.onBackPressed();
-        Log.d(TAG, "exit the app");
+        Log.d(TAG, "Back Button pressed");
         moveTaskToBack(true);
         finishAndRemoveTask();
         //android.os.Process.killProcess(android.os.Process.myPid()); // kill the process
         //System.exit(0) : 현재 액티비티를 종료시킨다.
         System.runFinalization();  //간단히 말해 현재 작업중인 쓰레드가 다 종료되면, 종료 시키라는 명령어
+        Log.d(TAG, "exit the app");
         System.exit(0);
     }
 
