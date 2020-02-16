@@ -1,5 +1,7 @@
 package com.example.simpleteacher;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -93,6 +96,7 @@ public class ItemActivity extends AppCompatActivity {
     private String severUserData;
     private String TAG = "ItemActivity";
     private Data mData;
+    private Context mContext;
 
 
     @Override
@@ -100,6 +104,7 @@ public class ItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         secondIntent = getIntent();
+        mContext = ItemActivity.this;
 
         try {
             mData = (Data) getApplication();
@@ -157,6 +162,24 @@ public class ItemActivity extends AppCompatActivity {
         });
     }
 
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        //super.onBackPressed(); //run this function without this code
+
+        AlertDialog.Builder d = new AlertDialog.Builder(this);
+        d.setMessage("Möchten Sie sich abmelden?");
+        d.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        d.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        d.show();
+    }
 
     public void setTrainingDB(String stName) {
         // userTraining.db
@@ -462,6 +485,15 @@ public class ItemActivity extends AppCompatActivity {
         initFirstWordListThread4.execute(urlPath, csvPath);
     }
 
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
+    }
 }
 
 

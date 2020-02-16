@@ -282,8 +282,15 @@ public class Data extends Application {
 
     @Override
     public void onTerminate() {
+        Log.v(TAG,"onTerminate()");
         // TODO Auto-generated method stub
         super.onTerminate();
+    }
+
+    @Override
+    public void onLowMemory() {
+        Log.v(TAG,"onLowMemory()");
+        super.onLowMemory();
     }
 
 }
