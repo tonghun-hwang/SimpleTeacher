@@ -216,7 +216,34 @@ public class ItemActivity extends AppCompatActivity {
 
     }
 
+    public int getSessionCategory(int sessionblock) {
+        Log.d(TAG, "getSessionCategory(): ");
 
+        if (sessionblock < 0 || sessionblock >= 3) {
+            return Integer.parseInt("3FFFFF", 16);
+        }
+
+        if (resultDB == null || !resultDB.isOpen()) {
+            resultDB = resultDBHelper.getReadableDatabase();
+        }
+        Cursor c = resultDB.rawQuery("SELECT * FROM "
+                + userResultDBHelper.RESULT_DIAG_MAIN
+                + " ORDER BY ERROR_RATE DESC" , null);
+        String main = "3";
+        String errorRate = "0.3";
+        if (c != null && c.getCount() > 0) {
+            c.moveToPosition(sessionblock);
+
+            main = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
+            errorRate = c.getString(c.getColumnIndex("ERROR_RATE"));
+
+            c.close();
+        }
+        if (resultDB.isOpen()) {
+            resultDB.close();
+        }
+        return Integer.valueOf(main);
+    }
     public int getNumWrongTries(String stName) {
         Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                 " WHERE EVENT = '" + mData.TRAIN_WRONG + "'", null);

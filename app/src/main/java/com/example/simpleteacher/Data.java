@@ -37,7 +37,7 @@ public class Data extends Application {
 
     public String nameStudent;
 
-    public String nameErrorcategory = "Error Category";
+    public int[] errorcategory;
 
     public int[] trainAll;
     public int[] trainAllTries;
@@ -70,6 +70,8 @@ public class Data extends Application {
     private static final String TAG = "Data";
 
 
+
+
     @Override
     public void onCreate(){
         super.onCreate();
@@ -77,7 +79,7 @@ public class Data extends Application {
 
         nameStudent = "";
 
-        nameErrorcategory = "Error Category";
+        errorcategory = new int[3];
 
         trainAll = new int[16];
         trainAllTries = new int[16];
@@ -105,6 +107,7 @@ public class Data extends Application {
     public void setDaten(){
         Log.i(TAG, "initialize data to 0.");
 
+        fill(errorcategory,0);
         fill(trainAll,0);
         fill(trainAllTries,0);
         fill(trainWrong,0);
@@ -131,9 +134,9 @@ public class Data extends Application {
         Log.i(TAG, "set a name in nameStudent: " + nameStudent);
         this.nameStudent = nameStudent;
     }
-    public void setNameErrorcategory(String nameErrorcategory) {
-        Log.i(TAG, "set a category in Errorcategorz: " + nameErrorcategory);
-        this.nameErrorcategory = nameErrorcategory;
+    public void setErrorcategory(int index, int value) {
+        Log.i(TAG, "errorcategory: Set a value: errorcategory[" + index +"] = " + value);
+        this.errorcategory[index] = value;
     }
 
     public void setNumNochmal(int index, int value) {
@@ -278,6 +281,10 @@ public class Data extends Application {
         count = 0;
 
 
+    }
+
+    public int[] getErrorcategory() {
+        return errorcategory;
     }
 
     @Override

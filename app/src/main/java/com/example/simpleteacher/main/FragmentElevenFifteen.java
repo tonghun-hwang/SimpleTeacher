@@ -27,7 +27,7 @@ import java.util.List;
 
 public class FragmentElevenFifteen extends Fragment {
     View inf;
-    private TextView numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
+    private TextView errorCategory, numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
     private LineChart grafikA, grafikB, grafikC;
 
     public FragmentElevenFifteen() {
@@ -49,6 +49,10 @@ public class FragmentElevenFifteen extends Fragment {
                              Bundle savedInstanceState) {
 
         inf = inflater.inflate(R.layout.fragment_elevenfifteen, container, false);
+
+        errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
+        errorCategory.setText(Integer.toString(mData.errorcategory[2]));
+
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         numAllWords.setText(Integer.toString(mData.numAllWords[2]));
 

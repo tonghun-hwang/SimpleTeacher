@@ -52,9 +52,6 @@ public class MainFragment extends Fragment {
         nameStudent = (TextView) inf.findViewById(R.id.idStudent);
         nameStudent.setText(mData.nameStudent);
 
-        errorCategory = (TextView) inf.findViewById(R.id.Errorcategory);
-        errorCategory.setText(mData.nameErrorcategory);
-
         btnoneToFive = inf.findViewById(R.id.btnOneFive);
         btnsixToTen = inf.findViewById(R.id.btnSixTen);
         btnelevenToFifteen = inf.findViewById(R.id.btnElevenFifteen);
