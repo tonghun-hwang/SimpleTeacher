@@ -25,7 +25,7 @@ import java.util.List;
  * Represents an asynchronous login/registration task used to authenticate
  * the user.
  */
-public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
+public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "Main.ReadURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     private final String mFile;
@@ -35,7 +35,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private SQLiteDatabase mDB;
     Cursor cursor;
 
-    public ReadTrainingURLTask(ItemActivity parent, String url, String fileName) {
+    public ReadResultURLTask(ItemActivity parent, String url, String fileName) {
         mParent = parent;
         mUrl = url;
         mList = mParent.mUserDataList;
@@ -66,12 +66,12 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected void onPostExecute(final Integer result) {
-        Log.d(TAG, "onPostExcute(): readTrainingURLTask");
+        Log.d(TAG, "onPostExcute(): readResultURLTask");
     }
 
     @Override
     protected void onCancelled() {
-        mParent.mReadTrainingUrlTask = null;
+        mParent.mReadResultURLTask = null;
     }
 
     private int readURLCSV(String urlCsvName) {
@@ -98,7 +98,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
                     BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.ISO_8859_1));
                     String inputLine;
                     String[] nextLine = null;
-                    Log.d(TAG, "readURL: " + urlCsvName);
+                    Log.d(TAG, "readResultURL: " + urlCsvName);
                     while ((inputLine = br.readLine()) != null) {
                         nextLine = inputLine.split(";");
 
@@ -127,7 +127,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     }
 
     private int readURL(String urlName) {
-        Log.d(TAG, "readTrainingURL: " + urlName);
+        Log.d(TAG, "readResultURL: " + urlName);
 
         /* authorization for the data storage */
         Authenticator.setDefault (new Authenticator() {

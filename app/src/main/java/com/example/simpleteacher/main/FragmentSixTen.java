@@ -55,7 +55,7 @@ public class FragmentSixTen extends Fragment {
 
 
         errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
-        errorCategory.setText(Integer.toString(mData.errorcategory[1]));
+        errorCategory.setText(mData.errorcategory[1]);
 
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         numAllWords.setText(Integer.toString(mData.numAllWords[1]));

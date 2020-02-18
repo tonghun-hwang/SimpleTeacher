@@ -22,9 +22,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
+import com.example.simpleteacher.asyncTask.ReadResultURLTask;
 import com.example.simpleteacher.asyncTask.ReadTrainingURLTask;
 import com.example.simpleteacher.asyncTask.initFirstWordListsTask;
 import com.example.simpleteacher.helper.userDBHelper;
+import com.example.simpleteacher.helper.userResultDBHelper;
 import com.example.simpleteacher.helper.userTrainingDBHelper;
 import com.example.simpleteacher.helper.wordDBHelper;
 import com.example.simpleteacher.main.FragmentLastGraph;
@@ -79,6 +81,10 @@ public class ItemActivity extends AppCompatActivity {
     public SQLiteDatabase mUserDB = null;
     public SQLiteDatabase mUserTrainingDB = null;
 
+
+    public static userResultDBHelper resultDBHelper;
+    public static SQLiteDatabase resultDB = null;
+
     public static String BASE_DATABASE_NAME = "wordList.db";
     private static initFirstWordListsTask initFirstWordListThread;
     private static initFirstWordListsTask initFirstWordListThread2;
@@ -92,6 +98,7 @@ public class ItemActivity extends AppCompatActivity {
     public static SharedPreferences pref;
     public static ReadInfoURLTask mReadInfoUrlTask = null;
     public static ReadTrainingURLTask mReadTrainingUrlTask = null;
+    public static ReadResultURLTask mReadResultURLTask = null;
     private String remoteDBUserData;
     private String severUserData;
     private String TAG = "ItemActivity";
@@ -138,15 +145,28 @@ public class ItemActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
+                String dbName;
+                String host;
+                String url;
 
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
+
+                Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
+
                 mData.setNameStudent(strText);
+
+                mWDB = mWDBHelper.getWritableDatabase();
+
+
+
+
                 mData.setDaten();
                 Log.i(TAG, "ID "+ strText + " is read.");
                 setTrainingDB(mData.nameStudent);
+                getSessionCategory(mData.nameStudent);
 
-                Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
+
                 mData.calDaten();
 
                 // TODO : use strText
@@ -216,34 +236,63 @@ public class ItemActivity extends AppCompatActivity {
 
     }
 
-    public int getSessionCategory(int sessionblock) {
+    public void getSessionCategory(String stName) {
+        String dbName;
+        String host;
+        String url;
+
+        dbName = "result_" + stName + ".db";
+        Log.d(TAG,"readResultDB: " + dbName);
+        host = ItemActivity.pref.getString("host", "");
+        url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+
+        resultDBHelper = new userResultDBHelper(this, dbName,1);
+        resultDB = resultDBHelper.getReadableDatabase();
+        readResultURL(url, dbName, mReadResultURLTask);
+
         Log.d(TAG, "getSessionCategory(): ");
 
-        if (sessionblock < 0 || sessionblock >= 3) {
-            return Integer.parseInt("3FFFFF", 16);
-        }
-
         if (resultDB == null || !resultDB.isOpen()) {
+            Log.d(TAG, "readable database open: ");
             resultDB = resultDBHelper.getReadableDatabase();
         }
+
         Cursor c = resultDB.rawQuery("SELECT * FROM "
-                + userResultDBHelper.RESULT_DIAG_MAIN
-                + " ORDER BY ERROR_RATE DESC" , null);
+                 + userResultDBHelper.RESULT_DIAG_MAIN
+                + " ORDER BY ERROR_RATE DESC", null);
+        Log.d(TAG, "getSessionCategory(): "+ c.moveToFirst());
+
         String main = "3";
-        String errorRate = "0.3";
-        if (c != null && c.getCount() > 0) {
-            c.moveToPosition(sessionblock);
+        //String errorRate = "0.3";
+        if ( c == null) {
+            Log.d(TAG, "cursor is null "); // => cursor : c.moveToFirst() return false is because cursor is empty but not null (query was successful).
+        } else if (c != null && c.getCount() > 0) {
+                c.moveToFirst();
+                main = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
+                Log.d(TAG, "getSessionCategory()11: " + main);
 
-            main = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
-            errorRate = c.getString(c.getColumnIndex("ERROR_RATE"));
+                //for (int ind = 0; ind < 3; ind++) {
+                //    mData.setErrorcategory(ind, c.getString(c.getColumnIndex("CATEGORY_MAIN")));
+                //    Log.d(TAG, "getSessionCategory(" + ind + "): " + c.getString(c.getColumnIndex("CATEGORY_MAIN")));
+                //    c.moveToNext();
+                //}
 
-            c.close();
-        }
-        if (resultDB.isOpen()) {
-            resultDB.close();
-        }
-        return Integer.valueOf(main);
+
+
+                //errorRate = c.getString(c.getColumnIndex("ERROR_RATE"));
+
+                c.close();
+            }
+            if (resultDB.isOpen()) {
+
+                Log.d(TAG, "getSessionCategory() closed ");
+                resultDB.close();
+            }
+            //return Integer.valueOf(main);
+
     }
+
+
     public int getNumWrongTries(String stName) {
         Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                 " WHERE EVENT = '" + mData.TRAIN_WRONG + "'", null);
@@ -453,6 +502,17 @@ public class ItemActivity extends AppCompatActivity {
             return;
         }
         tempTask = new ReadTrainingURLTask(this, urlName, dbName);
+        tempTask.execute((Void) null);
+    }
+
+    private void readResultURL(String urlName, String dbName, ReadResultURLTask tempTask) {
+        Log.d(TAG, "readResultURL: " + urlName);
+
+        if (tempTask != null) {
+            Log.d(TAG, "tempTask is not null ");
+            return;
+        }
+        tempTask = new ReadResultURLTask(this, urlName, dbName);
         tempTask.execute((Void) null);
     }
 
