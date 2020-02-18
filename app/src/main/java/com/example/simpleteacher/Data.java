@@ -37,7 +37,7 @@ public class Data extends Application {
 
     public String nameStudent;
 
-    public int[] errorcategory;
+    public String[] errorcategory;
 
     public int[] trainAll;
     public int[] trainAllTries;
@@ -79,7 +79,7 @@ public class Data extends Application {
 
         nameStudent = "";
 
-        errorcategory = new int[3];
+        errorcategory = new String[3];
 
         trainAll = new int[16];
         trainAllTries = new int[16];
@@ -107,7 +107,7 @@ public class Data extends Application {
     public void setDaten(){
         Log.i(TAG, "initialize data to 0.");
 
-        fill(errorcategory,0);
+        fill(errorcategory,"");
         fill(trainAll,0);
         fill(trainAllTries,0);
         fill(trainWrong,0);
@@ -134,7 +134,7 @@ public class Data extends Application {
         Log.i(TAG, "set a name in nameStudent: " + nameStudent);
         this.nameStudent = nameStudent;
     }
-    public void setErrorcategory(int index, int value) {
+    public void setErrorcategory(int index, String value) {
         Log.i(TAG, "errorcategory: Set a value: errorcategory[" + index +"] = " + value);
         this.errorcategory[index] = value;
     }
@@ -283,7 +283,7 @@ public class Data extends Application {
 
     }
 
-    public int[] getErrorcategory() {
+    public String[] getErrorcategory() {
         return errorcategory;
     }
 

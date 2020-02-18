@@ -52,7 +52,7 @@ public class FragmentOneFive extends Fragment {
         inf = inflater.inflate(R.layout.fragment_onefive, container, false);
 
         errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
-        errorCategory.setText(Integer.toString(mData.errorcategory[0]));
+        errorCategory.setText(mData.errorcategory[0]);
         // category 2)
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         numAllWords.setText(Integer.toString(mData.numAllWords[0]));
