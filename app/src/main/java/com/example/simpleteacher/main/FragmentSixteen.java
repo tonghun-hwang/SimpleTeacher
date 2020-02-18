@@ -28,7 +28,7 @@ import java.util.List;
 public class FragmentSixteen extends Fragment {
 
     View inf;
-    private TextView numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
+    private TextView  numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
     private LineChart grafikA, grafikB, grafikC;
 
     public FragmentSixteen() {
@@ -52,6 +52,8 @@ public class FragmentSixteen extends Fragment {
                              Bundle savedInstanceState) {
 
         inf = inflater.inflate(R.layout.fragment_sixteen, container, false);
+
+
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         numAllWords.setText(Integer.toString(mData.numAllWords[3]));
 

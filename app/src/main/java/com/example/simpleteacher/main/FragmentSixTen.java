@@ -29,7 +29,7 @@ import java.util.List;
 public class FragmentSixTen extends Fragment {
 
     View inf;
-    private TextView numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
+    private TextView errorCategory, numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
     private LineChart grafikA, grafikB, grafikC;
 
     public FragmentSixTen() {
@@ -52,6 +52,10 @@ public class FragmentSixTen extends Fragment {
                              Bundle savedInstanceState) {
 
         inf = inflater.inflate(R.layout.fragment_sixten, container, false);
+
+
+        errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
+        errorCategory.setText(Integer.toString(mData.errorcategory[1]));
 
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         numAllWords.setText(Integer.toString(mData.numAllWords[1]));
