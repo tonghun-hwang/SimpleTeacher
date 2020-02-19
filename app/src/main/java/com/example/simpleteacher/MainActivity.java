@@ -78,36 +78,52 @@ public class MainActivity extends AppCompatActivity {
                     if (account.get(id.getText().toString()).equals(password.getText().toString())){
                         if( id.getText().toString().equals("admin")){
                             intent.putExtra("ID", admin);
+                            intent.putExtra("length", admin.length);
                         } else if( id.getText().toString().equals("ADM1")){
                             intent.putExtra("ID", ADM1);
+                            intent.putExtra("length", ADM1.length);
                         } else if( id.getText().toString().equals("AUN1")){
                             intent.putExtra("ID", AUN1);
+                            intent.putExtra("length", AUN1.length);
                         } else if( id.getText().toString().equals("ASB1")){
                             intent.putExtra("ID", ASB1);
+                            intent.putExtra("length", ASB1.length);
                         } else if( id.getText().toString().equals("BSR1")){
                             intent.putExtra("ID", BSR1);
+                            intent.putExtra("length", BSR1.length);
                         } else if( id.getText().toString().equals("BBH1")){
                             intent.putExtra("ID", BBH1);
+                            intent.putExtra("length", BBH1.length);
                         } else if( id.getText().toString().equals("ASE2")){
                             intent.putExtra("ID", ASE2);
+                            intent.putExtra("length", ASE2.length);
                         } else if( id.getText().toString().equals("ABR2")){
                             intent.putExtra("ID", ABR2);
+                            intent.putExtra("length", ABR2.length);
                         } else if( id.getText().toString().equals("AFT2")){
                             intent.putExtra("ID", AFT2);
+                            intent.putExtra("length", AFT2.length);
                         } else if( id.getText().toString().equals("ABT2")){
                             intent.putExtra("ID", ABT2);
+                            intent.putExtra("length", ABT2.length);
                         } else if( id.getText().toString().equals("ASH2")){
                             intent.putExtra("ID", ASH2);
+                            intent.putExtra("length", ASH2.length);
                         } else if( id.getText().toString().equals("BLR2")){
                             intent.putExtra("ID", BLR2);
+                            intent.putExtra("length", BLR2.length);
                         } else if( id.getText().toString().equals("BJN2")){
                             intent.putExtra("ID", BJN2);
+                            intent.putExtra("length", BJN2.length);
                         } else if( id.getText().toString().equals("BWR2")){
                             intent.putExtra("ID", BWR2);
+                            intent.putExtra("length", BWR2.length);
                         } else if( id.getText().toString().equals("BBM2")){
                             intent.putExtra("ID", BBM2);
+                            intent.putExtra("length", BBM2.length);
                         } else if( id.getText().toString().equals("BBG2")){
                             intent.putExtra("ID", BBG2);
+                            intent.putExtra("length", BBG2.length);
                         }
                         id.setText(null);
                         password.setText(null);
