@@ -26,7 +26,7 @@ import java.util.List;
  * the user.
  */
 public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
-    private final String TAG = "Main.ReadURL";
+    private final String TAG = "Main.ReadTrainingURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     private final String mFile;
     private ItemActivity mParent;
@@ -67,6 +67,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readTrainingURLTask");
+        mParent.updateUI();
     }
 
     @Override

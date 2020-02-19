@@ -24,7 +24,7 @@ public class userTrainingDBHelper extends SQLiteOpenHelper {
     public static final String PARAM1 = "PARAM1";
     public static final String PARAM2 = "PARAM2";
 
-    private static final String TAG = "Main.userResultDBHelper";
+    private static final String TAG = "Main.readTrainingURL";
     private ItemActivity mParent;
     private int mSessionNo;
     private String mTableName;
