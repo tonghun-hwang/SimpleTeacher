@@ -28,33 +28,35 @@ import java.util.List;
 public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "Main.ReadTrainingURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
-    private final String mFile;
+   // private final String mFile;
     private ItemActivity mParent;
+    private String[] mID;
     private String mUrl;
     private List<String[]> mList;
     private SQLiteDatabase mDB;
     Cursor cursor;
 
-    public ReadTrainingURLTask(ItemActivity parent, String url, String fileName) {
+    public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
-        mUrl = url;
+        mID = idList;
         mList = mParent.mUserDataList;
         mDB = mParent.mUserDB;
-        mFile = fileName;
+        //mFile = fileName;
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
         Log.d(TAG, "doInBackground(): ReadURLTask");
         // TODO: attempt authentication against a network service.
-        int res = readURL(mUrl);
+        int res = readURL(mID);
         if (res != HttpURLConnection.HTTP_OK) {
-            String userDataCsv = ItemActivity.pref.getString("userData", "");
-            res = readURLCSV(userDataCsv);
-            if (res != HttpURLConnection.HTTP_OK) {
-                readLocalDB();
-                return res;
-            }
+            Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
+//            String userDataCsv = ItemActivity.pref.getString("userData", "");
+//            res = readURLCSV(userDataCsv);
+//            if (res != HttpURLConnection.HTTP_OK) {
+//                readLocalDB();
+//                return res;
+ //           }
         }
         return res;
     }
@@ -67,7 +69,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readTrainingURLTask");
-        mParent.updateUI();
+        //mParent.updateUI();
     }
 
     @Override
@@ -127,9 +129,12 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         return responseCode;
     }
 
-    private int readURL(String urlName) {
-        Log.d(TAG, "readTrainingURL: " + urlName);
-
+    private int readURL(String[] idList) {
+        Log.d(TAG, "readTrainingURL: " + idList);
+        String stName;
+        String dbName;
+        String host;
+        String stURL;
         /* authorization for the data storage */
         Authenticator.setDefault (new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -137,27 +142,41 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
             }
         });
 
-        File file = new File(mParent.getDatabasePath(mFile).toString());
+        //File file = new File(mParent.getDatabasePath(mFile).toString());
         int responseCode = 0;
 
         try {
-            URL url = new URL(urlName);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
-            responseCode = conn.getResponseCode();
+            for(int i = 0; i < idList.length; i++){
+                stName = mParent.getID(idList, i);
+                for (int j = 1; j <= 16; j++){
+                    dbName = "training_" + stName + "_" + j + ".db";
+                    host = ItemActivity.pref.getString("host", "");
+                    stURL = host + "/HOT-T/Results/" + stName + "/" + dbName;
 
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                try {
-                    InputStream in = conn.getInputStream();
-                    copyInputStreamToFile(in, file);
-                    in.close();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                    Log.d(TAG, e.toString());
-                } finally {
-                    conn.disconnect();
+                    File file = new File(mParent.getDatabasePath(dbName).toString());
+
+                    URL url = new URL(stURL);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
+                    responseCode = conn.getResponseCode();
+
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        try {
+                            InputStream in = conn.getInputStream();
+                            copyInputStreamToFile(in, file);
+                            in.close();
+                        } catch (Exception e) {
+                            e.getStackTrace();
+                            Log.d(TAG, e.toString());
+                        } finally {
+                            conn.disconnect();
+                        }
+                    } else {
+                        break;
+                    }
                 }
             }
+
         } catch (Exception e) {
             e.getStackTrace();
             Log.d(TAG, e.toString());

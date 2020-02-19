@@ -64,6 +64,7 @@ public class ItemActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     public String strText;
 
+
     // added by Hwang TODO: delete this comment
     public static final int READ_PERMITION_REQUEST_CODE = 200;
     public static final int WRITE_PERMITION_REQUEST_CODE = 300;
@@ -104,13 +105,16 @@ public class ItemActivity extends AppCompatActivity {
     private String TAG = "ItemActivity";
     private Data mData;
     private Context mContext;
-
+    public String[] mID;
+    public int mIDlength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         secondIntent = getIntent();
+        mID = secondIntent.getStringArrayExtra("ID");
+        mIDlength = secondIntent.getIntExtra("length", mID.length);
         mContext = ItemActivity.this;
 
         try {
@@ -118,6 +122,10 @@ public class ItemActivity extends AppCompatActivity {
         } catch(ClassCastException e){
             Log.d("Data class", "Dataclass error");
         }
+
+
+        readTrainingURL(mID, mReadTrainingUrlTask);
+
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, secondIntent.getStringArrayExtra("ID"));
 
         ListView listview = (ListView) findViewById(R.id.student_list) ;
@@ -211,12 +219,14 @@ public class ItemActivity extends AppCompatActivity {
 
         for (int i = 1; i <= 16; i++){
             Log.d(TAG,"readDatabank:" + i);
+            /*
             dbName = "training_" + stName + "_" + i + ".db";
             host = ItemActivity.pref.getString("host", "");
             url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+            */
+            dbName = "training_" + stName + "_" + i + ".db";
             mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
             mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
-            readTrainingURL(url, dbName, mReadTrainingUrlTask);
 
             mData.setTrainAll(i-1, getNumTotalWords(mData.nameStudent)); // all words
             mData.setTrainWrongError(i-1,getNumTotallyWrongWordsInCategory(mData.nameStudent)); // wrong words
@@ -232,6 +242,9 @@ public class ItemActivity extends AppCompatActivity {
                 mUserTrainingDB.close();
             }
         }
+    }
+    public String getID(String[] strArr, int ind){
+        return strArr[ind];
     }
 
     public void getSessionCategory(String stName) {
@@ -454,6 +467,9 @@ public class ItemActivity extends AppCompatActivity {
         int res = c.getCount();
         if (res > 0) {
             c.moveToFirst();
+            if (mWDB == null || !mWDB.isOpen()) {
+                mWDB = mWDBHelper.getWritableDatabase();
+            }
             do {
                 String word = c.getString(c.getColumnIndex(mUserTrainingDBHelper.CORRECT_WORD));
 
@@ -492,13 +508,13 @@ public class ItemActivity extends AppCompatActivity {
 
 
 
-    private void readTrainingURL(String urlName, String dbName, ReadTrainingURLTask tempTask) {
-        Log.d(TAG, "readTrainingURL: " + urlName);
+    private void readTrainingURL(String[] urlNameList, ReadTrainingURLTask tempTask) {
+        Log.d(TAG, "readTrainingURL: " + urlNameList);
 
         if (tempTask != null) {
             return;
         }
-        tempTask = new ReadTrainingURLTask(this, urlName, dbName);
+        tempTask = new ReadTrainingURLTask(this, urlNameList);
         tempTask.execute((Void) null);
     }
 
