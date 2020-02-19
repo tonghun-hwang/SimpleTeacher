@@ -158,28 +158,28 @@ public class ItemActivity extends AppCompatActivity {
 
                 mWDB = mWDBHelper.getWritableDatabase();
 
-
-
-
                 mData.setDaten();
                 Log.i(TAG, "ID "+ strText + " is read.");
-                setTrainingDB(mData.nameStudent);
                 getSessionCategory(mData.nameStudent);
+                setTrainingDB(mData.nameStudent);
 
-
-                mData.calDaten();
-
-                // TODO : use strText
-                FragmentManager fm = getSupportFragmentManager();
-                Log.i("Fragments open", "Fragment are called");
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment1, new MainFragment());
-                fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
-                fragmentTransaction.replace(R.id.fragment3, new FragmentLastGraph());
-                fragmentTransaction.commit();
+                updateUI();
 
             }
         });
+    }
+
+    public void updateUI() {
+        mData.calDaten();
+
+        // TODO : use strText
+        FragmentManager fm = getSupportFragmentManager();
+        Log.i("Fragments open", "Fragment are called");
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment1, new MainFragment());
+        fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
+        fragmentTransaction.replace(R.id.fragment3, new FragmentLastGraph());
+        fragmentTransaction.commit();
     }
 
     public void onBackPressed() {
@@ -232,8 +232,6 @@ public class ItemActivity extends AppCompatActivity {
                 mUserTrainingDB.close();
             }
         }
-
-
     }
 
     public void getSessionCategory(String stName) {
@@ -247,7 +245,6 @@ public class ItemActivity extends AppCompatActivity {
         url = host + "/HOT-T/Results/" + stName + "/" + dbName;
 
         resultDBHelper = new userResultDBHelper(this, dbName,1);
-        resultDB = resultDBHelper.getReadableDatabase();
         readResultURL(url, dbName, mReadResultURLTask);
 
         Log.d(TAG, "getSessionCategory(): ");
@@ -262,20 +259,20 @@ public class ItemActivity extends AppCompatActivity {
                 + " ORDER BY ERROR_RATE DESC", null);
         Log.d(TAG, "getSessionCategory(): "+ c.moveToFirst());
 
-        String main = "3";
+       // String main = "3";
         //String errorRate = "0.3";
         if ( c == null) {
             Log.d(TAG, "cursor is null "); // => cursor : c.moveToFirst() return false is because cursor is empty but not null (query was successful).
         } else if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
-                main = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
-                Log.d(TAG, "getSessionCategory()11: " + main);
+         //       main = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
+//                Log.d(TAG, "getSessionCategory()11: " + main);
 
-                //for (int ind = 0; ind < 3; ind++) {
-                //    mData.setErrorcategory(ind, c.getString(c.getColumnIndex("CATEGORY_MAIN")));
-                //    Log.d(TAG, "getSessionCategory(" + ind + "): " + c.getString(c.getColumnIndex("CATEGORY_MAIN")));
-                //    c.moveToNext();
-                //}
+                for (int ind = 0; ind < 3; ind++) {
+                    mData.setErrorcategory(ind, c.getString(c.getColumnIndex("CATEGORY_MAIN")));
+                    Log.d(TAG, "getSessionCategory(" + ind + "): " + c.getString(c.getColumnIndex("CATEGORY_MAIN")));
+                    c.moveToNext();
+                }
 
 
 
