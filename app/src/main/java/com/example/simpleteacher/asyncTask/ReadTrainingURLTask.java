@@ -69,7 +69,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readTrainingURLTask");
-        //mParent.updateUI();
+        mParent.updateFragView();
     }
 
     @Override

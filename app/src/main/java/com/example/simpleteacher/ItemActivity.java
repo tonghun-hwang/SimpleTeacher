@@ -171,15 +171,13 @@ public class ItemActivity extends AppCompatActivity {
                 getSessionCategory(mData.nameStudent);
                 setTrainingDB(mData.nameStudent);
 
-                updateUI();
-
+                updateFragView();
             }
         });
+        updateUI();
     }
 
     public void updateUI() {
-        mData.calDaten();
-
         // TODO : use strText
         FragmentManager fm = getSupportFragmentManager();
         Log.i("Fragments open", "Fragment are called");
@@ -188,6 +186,18 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
         fragmentTransaction.replace(R.id.fragment3, new FragmentLastGraph());
         fragmentTransaction.commit();
+    }
+
+    public void updateFragView() {
+        Log.d(TAG, "updateNoteFragView()");
+        mData.calDaten();
+
+        FragmentOneFive frag = (FragmentOneFive)
+                getSupportFragmentManager().findFragmentById(R.id.fragment2);
+        if (frag != null) {
+            frag.filledData(mData);
+            frag.filledData(mData);
+        }
     }
 
     public void onBackPressed() {
