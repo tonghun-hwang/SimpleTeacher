@@ -51,6 +51,15 @@ public class FragmentOneFive extends Fragment {
                              Bundle savedInstanceState) {
         inf = inflater.inflate(R.layout.fragment_onefive, container, false);
 
+        filledData(mData);
+        generateGraph(mData);
+
+        return inf;
+    }
+
+    public void filledData(Data data) {
+        mData = data;
+
         errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
         errorCategory.setText(mData.errorcategory[0]);
         // category 2)
@@ -71,8 +80,10 @@ public class FragmentOneFive extends Fragment {
 
         numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
         numALLRadierer.setText(Integer.toString(mData.arrAllErase[0]));
+    }
 
-
+    public void generateGraph(Data data) {
+        mData = data;
         // category 3)
         // grafik a
         grafikA = inf.findViewById(R.id.chart1);
@@ -304,7 +315,6 @@ public class FragmentOneFive extends Fragment {
         grafikC.setDrawGridBackground(false);
         grafikC.setDescription(descriptionC);
         grafikC.invalidate();
-        return inf;
     }
 
 
