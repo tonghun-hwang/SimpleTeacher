@@ -103,10 +103,11 @@ public class ItemActivity extends AppCompatActivity {
     private String remoteDBUserData;
     private String severUserData;
     private String TAG = "ItemActivity";
-    private Data mData;
+    public Data mData;
     private Context mContext;
     public String[] mID;
     public int mIDlength;
+    private FragmentOneFive mFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +124,9 @@ public class ItemActivity extends AppCompatActivity {
             Log.d("Data class", "Dataclass error");
         }
 
-
-        readTrainingURL(mID, mReadTrainingUrlTask);
+        pref = getApplicationContext().getSharedPreferences("Mypref", 0);
+//        readTrainingURL(mID, mReadTrainingUrlTask);
+//        readResultURL(mID, mReadResultURLTask);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, secondIntent.getStringArrayExtra("ID"));
 
@@ -132,7 +134,6 @@ public class ItemActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         // added by Hwang TODO: delete this comment
-        pref = getApplicationContext().getSharedPreferences("Mypref", 0);
         if (is_Started == false) {
             createPreferences();
             is_Started = true;
@@ -150,12 +151,17 @@ public class ItemActivity extends AppCompatActivity {
         // TODO : use strText
         mWDBHelper = new wordDBHelper(this, BASE_DATABASE_NAME);
         initWordList();
+
+        mFrag = (FragmentOneFive)
+                getSupportFragmentManager().findFragmentById(R.id.fragment2);
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 String dbName;
                 String host;
                 String url;
+                mData.mSessionBlock = 0;
 
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
@@ -172,6 +178,7 @@ public class ItemActivity extends AppCompatActivity {
                 setTrainingDB(mData.nameStudent);
 
                 updateFragView();
+                updateUI();
             }
         });
         updateUI();
@@ -190,13 +197,22 @@ public class ItemActivity extends AppCompatActivity {
 
     public void updateFragView() {
         Log.d(TAG, "updateNoteFragView()");
+        getSessionCategory(mData.nameStudent);
+
         mData.calDaten();
 
-        FragmentOneFive frag = (FragmentOneFive)
+        mFrag = (FragmentOneFive)
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
-        if (frag != null) {
-            frag.filledData(mData);
-            frag.filledData(mData);
+
+        if (mFrag != null) {
+            mFrag.filledData(mData);
+            mFrag.generateGraph(mData);
+
+            FragmentManager fm = getSupportFragmentManager();
+            Log.i("Fragments open", "Fragment are called");
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment2, mFrag);
+            fragmentTransaction.commit();
         }
     }
 
@@ -229,27 +245,32 @@ public class ItemActivity extends AppCompatActivity {
 
         for (int i = 1; i <= 16; i++){
             Log.d(TAG,"readDatabank:" + i);
+            try {
             /*
             dbName = "training_" + stName + "_" + i + ".db";
             host = ItemActivity.pref.getString("host", "");
             url = host + "/HOT-T/Results/" + stName + "/" + dbName;
             */
-            dbName = "training_" + stName + "_" + i + ".db";
-            mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
-            mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
+                dbName = "training_" + stName + "_" + i + ".db";
+                mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
+                mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
 
-            mData.setTrainAll(i-1, getNumTotalWords(mData.nameStudent)); // all words
-            mData.setTrainWrongError(i-1,getNumTotallyWrongWordsInCategory(mData.nameStudent)); // wrong words
-            mData.setTrainWrong(i-1, getNumTotallyWrongWords(mData.nameStudent));
-            mData.setNumNochmal(i-1, getNumButtonEar(mData.nameStudent));
-            mData.setNumAErase(i-1, getNumEraseOne(mData.nameStudent));
-            mData.setNumAllErase(i-1, getNumEraseAll(mData.nameStudent));
+                mData.setTrainAll(i-1, getNumTotalWords(mData.nameStudent)); // all words
+                mData.setTrainWrongError(i-1,getNumTotallyWrongWordsInCategory(mData.nameStudent)); // wrong words
+                mData.setTrainWrong(i-1, getNumTotallyWrongWords(mData.nameStudent));
+                mData.setNumNochmal(i-1, getNumButtonEar(mData.nameStudent));
+                mData.setNumAErase(i-1, getNumEraseOne(mData.nameStudent));
+                mData.setNumAllErase(i-1, getNumEraseAll(mData.nameStudent));
 
-            getNumTotalTries(mData.nameStudent);
-            getNumTotalTriesInCategory(mData.nameStudent);
+                getNumTotalTries(mData.nameStudent);
+                getNumTotalTriesInCategory(mData.nameStudent);
 
-            if(mUserTrainingDB.isOpen()) {
-                mUserTrainingDB.close();
+            } catch (Exception e) {
+                e.getStackTrace();
+            } finally {
+                if(mUserTrainingDB.isOpen()) {
+                    mUserTrainingDB.close();
+                }
             }
         }
     }
@@ -258,20 +279,11 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     public void getSessionCategory(String stName) {
-        String dbName;
-        String host;
-        String url;
-
-        dbName = "result_" + stName + ".db";
-        Log.d(TAG,"readResultDB: " + dbName);
-        host = ItemActivity.pref.getString("host", "");
-        url = host + "/HOT-T/Results/" + stName + "/" + dbName;
-
-        resultDBHelper = new userResultDBHelper(this, dbName,1);
-        readResultURL(url, dbName, mReadResultURLTask);
-
         Log.d(TAG, "getSessionCategory(): ");
 
+        String dbName = "result_" + stName + ".db";
+
+        resultDBHelper = new userResultDBHelper(this, dbName,1);
         if (resultDB == null || !resultDB.isOpen()) {
             Log.d(TAG, "readable database open: ");
             resultDB = resultDBHelper.getReadableDatabase();
@@ -311,7 +323,6 @@ public class ItemActivity extends AppCompatActivity {
             //return Integer.valueOf(main);
 
     }
-
 
     public int getNumWrongTries(String stName) {
         Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
@@ -516,8 +527,6 @@ public class ItemActivity extends AppCompatActivity {
         tempTask.execute((Void) null);
     }
 
-
-
     private void readTrainingURL(String[] urlNameList, ReadTrainingURLTask tempTask) {
         Log.d(TAG, "readTrainingURL: " + urlNameList);
 
@@ -528,14 +537,14 @@ public class ItemActivity extends AppCompatActivity {
         tempTask.execute((Void) null);
     }
 
-    private void readResultURL(String urlName, String dbName, ReadResultURLTask tempTask) {
-        Log.d(TAG, "readResultURL: " + urlName);
+    private void readResultURL(String[] urlNameList, ReadResultURLTask tempTask) {
+        Log.d(TAG, "readResultURL: " + urlNameList);
 
         if (tempTask != null) {
             Log.d(TAG, "tempTask is not null ");
             return;
         }
-        tempTask = new ReadResultURLTask(this, urlName, dbName);
+        tempTask = new ReadResultURLTask(this, urlNameList);
         tempTask.execute((Void) null);
     }
 

@@ -15,6 +15,8 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,20 +26,59 @@ import java.util.List;
 public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "Main.ReadResultURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
-    private final String mFile;
     private ItemActivity mParent;
-    private String mUrl;
+    private String[] mIDList;
+    private List<String> mUrlList;
+    private List<String> mDBList;
     private List<String[]> mList;
-    private SQLiteDatabase mDB;
     public static boolean Result = false;
     Cursor cursor;
 
-    public ReadResultURLTask(ItemActivity parent, String url, String fileName) {
+    public ReadResultURLTask(ItemActivity parent, String[] idList) {
         mParent = parent;
-        mUrl = url;
+        mIDList = idList;
+        mUrlList = getUrlList(idList);
         mList = mParent.mUserDataList;
-        mDB = mParent.mUserDB;
-        mFile = fileName;
+        mDBList = getDBList(idList);
+        //mFile = fileName;
+    }
+
+    private List<String> getUrlList(String[] idList) {
+        List<String> urlList = new ArrayList<String>();
+        for (int i = 0; i < idList.length; i++) {
+            String url = getURLName(idList[i]);
+            urlList.add(url);
+        }
+        return urlList;
+    }
+
+    private String getURLName(String stName) {
+        String dbName;
+        String host;
+        String url;
+
+        dbName = getDBName(stName);
+        Log.d(TAG,"readResultDB: " + dbName);
+        host = mParent.pref.getString("host", "");
+        url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+
+        return url;
+    }
+
+    private List<String> getDBList(String[] idList) {
+        List<String> dbList = new ArrayList<String>();
+        for (int i = 0; i < idList.length; i++) {
+            String db = getDBName(idList[i]);
+            dbList.add(db);
+        }
+        return dbList;
+    }
+
+    private String getDBName(String stName) {
+        String dbName;
+        dbName = "result_" + stName + ".db";
+
+        return dbName;
     }
 
     @Override
@@ -45,11 +86,24 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         Log.d(TAG, "doInBackground()11111: ReadURLTask");
         // TODO: attempt authentication against a network service.
         Log.d(TAG, "aaaaaa 0");
-        int res = readURL(mUrl);
-        Log.d(TAG, "aaaaaa 00");
-        if (res != HttpURLConnection.HTTP_OK) {
-            readLocalDB();
-            return res;
+
+        int res = 0;
+        int index = 0;
+        Iterator<String> iter = mUrlList.iterator();
+        while(iter.hasNext()) {
+            String mUrl = iter.next();
+            try {
+                res = readURL(mUrl, index);
+                Log.d(TAG, "aaaaaa 00");
+                if (res != HttpURLConnection.HTTP_OK) {
+                    readLocalDB();
+                    return res;
+                }
+            } catch (Exception e) {
+                e.getStackTrace();
+            } finally {
+                index++;
+            }
         }
         return res;
     }
@@ -67,7 +121,7 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readResultURLTask");
-        mParent.updateUI();
+        mParent.updateFragView();
     }
 
     @Override
@@ -75,7 +129,7 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         mParent.mReadResultURLTask = null;
     }
 
-    private int readURL(String urlName) {
+    private int readURL(String urlName, int index) {
         Log.d(TAG, "readResultURL: " + urlName);
 
         /* authorization for the data storage */
@@ -85,7 +139,7 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
             }
         });
         Log.d(TAG, "aaaaaa 1");
-        File file = new File(mParent.getDatabasePath(mFile).toString());
+        File file = new File(mParent.getDatabasePath(mDBList.get(index)).toString());
         int responseCode = 0;
         Log.d(TAG, "aaaaaa 2");
         try {

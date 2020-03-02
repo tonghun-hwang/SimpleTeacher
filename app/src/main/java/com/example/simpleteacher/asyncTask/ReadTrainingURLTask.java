@@ -18,8 +18,11 @@ import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Represents an asynchronous login/registration task used to authenticate
@@ -28,35 +31,85 @@ import java.util.List;
 public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "Main.ReadTrainingURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
-   // private final String mFile;
+    // private final String mFile;
     private ItemActivity mParent;
     private String[] mID;
     private String mUrl;
     private List<String[]> mList;
     private SQLiteDatabase mDB;
     Cursor cursor;
+    private List<String> mUrlList;
+    private final List<String> mDBList;
 
     public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
         mID = idList;
         mList = mParent.mUserDataList;
         mDB = mParent.mUserDB;
+        mUrlList = getUrlList(idList);
+        mDBList = getDBList(idList);
         //mFile = fileName;
+    }
+
+    private List<String> getUrlList(String[] idList) {
+        List<String> urlList = new ArrayList<String>();
+        for (int i = 0; i < idList.length; i++) {
+            for (int j = 0; j < 16; j++) {
+                String url = getURLName(idList[i], j);
+                urlList.add(url);
+            }
+        }
+        return urlList;
+    }
+
+    private String getURLName(String stName, int index) {
+        String dbName;
+        String host;
+        String url;
+
+        dbName = getDBName(stName, index);
+        Log.d(TAG,"readResultDB: " + dbName);
+        host = mParent.pref.getString("host", "");
+        url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+
+        return url;
+    }
+
+    private List<String> getDBList(String[] idList) {
+        List<String> dbList = new ArrayList<String>();
+        for (int i = 0; i < idList.length; i++) {
+            String db = getDBName(idList[i], i);
+            dbList.add(db);
+        }
+        return dbList;
+    }
+
+    private String getDBName(String stName, int index) {
+        String dbName;
+        dbName = "training_" + stName + "_" + index + ".db";
+
+        return dbName;
     }
 
     @Override
     protected Integer doInBackground(Void... params) {
         Log.d(TAG, "doInBackground(): ReadURLTask");
         // TODO: attempt authentication against a network service.
-        int res = readURL(mID);
-        if (res != HttpURLConnection.HTTP_OK) {
-            Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
-//            String userDataCsv = ItemActivity.pref.getString("userData", "");
-//            res = readURLCSV(userDataCsv);
-//            if (res != HttpURLConnection.HTTP_OK) {
-//                readLocalDB();
-//                return res;
- //           }
+        int res = 0;
+        int index = 0;
+        Iterator<String> iter = mUrlList.iterator();
+        while(iter.hasNext()) {
+            String mUrl = iter.next();
+            try {
+                res = readURL(mUrl, index);
+                if (res != HttpURLConnection.HTTP_OK) {
+                    Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
+                }
+            } catch (Exception e) {
+                e.getStackTrace();
+            } finally {
+                index++;
+            }
         }
         return res;
     }
@@ -129,12 +182,8 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         return responseCode;
     }
 
-    private int readURL(String[] idList) {
-        Log.d(TAG, "readTrainingURL: " + idList);
-        String stName;
-        String dbName;
-        String host;
-        String stURL;
+    private int readURL(String stURL, int index) {
+        Log.d(TAG, "readTrainingURL: " + stURL);
         /* authorization for the data storage */
         Authenticator.setDefault (new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -146,34 +195,23 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         int responseCode = 0;
 
         try {
-            for(int i = 0; i < idList.length; i++){
-                stName = mParent.getID(idList, i);
-                for (int j = 1; j <= 16; j++){
-                    dbName = "training_" + stName + "_" + j + ".db";
-                    host = ItemActivity.pref.getString("host", "");
-                    stURL = host + "/HOT-T/Results/" + stName + "/" + dbName;
+            File file = new File(mParent.getDatabasePath(mDBList.get(index)).toString());
 
-                    File file = new File(mParent.getDatabasePath(dbName).toString());
+            URL url = new URL(stURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
+            responseCode = conn.getResponseCode();
 
-                    URL url = new URL(stURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
-                    responseCode = conn.getResponseCode();
-
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        try {
-                            InputStream in = conn.getInputStream();
-                            copyInputStreamToFile(in, file);
-                            in.close();
-                        } catch (Exception e) {
-                            e.getStackTrace();
-                            Log.d(TAG, e.toString());
-                        } finally {
-                            conn.disconnect();
-                        }
-                    } else {
-                        break;
-                    }
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try {
+                    InputStream in = conn.getInputStream();
+                    copyInputStreamToFile(in, file);
+                    in.close();
+                } catch (Exception e) {
+                    e.getStackTrace();
+                    Log.d(TAG, e.toString());
+                } finally {
+                    conn.disconnect();
                 }
             }
 

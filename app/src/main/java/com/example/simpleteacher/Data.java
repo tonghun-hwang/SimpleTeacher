@@ -69,6 +69,7 @@ public class Data extends Application {
     public static final String TRAIN_BUTTON_EAR = "btEar";
     private static final String TAG = "Data";
 
+    public int mSessionBlock;
 
 
 
@@ -208,7 +209,7 @@ public class Data extends Application {
                 numAllWords[i] += trainAll[count];
                 count++;
             }
-                    }
+        }
         numAllWords[3] = trainAll[15];
         count = 0;
 
