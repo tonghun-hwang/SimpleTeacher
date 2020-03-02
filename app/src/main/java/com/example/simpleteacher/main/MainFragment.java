@@ -39,7 +39,7 @@ public class MainFragment extends Fragment {
         super.onAttach(context);
         //이 메소드가 호출될떄는 프래그먼트가 엑티비티위에 올라와있는거니깐 getActivity메소드로 엑티비티참조가능
         activity = (ItemActivity) getActivity();
-        mData = (Data) getActivity().getApplication();
+        mData = activity.mData;
     }
 
 
@@ -71,29 +71,17 @@ public class MainFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.btnOneFive){
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
-                    //fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    mData.mSessionBlock = 0;
+                    activity.updateFragView();
                 } else if(checkedId == R.id.btnSixTen){
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment2, new FragmentSixTen());
-                    fragmentTransaction.commit();
+                    mData.mSessionBlock = 1;
+                    activity.updateFragView();
                 } else if(checkedId == R.id.btnElevenFifteen){
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment2, new FragmentElevenFifteen());
-                    //fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-
+                    mData.mSessionBlock = 2;
+                    activity.updateFragView();
                 } else if(checkedId == R.id.btnSixteen){
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment2, new FragmentSixteen());
-                    //fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    mData.mSessionBlock = 3;
+                    activity.updateFragView();
                 }
             }
         });
