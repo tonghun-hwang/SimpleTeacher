@@ -31,6 +31,7 @@ import com.example.simpleteacher.helper.userTrainingDBHelper;
 import com.example.simpleteacher.helper.wordDBHelper;
 import com.example.simpleteacher.main.FragmentLastGraph;
 import com.example.simpleteacher.main.FragmentOneFive;
+import com.example.simpleteacher.main.FragmentSync;
 import com.example.simpleteacher.main.MainFragment;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class ItemActivity extends AppCompatActivity {
     private final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
     Intent secondIntent;
     RadioGroup radioGroup;
-    public String strText;
+    public String strText, status;
 
 
     // added by Hwang TODO: delete this comment
@@ -108,6 +109,7 @@ public class ItemActivity extends AppCompatActivity {
     public String[] mID;
     public int mIDlength;
     private FragmentOneFive mFrag;
+    private FragmentSync mFrag4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +157,9 @@ public class ItemActivity extends AppCompatActivity {
         mFrag = (FragmentOneFive)
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
 
+
+        updateUI();
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -181,7 +186,13 @@ public class ItemActivity extends AppCompatActivity {
                 updateUI();
             }
         });
-        updateUI();
+    }
+
+
+    public void setStatus(String status){
+
+        Log.i(TAG, "set a status: " + status);
+        this.status = status;
     }
 
     public void updateUI() {
@@ -192,6 +203,7 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment1, new MainFragment());
         fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
         fragmentTransaction.replace(R.id.fragment3, new FragmentLastGraph());
+        fragmentTransaction.replace(R.id.fragment4, new FragmentSync());
         fragmentTransaction.commit();
     }
 
@@ -215,6 +227,9 @@ public class ItemActivity extends AppCompatActivity {
             fragmentTransaction.commit();
         }
     }
+
+
+    
 
     public void onBackPressed() {
         Log.i(TAG,"onBackPressed() for logout");
@@ -527,24 +542,24 @@ public class ItemActivity extends AppCompatActivity {
         tempTask.execute((Void) null);
     }
 
-    private void readTrainingURL(String[] urlNameList, ReadTrainingURLTask tempTask) {
+    public void readTrainingURL(String[] urlNameList, ReadTrainingURLTask tempTask) {
         Log.d(TAG, "readTrainingURL: " + urlNameList);
 
         if (tempTask != null) {
             return;
         }
-        tempTask = new ReadTrainingURLTask(this, urlNameList);
+        tempTask = new ReadTrainingURLTask(this, admin);
         tempTask.execute((Void) null);
     }
 
-    private void readResultURL(String[] urlNameList, ReadResultURLTask tempTask) {
+    public void readResultURL(String[] urlNameList, ReadResultURLTask tempTask) {
         Log.d(TAG, "readResultURL: " + urlNameList);
 
         if (tempTask != null) {
             Log.d(TAG, "tempTask is not null ");
             return;
         }
-        tempTask = new ReadResultURLTask(this, urlNameList);
+        tempTask = new ReadResultURLTask(this, admin);
         tempTask.execute((Void) null);
     }
 
