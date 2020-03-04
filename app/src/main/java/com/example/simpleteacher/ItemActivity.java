@@ -109,7 +109,7 @@ public class ItemActivity extends AppCompatActivity {
     public String[] mID;
     public int mIDlength;
     private FragmentOneFive mFrag;
-    private FragmentSync mFrag4;
+    private FragmentSync mFragSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +156,8 @@ public class ItemActivity extends AppCompatActivity {
 
         mFrag = (FragmentOneFive)
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
+        mFragSync = (FragmentSync)
+                getSupportFragmentManager().findFragmentById(R.id.fragment4);
 
 
         updateUI();
@@ -207,6 +209,7 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+
     public void updateFragView() {
         Log.d(TAG, "updateNoteFragView()");
         getSessionCategory(mData.nameStudent);
@@ -228,8 +231,27 @@ public class ItemActivity extends AppCompatActivity {
         }
     }
 
+    public void updateSyncFragView() {
+        Log.d(TAG, "updateSzncFragView()");
 
-    
+
+
+        mFragSync = (FragmentSync)
+                getSupportFragmentManager().findFragmentById(R.id.fragment4);
+
+        if (mFragSync != null) {
+
+            mFragSync.syncOnPressed();
+            FragmentManager fm = getSupportFragmentManager();
+            Log.i("Fragments open", "Fragment are called");
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment4, mFragSync);
+            fragmentTransaction.commit();
+        }
+    }
+
+
+
 
     public void onBackPressed() {
         Log.i(TAG,"onBackPressed() for logout");
