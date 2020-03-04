@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.simpleteacher.asyncTask.ReadDiagnosticURLTask;
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
 import com.example.simpleteacher.asyncTask.ReadResultURLTask;
 import com.example.simpleteacher.asyncTask.ReadTrainingURLTask;
@@ -101,6 +102,7 @@ public class ItemActivity extends AppCompatActivity {
     public static ReadInfoURLTask mReadInfoUrlTask = null;
     public static ReadTrainingURLTask mReadTrainingUrlTask = null;
     public static ReadResultURLTask mReadResultURLTask = null;
+    public static ReadDiagnosticURLTask mReadDiagnosticURLTask = null;
     private String remoteDBUserData;
     private String severUserData;
     private String TAG = "ItemActivity";
@@ -160,6 +162,7 @@ public class ItemActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.fragment4);
 
 
+        updateFragView();
         updateUI();
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -571,6 +574,16 @@ public class ItemActivity extends AppCompatActivity {
             return;
         }
         tempTask = new ReadTrainingURLTask(this, admin);
+        tempTask.execute((Void) null);
+    }
+
+    public void readDiagnosticURL(String[] urlNameList, ReadDiagnosticURLTask tempTask) {
+        Log.d(TAG, "readDiagnosticURL: " + urlNameList);
+
+        if (tempTask != null) {
+            return;
+        }
+        tempTask = new ReadDiagnosticURLTask(this, admin);
         tempTask.execute((Void) null);
     }
 
