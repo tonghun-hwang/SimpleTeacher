@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.simpleteacher.main.FragmentSync;
+
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,16 +40,24 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
 
     private String TAG = "MainActivity";
-    HashMap<String, String> account = new HashMap<String, String>();
-    EditText id;
-    EditText password;
-    Button buttonLogin;
+    public ItemActivity itemActivity;
+    public HashMap<String, String> account = new HashMap<String, String>();
+    public EditText id;
+    public EditText password;
+    public Button btnLogin;
+    private Data mData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try {
+            mData = (Data) getApplication();
+        } catch(ClassCastException e){
+            Log.d("Data class", "Dataclass error");
+        }
         //ID and Password for teachers
         account.put("admin", "admin1");
         account.put("ADM1", "mda1");
@@ -69,9 +79,10 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(this, ItemActivity.class);
         id = (EditText) findViewById(R.id.ID);
         password = (EditText) findViewById(R.id.password);
-        buttonLogin = (Button) findViewById(R.id.button);
+        btnLogin = (Button) findViewById(R.id.button);
 
-        buttonLogin.setOnClickListener(new Button.OnClickListener() {
+
+        btnLogin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (account.containsKey(id.getText().toString())){
@@ -138,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void onStop() {
         super.onStop();

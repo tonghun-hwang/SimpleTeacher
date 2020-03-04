@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.simpleteacher.Data;
 import com.example.simpleteacher.ItemActivity;
@@ -59,7 +57,7 @@ public class MainFragment extends Fragment {
 
         radioGroup = inf.findViewById(R.id.radioGroup);
 
-        return inf; /////hiermit kann fragmente ändern
+        return inf;
     }
 
     @Override
