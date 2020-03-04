@@ -58,6 +58,9 @@ public class Data extends Application {
     public int[] arrNochmal;
     public int[] arrAErase;
     public int[] arrAllErase;
+    public boolean postExeResult;
+    public boolean postExeTrain;
+    public boolean postExeBoth;
 
     public static final String TRAIN_ALL = "incWIdx";
     public static final String TRAIN_WRONG = "mistakeDlg";
@@ -103,6 +106,10 @@ public class Data extends Application {
         arrAErase = new int[4];
         arrAllErase = new int[4];
         arrNochmal = new int[4];
+        postExeResult = false;
+        postExeTrain = false;
+        postExeBoth = false;
+
     }
 
     public void setDaten(){

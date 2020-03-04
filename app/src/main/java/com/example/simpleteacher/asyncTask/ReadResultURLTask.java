@@ -1,11 +1,11 @@
 package com.example.simpleteacher.asyncTask;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.simpleteacher.ItemActivity;
+import com.example.simpleteacher.MainActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +27,7 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "Main.ReadResultURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     private ItemActivity mParent;
+    private MainActivity mainActivity;
     private String[] mIDList;
     private List<String> mUrlList;
     private List<String> mDBList;
@@ -116,12 +117,13 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
     }
 
     @Override
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readResultURLTask");
-        mParent.updateFragView();
+        //mParent.updateFragView();
     }
 
     @Override
