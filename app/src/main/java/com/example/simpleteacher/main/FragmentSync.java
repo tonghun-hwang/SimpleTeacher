@@ -98,26 +98,18 @@ public class FragmentSync extends Fragment {
         btnSync.setOnClickListener((new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txtUpdate.setText("Synchronization...");
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment4, fragment);
-                fragmentTransaction.commit();
+
                 mParent.readResultURL(mParent.mID, mParent.mReadResultURLTask);
                 mParent.readTrainingURL(mParent.mID, mParent.mReadTrainingUrlTask);
-
-
 
             }
         }
         ));
     }
 
-    public void preTrain(){
+    public void syncOnPressed(){
         if (txtUpdate != null) {
             txtUpdate.setText("Synchronization...");
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment4, fragment);
-            fragmentTransaction.commit();
         }
     }
 

@@ -130,9 +130,9 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected void onPreExecute() {
+        Log.d(TAG, "onPreExcute(): readTrainingURLTask");
         super.onPreExecute();
-
-
+        mParent.updateSyncFragView();
 
     }
 
