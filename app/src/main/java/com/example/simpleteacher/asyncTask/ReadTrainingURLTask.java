@@ -38,21 +38,11 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     // private final String mFile;
     private ItemActivity mParent;
-    private MainActivity mainActivity;
     private Fragment fragmentSync;
-    private String[] mID;
-    private String mUrl;
-    private List<String[]> mList;
-    private SQLiteDatabase mDB;
-    public String status;
-    Cursor cursor;
     private List<String> mUrlList;
 
     public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
-        mID = idList;
-        mList = mParent.mUserDataList;
-        mDB = mParent.mUserDB;
         mUrlList = getUrlList(idList);
     }
 
@@ -141,58 +131,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onCancelled() {
         mParent.mReadTrainingUrlTask = null;
-    }
-
-    private int readURLCSV(String urlCsvName) {
-
-        Log.d(TAG, "readURLCSV: " + urlCsvName);
-        /* authorization for the data storage */
-        Authenticator.setDefault(new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("hottsportwiss@gmail.com", "Sportwiss2019".toCharArray());
-            }
-        });
-
-        int responseCode = 0;
-        try {
-            URL url = new URL(urlCsvName);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
-
-            responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                try {
-                    InputStream in = conn.getInputStream();
-
-                    BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.ISO_8859_1));
-                    String inputLine;
-                    String[] nextLine = null;
-                    Log.d(TAG, "readURL: " + urlCsvName);
-                    while ((inputLine = br.readLine()) != null) {
-                        nextLine = inputLine.split(";");
-
-                        /* data in the array list */
-                        String[] temp = Arrays.copyOfRange(nextLine, 1, nextLine.length - 1);
-                        mList.add(temp);
-
-                        boolean res = mParent.mUserDBHelper.replaceData(mDB, nextLine);
-                        Log.d(TAG, "user student: " + res);
-
-                        Log.d(TAG, nextLine[0]);
-                    }
-                    in.close();
-                } catch (Exception e) {
-                    Log.d(TAG, e.toString());
-                    e.getStackTrace();
-                } finally {
-                    conn.disconnect();
-                }
-            }
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-            e.getStackTrace();
-        }
-        return responseCode;
     }
 
     private int readURL(String stURL, int index) {
