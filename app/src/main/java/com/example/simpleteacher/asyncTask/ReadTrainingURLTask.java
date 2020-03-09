@@ -77,6 +77,15 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         return dbName;
     }
 
+    private String getPsDBName(String stName) {
+        String[] pathNames = stName.split(".db");
+        String dbName = pathNames[0];
+        String psDbName = dbName + "ps.db";
+
+        Log.d(TAG, "getPsDBName(): " + psDbName);
+        return psDbName;
+    }
+
     @Override
     protected Integer doInBackground(Void... params) {
         Log.d(TAG, "doInBackground(): ReadURLTask");
@@ -87,9 +96,12 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         while(iter.hasNext()) {
             String mUrl = iter.next();
             try {
-                res = readURL(mUrl, index);
+                res = readURL(mUrl);
                 if (res != HttpURLConnection.HTTP_OK) {
-                    Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
+                    int resPs = readURL(getPsDBName(mUrl));
+                    if (resPs != HttpURLConnection.HTTP_OK) {
+                        Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
+                    }
                 }
             } catch (Exception e) {
                 e.getStackTrace();
@@ -133,7 +145,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         mParent.mReadTrainingUrlTask = null;
     }
 
-    private int readURL(String stURL, int index) {
+    private int readURL(String stURL) {
         Log.d(TAG, "readTrainingURL: " + stURL);
         /* authorization for the data storage */
         Authenticator.setDefault (new Authenticator() {
