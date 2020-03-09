@@ -85,10 +85,8 @@ public class FragmentSync extends Fragment {
         txtConnect = view.findViewById(R.id.txtIsConnected);
         txtUpdate = view.findViewById(R.id.txtUpdated);
         fragment = this;
-        //txtUpdate.setText(mParent.pref.getString("syncDate", "00-00-0000 00:00:00"));
 
         return view;
-
     }
 
     @Override
@@ -122,10 +120,7 @@ public class FragmentSync extends Fragment {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fragment4, fragment);
         fragmentTransaction.commit();
-
-
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

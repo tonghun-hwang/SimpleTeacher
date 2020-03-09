@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     public Button btnLogin;
     private Data mData;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         id = (EditText) findViewById(R.id.ID);
         password = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.button);
-
 
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -150,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-
     public void onStop() {
         super.onStop();
         Log.i(TAG, "onStop");
@@ -175,5 +171,4 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "exit the app");
         System.exit(0);
     }
-
 }
