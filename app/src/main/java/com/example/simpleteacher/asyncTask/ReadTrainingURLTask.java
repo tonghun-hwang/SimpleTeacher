@@ -47,7 +47,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     public String status;
     Cursor cursor;
     private List<String> mUrlList;
-    private final List<String> mDBList;
 
     public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
@@ -55,7 +54,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         mList = mParent.mUserDataList;
         mDB = mParent.mUserDB;
         mUrlList = getUrlList(idList);
-        mDBList = getDBList(idList);
 
         //mFile = fileName;
     }
@@ -82,15 +80,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         url = host + "/HOT-T/Results/" + stName + "/" + dbName;
 
         return url;
-    }
-
-    private List<String> getDBList(String[] idList) {
-        List<String> dbList = new ArrayList<String>();
-        for (int i = 0; i < idList.length; i++) {
-            String db = getDBName(idList[i], i);
-            dbList.add(db);
-        }
-        return dbList;
     }
 
     private String getDBName(String stName, int index) {
@@ -227,7 +216,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         int responseCode = 0;
 
         try {
-            File file = new File(mParent.getDatabasePath(mDBList.get(index)).toString());
+            File file = new File(getlocalDBFileName(stURL));
 
             URL url = new URL(stURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -252,6 +241,13 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
             Log.d(TAG, e.toString());
         }
         return responseCode;
+    }
+
+    private String getlocalDBFileName(String stURL) {
+        String[] fileNames = stURL.split("/");
+        String dbName = fileNames[fileNames.length - 1];
+        Log.d(TAG,  mParent.getDatabasePath(dbName).toString());
+        return mParent.getDatabasePath(dbName).toString();
     }
 
     private void copyInputStreamToFile(InputStream in, File file) throws IOException {
