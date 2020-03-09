@@ -40,6 +40,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private ItemActivity mParent;
     private Fragment fragmentSync;
     private List<String> mUrlList;
+    private final int MAX_SESSION = 16;
 
     public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
@@ -49,7 +50,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private List<String> getUrlList(String[] idList) {
         List<String> urlList = new ArrayList<String>();
         for (int i = 0; i < idList.length; i++) {
-            for (int j = 0; j < 16; j++) {
+            for (int j = 0; j < MAX_SESSION; j++) {
                 String url = getURLName(idList[i], j);
                 urlList.add(url);
             }
