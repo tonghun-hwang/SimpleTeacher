@@ -74,8 +74,6 @@ public class Data extends Application {
 
     public int mSessionBlock;
 
-
-
     @Override
     public void onCreate(){
         super.onCreate();
@@ -109,7 +107,6 @@ public class Data extends Application {
         postExeResult = false;
         postExeTrain = false;
         postExeBoth = false;
-
     }
 
     public void setDaten(){
@@ -197,7 +194,6 @@ public class Data extends Application {
             } else {
                 prozTrainWrong[i] = (trainWrong[i] * 100) / trainAll[i];
             }
-
         }
 
         // prozTrainWrongError
@@ -220,7 +216,6 @@ public class Data extends Application {
         numAllWords[3] = trainAll[15];
         count = 0;
 
-
         // View => numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll); 2.2
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 5; j++){
@@ -238,7 +233,6 @@ public class Data extends Application {
                 prozAllTrainWrong[i] = (numAllWrong[i]*100) / numAllWords[i];
             }
         }
-
 
         // View => numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError); 2.3
         for(int i = 0; i < 3; i++){
@@ -287,8 +281,6 @@ public class Data extends Application {
         }
         arrAllErase[3] = numAllErase[15];
         count = 0;
-
-
     }
 
     public String[] getErrorcategory() {

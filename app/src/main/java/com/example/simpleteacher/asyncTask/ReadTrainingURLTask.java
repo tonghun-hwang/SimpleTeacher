@@ -54,8 +54,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         mList = mParent.mUserDataList;
         mDB = mParent.mUserDB;
         mUrlList = getUrlList(idList);
-
-        //mFile = fileName;
     }
 
     private List<String> getUrlList(String[] idList) {
@@ -112,17 +110,11 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         return res;
     }
 
-    private void readLocalDB() {
-        cursor = mParent.mUserDB.rawQuery("SELECT * FROM "
-                + mParent.mUserDBHelper.TABLE_NAME, null);
-    }
-
     @Override
     protected void onPreExecute() {
         Log.d(TAG, "onPreExcute(): readTrainingURLTask");
         super.onPreExecute();
         mParent.updateSyncFragView();
-
     }
 
     @Override
@@ -212,7 +204,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
             }
         });
 
-        //File file = new File(mParent.getDatabasePath(mFile).toString());
         int responseCode = 0;
 
         try {

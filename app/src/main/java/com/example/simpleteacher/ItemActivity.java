@@ -66,8 +66,6 @@ public class ItemActivity extends AppCompatActivity {
     RadioGroup radioGroup;
     public String strText, status;
 
-
-    // added by Hwang TODO: delete this comment
     public static final int READ_PERMITION_REQUEST_CODE = 200;
     public static final int WRITE_PERMITION_REQUEST_CODE = 300;
 
@@ -83,7 +81,6 @@ public class ItemActivity extends AppCompatActivity {
     public SQLiteDatabase mWDB = null;
     public SQLiteDatabase mUserDB = null;
     public SQLiteDatabase mUserTrainingDB = null;
-
 
     public static userResultDBHelper resultDBHelper;
     public static SQLiteDatabase resultDB = null;
@@ -129,15 +126,12 @@ public class ItemActivity extends AppCompatActivity {
         }
 
         pref = getApplicationContext().getSharedPreferences("Mypref", 0);
-//        readTrainingURL(mID, mReadTrainingUrlTask);
-//        readResultURL(mID, mReadResultURLTask);
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, secondIntent.getStringArrayExtra("ID"));
 
         ListView listview = (ListView) findViewById(R.id.student_list) ;
         listview.setAdapter(adapter);
 
-        // added by Hwang TODO: delete this comment
         if (is_Started == false) {
             createPreferences();
             is_Started = true;
@@ -160,7 +154,6 @@ public class ItemActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
         mFragSync = (FragmentSync)
                 getSupportFragmentManager().findFragmentById(R.id.fragment4);
-
 
         updateFragView();
         updateUI();
@@ -193,7 +186,6 @@ public class ItemActivity extends AppCompatActivity {
         });
     }
 
-
     public void setStatus(String status){
 
         Log.i(TAG, "set a status: " + status);
@@ -211,7 +203,6 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment4, new FragmentSync());
         fragmentTransaction.commit();
     }
-
 
     public void updateFragView() {
         Log.d(TAG, "updateNoteFragView()");
@@ -237,8 +228,6 @@ public class ItemActivity extends AppCompatActivity {
     public void updateSyncFragView() {
         Log.d(TAG, "updateSzncFragView()");
 
-
-
         mFragSync = (FragmentSync)
                 getSupportFragmentManager().findFragmentById(R.id.fragment4);
 
@@ -252,9 +241,6 @@ public class ItemActivity extends AppCompatActivity {
             fragmentTransaction.commit();
         }
     }
-
-
-
 
     public void onBackPressed() {
         Log.i(TAG,"onBackPressed() for logout");
@@ -286,11 +272,6 @@ public class ItemActivity extends AppCompatActivity {
         for (int i = 1; i <= 16; i++){
             Log.d(TAG,"readDatabank:" + i);
             try {
-            /*
-            dbName = "training_" + stName + "_" + i + ".db";
-            host = ItemActivity.pref.getString("host", "");
-            url = host + "/HOT-T/Results/" + stName + "/" + dbName;
-            */
                 dbName = "training_" + stName + "_" + i + ".db";
                 mUserTrainingDBHelper = new userTrainingDBHelper(this, dbName, stName, 1);
                 mUserTrainingDB = mUserTrainingDBHelper.getWritableDatabase();
@@ -314,6 +295,7 @@ public class ItemActivity extends AppCompatActivity {
             }
         }
     }
+
     public String getID(String[] strArr, int ind){
         return strArr[ind];
     }
@@ -334,34 +316,22 @@ public class ItemActivity extends AppCompatActivity {
                 + " ORDER BY ERROR_RATE DESC", null);
         Log.d(TAG, "getSessionCategory(): "+ c.moveToFirst());
 
-       // String main = "3";
-        //String errorRate = "0.3";
         if ( c == null) {
             Log.d(TAG, "cursor is null "); // => cursor : c.moveToFirst() return false is because cursor is empty but not null (query was successful).
         } else if (c != null && c.getCount() > 0) {
-                c.moveToFirst();
-         //       main = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
-//                Log.d(TAG, "getSessionCategory()11: " + main);
-
-                for (int ind = 0; ind < 3; ind++) {
-                    mData.setErrorcategory(ind, c.getString(c.getColumnIndex("CATEGORY_MAIN")));
-                    Log.d(TAG, "getSessionCategory(" + ind + "): " + c.getString(c.getColumnIndex("CATEGORY_MAIN")));
-                    c.moveToNext();
-                }
-
-
-
-                //errorRate = c.getString(c.getColumnIndex("ERROR_RATE"));
-
-                c.close();
+            c.moveToFirst();
+            for (int ind = 0; ind < 3; ind++) {
+                mData.setErrorcategory(ind, c.getString(c.getColumnIndex("CATEGORY_MAIN")));
+                Log.d(TAG, "getSessionCategory(" + ind + "): " + c.getString(c.getColumnIndex("CATEGORY_MAIN")));
+                c.moveToNext();
             }
-            if (resultDB.isOpen()) {
+            c.close();
+        }
+        if (resultDB.isOpen()) {
 
-                Log.d(TAG, "getSessionCategory() closed ");
-                resultDB.close();
-            }
-            //return Integer.valueOf(main);
-
+            Log.d(TAG, "getSessionCategory() closed ");
+            resultDB.close();
+        }
     }
 
     public int getNumWrongTries(String stName) {
@@ -406,7 +376,6 @@ public class ItemActivity extends AppCompatActivity {
         c.close();
         return categorisedWord;
     }
-
 
     // easy words inclusive
     public int getNumTotalTries(String stName) {
@@ -664,7 +633,3 @@ public class ItemActivity extends AppCompatActivity {
         Log.i(TAG, "onDestroy");
     }
 }
-
-
-
-

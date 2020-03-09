@@ -27,7 +27,6 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     private final String TAG = "Main.ReadResultURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     private ItemActivity mParent;
-    private MainActivity mainActivity;
     private String[] mIDList;
     private List<String> mUrlList;
     private List<String> mDBList;
@@ -41,7 +40,6 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         mUrlList = getUrlList(idList);
         mList = mParent.mUserDataList;
         mDBList = getDBList(idList);
-        //mFile = fileName;
     }
 
     private List<String> getUrlList(String[] idList) {

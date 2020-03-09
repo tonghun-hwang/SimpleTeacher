@@ -19,14 +19,11 @@ import com.example.simpleteacher.R;
 
 public class MainFragment extends Fragment {
 
-
     private View inf;
-
 
     RadioButton btnoneToFive, btnsixToTen, btnelevenToFifteen, btnsixteen;
     RadioGroup radioGroup;
     TextView nameTeacher, nameStudent, errorCategory;
-
 
     public MainFragment() { }
 
@@ -39,7 +36,6 @@ public class MainFragment extends Fragment {
         activity = (ItemActivity) getActivity();
         mData = activity.mData;
     }
-
 
     @Nullable
     @Override
@@ -84,8 +80,4 @@ public class MainFragment extends Fragment {
             }
         });
     }
-
-
-
-
 }
