@@ -4,23 +4,28 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.helper.userResultDBHelper;
 import com.example.simpleteacher.helper.userTrainingDBHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
     private final ItemActivity mParent;
     private final String TAG = "DiagAnal";
     private final String[] mIds;
-    private int mIndex;
+    private List<String[]> dataList;
     private final Context mContext;
 
     public fillDiagAnalysisTask (Context parent, String[] ids) {
         mParent = (ItemActivity) parent;
         mContext = parent;
         mIds = ids;
+        dataList = new ArrayList<>();
     }
 
     @Override
@@ -46,15 +51,19 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
                     Log.d(TAG, "readable database open: ");
                     mParent.resultDB = mParent.resultDBHelper.getReadableDatabase();
                 }
+                Cursor ct = mParent.resultDB.rawQuery("SELECT * FROM "
+                                + userResultDBHelper.RESULT_DIAGNOSTIC
+                        , null);
+                int numWord = ct.getCount();
+                ct.close();
 
                 Cursor c = mParent.resultDB.rawQuery("SELECT * FROM "
                                 + userResultDBHelper.RESULT_DIAGNOSTIC
                                 + " WHERE CORRECT_WORD = WRITTEN_WORD"
                         , null);
                 int correctW = c.getCount();
-                Log.d(TAG, "------" + correctW);
-                data[0] = 60;
-                data[1] = 60 - correctW;
+                data[0] = numWord;
+                data[1] = numWord - correctW;
                 data[2] = data[1] / data[0];
                 c.close();
 
@@ -73,10 +82,10 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
                     mParent.mUserTrainingDB = mParent.mUserTrainingDBHelper.getWritableDatabase();
                 }
 
-                data[3] = mParent.getNumEraseAll(mIds[i]); // cat wrong words
-                data[4] = mParent.getNumEraseOne(mIds[i]); // cat wrong words
-                data[5] = mParent.getNumButtonEar(mIds[i]); // cat wrong words
-                data[6] = 0;
+                data[3] = mParent.getNumEraseAll(mIds[i]);
+                data[4] = mParent.getNumEraseOne(mIds[i]);
+                data[5] = mParent.getNumButtonEar(mIds[i]);
+                data[6] = mParent.getNumPushChar(mIds[i]);
 
                 /* result of category */
                 c = mParent.resultDB.rawQuery("SELECT * FROM "
@@ -87,13 +96,14 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
                     data[(j * 2) + 7] = c.getDouble(c.getColumnIndex("NUM_TOTAL")); // total words
                     data[(j * 2) + 8] = c.getDouble(c.getColumnIndex("ERROR_RATE")); //total wrong
                 }
+                String lastDate = c.getString(c.getColumnIndex("LAST_UPDATE"));
                 c.close();
 
                 /* replace the database */
                 if (mParent.mAnalysisDB != null || !mParent.mAnalysisDB.isOpen()) {
                     mParent.mAnalysisDB = mParent.mAnalysisDBHelper.getWritableDatabase();
                 }
-                mParent.mAnalysisDBHelper.replaceData(mParent.mAnalysisDB, i, mIds[i], data);
+                mParent.mAnalysisDBHelper.replaceData(mParent.mAnalysisDB, i, mIds[i], data, lastDate);
 
             } catch (Exception e) {
                 String err = e.getStackTrace().toString();
@@ -123,5 +133,14 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         Log.d(TAG, "onPostExecute(): " + result);
+        String envPath = Environment.getExternalStorageDirectory().toString();
+        String outputFile = envPath + "/HOT-T/diagnosticSummary.csv";
+
+        if (mParent.mAnalysisDB != null || !mParent.mAnalysisDB.isOpen()) {
+            mParent.mAnalysisDB = mParent.mAnalysisDBHelper.getWritableDatabase();
+        }
+        dataList = mParent.mAnalysisDBHelper.getDataList(mParent.mAnalysisDB);
+
+        mParent.writeCSVFile(outputFile, dataList);
     }
 }

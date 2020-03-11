@@ -2,14 +2,17 @@ package com.example.simpleteacher.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.zip.DataFormatException;
 
 public class analysisDBHelper extends SQLiteOpenHelper {
@@ -88,11 +91,9 @@ public class analysisDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean replaceData(SQLiteDatabase db, int id, String user, double[] data) {
+    public boolean replaceData(SQLiteDatabase db, int id, String user, double[] data, String lastDate) {
         Log.d(TAG, "replaceData");
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        String update = formatter.format(Calendar.getInstance().getTimeInMillis());
         long res = -1;
         if (data.length == 17) {
             ContentValues contentValues = new ContentValues();
@@ -115,7 +116,7 @@ public class analysisDBHelper extends SQLiteOpenHelper {
             contentValues.put(CAT6_ER, roundD3(data[14]));
             contentValues.put(CAT7_TOTAL, data[15]);
             contentValues.put(CAT7_ER, roundD3(data[16]));
-            contentValues.put(DATE, update);
+            contentValues.put(DATE, lastDate);
             res = db.replace(TABLE_DIAGNOSTIC,
                     null, contentValues);
         }
@@ -124,6 +125,49 @@ public class analysisDBHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    public List<String[]> getDataList(SQLiteDatabase db) {
+        Log.d(TAG, "getDataList");
+
+        long res = -1;
+        List<String[]> dataList = new ArrayList<String[]>();
+        String[] columnName = new String[] {
+                "ID",
+                "USERID",
+                "WORD_TOTAL",
+                "WORD_ERROR",
+                "WORD_ER",
+                "NUM_A_ERASE",
+                "NUM_ONE_ERASE",
+                "NUM_EAR",
+                "NUM_KEY",
+                "CAT3_TOTAL",
+                "CAT3_ER",
+                "CAT4_TOTAL",
+                "CAT4_ER",
+                "CAT5_TOTAL",
+                "CAT5_ER",
+                "CAT6_TOTAL",
+                "CAT6_ER",
+                "CAT7_TOTAL",
+                "CAT7_ER",
+                "LAST_UPDATE"
+        };
+        dataList.add(columnName);
+        Cursor c = db.rawQuery("SELECT * FROM "
+                + TABLE_DIAGNOSTIC, null);
+        c.moveToFirst();
+        do {
+            String[] data = new String[20];
+            for (int i = 0; i < 20; i++) {
+                data[i] = c.getString(i);
+            }
+            dataList.add(data);
+        } while (c.moveToNext());
+        c.close();
+
+        return dataList;
     }
 
     private String roundD3(double datum) {
