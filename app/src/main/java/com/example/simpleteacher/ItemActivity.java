@@ -1,9 +1,11 @@
 package com.example.simpleteacher;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -36,9 +39,18 @@ import com.example.simpleteacher.main.FragmentLastGraph;
 import com.example.simpleteacher.main.FragmentOneFive;
 import com.example.simpleteacher.main.FragmentSync;
 import com.example.simpleteacher.main.MainFragment;
+import com.opencsv.CSVWriter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ItemActivity extends AppCompatActivity {
@@ -524,6 +536,17 @@ public class ItemActivity extends AppCompatActivity {
         return res;
     }
 
+    public int getNumPushChar(String stName) {
+
+        Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                " WHERE EVENT = '" + mData.TRAIN_KEYBOARD + "'", null);
+        int res = c.getCount();
+
+        Log.d(TAG, "getNumButtonEar: " + res);
+        c.close();
+        return res;
+    }
+
     // Extracting data function for InCategories
     private int getNumCategorizedWords(Cursor c) {
         int sum = 0;
@@ -655,6 +678,57 @@ public class ItemActivity extends AppCompatActivity {
         urlPath = urlHottPath + "/master-wordlist_easywords_9-q.csv";
         initFirstWordListThread4 = new initFirstWordListsTask(this, wordDBHelper.TABLE_EASY);
         initFirstWordListThread4.execute(urlPath, csvPath);
+    }
+
+    public void writeCSVFile(String fileName, List<String[]> dataList) {
+        Log.d(TAG, "writeCSVFile: " + fileName);
+        boolean permissionGranted = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+        if (permissionGranted) {
+            System.out.println("permission Granted: " + permissionGranted);
+        } else {
+            System.out.println("permission request.");
+            ActivityCompat.requestPermissions(this,
+                    new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                    READ_PERMITION_REQUEST_CODE);
+            System.out.println("permission Granted: " + permissionGranted);
+        }
+
+        File fileFolder = new File(fileName.substring(0, fileName.length() -15));
+        if (!fileFolder.exists()) {
+            fileFolder.mkdirs();
+        }
+
+        try (FileOutputStream out = new FileOutputStream(fileName);
+             OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.ISO_8859_1);
+             CSVWriter writer = new CSVWriter(osw, ';',
+                     CSVWriter.NO_QUOTE_CHARACTER,
+                     CSVWriter.NO_ESCAPE_CHARACTER,
+                     CSVWriter.DEFAULT_LINE_END)) {
+            // TODO: for save with checked btn_save
+            String[] nextLine;
+            Iterator<String[]> iter = dataList.iterator();
+            while (iter.hasNext()) {
+                nextLine = iter.next();
+                writer.writeNext(nextLine);
+                Log.d(TAG, nextLine[0]);
+                int i = 0;
+                for (String str : nextLine) {
+                    Log.d(TAG, "URL Status write: " + str + " " + String.valueOf(i));
+                    i++;
+                }
+            }
+        } catch (FileNotFoundException e1) {
+            Log.e(TAG, "File is not found Exception.");
+            e1.printStackTrace();
+        } catch (UnsupportedEncodingException e2) {
+            Log.e(TAG, "Unsupported Encodinng Exception.");
+            e2.printStackTrace();
+        } catch (IOException e3) {
+            Log.e(TAG, "IO Exception");
+            e3.printStackTrace();
+        }
     }
 
     public void onStop() {
