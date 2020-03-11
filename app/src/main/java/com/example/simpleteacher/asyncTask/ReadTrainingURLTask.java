@@ -40,7 +40,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private ItemActivity mParent;
     private Fragment fragmentSync;
     private List<String> mUrlList;
-    private final int MAX_SESSION = 16;
+    private final int MAX_SESSION = 0;
 
     public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
@@ -110,6 +110,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
                 index++;
             }
         }
+
         return res;
     }
 
@@ -128,6 +129,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         if (result > 0) {
             Status = "Fail: ";
         }
+
         SharedPreferences.Editor editor = mParent.pref.edit();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String update = formatter.format(Calendar.getInstance().getTimeInMillis());

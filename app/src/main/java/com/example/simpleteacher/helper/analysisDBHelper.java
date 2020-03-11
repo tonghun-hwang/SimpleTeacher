@@ -19,14 +19,19 @@ public class analysisDBHelper extends SQLiteOpenHelper {
     public static final String TABLE_TRAINING = "training";
     public static final String ID = "ID";
     public static final String USERID = "USERID";
-    public static final String TOTAL_WORDS = "TOTAL_WORDS";
-    public static final String TOTAL_ERROR = "TOTAL_ERROR";
-    public static final String TOTAL_ERROR_RATE = "TOTAL_ERROR_RATE";
-    public static final String CAT_WORDS = "CAT_WORDS";
-    public static final String CAT_ERROR = "CAT_ERROR";
-    public static final String CAT_ERROR_RATE = "CAT_ERROR_RATE";
-    public static final String FIRST_ERROR = "FIRST_ERROR";
-    public static final String FIRST_ERROR_RATE = "CAT_ERROR_RATE";
+    public static final String WORD_TOTAL = "WORD_TOTAL";
+    public static final String WORD_ERROR = "WORD_ERROR";
+    public static final String WORD_ER = "WORD_ER";
+    public static final String CAT3_TOTAL = "CAT3_TOTAL";
+    public static final String CAT3_ER = "CAT3_ER";
+    public static final String CAT4_TOTAL = "CAT4_TOTAL";
+    public static final String CAT4_ER = "CAT4_ER";
+    public static final String CAT5_TOTAL = "CAT5_TOTAL";
+    public static final String CAT5_ER = "CAT5_ER";
+    public static final String CAT6_TOTAL = "CAT6_TOTAL";
+    public static final String CAT6_ER = "CAT6_ER";
+    public static final String CAT7_TOTAL = "CAT7_TOTAL";
+    public static final String CAT7_ER = "CAT7_ER";
     public static final String NUM_A_ERASE = "NUM_A_ERASE";
     public static final String NUM_ONE_ERASE = "NUM_ONE_ERASE";
     public static final String NUM_EAR = "NUM_EAR";
@@ -45,18 +50,23 @@ public class analysisDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIAGNOSTIC +
                 " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "USERID TEXT," +
-                "TOTAL_WORDS INTEGER," +
-                "TOTAL_ERROR INTEGER," +
-                "TOTAL_ERROR_RATE DOUBLE," +
-                "CAT_WORDS INTEGER," +
-                "CAT_ERROR INTEGER," +
-                "CAT_ERROR_RATE DOUBLE," +
-                "FIRST_ERROR INTEGER," +
-                "FIRST_ERROR_RATE DOUBLE," +
+                "WORD_TOTAL INTEGER," +
+                "WORD_ERROR INTEGER," +
+                "WORD_ER DOUBLE," +
                 "NUM_A_ERASE INTEGER," +
                 "NUM_ONE_ERASE INTEGER," +
                 "NUM_EAR INTEGER," +
                 "NUM_KEY INTEGER," +
+                "CAT3_TOTAL INTEGER," +
+                "CAT3_ER DOUBLE," +
+                "CAT4_TOTAL INTEGER," +
+                "CAT4_ER DOUBLE," +
+                "CAT5_TOTAL INTEGER," +
+                "CAT5_ER DOUBLE," +
+                "CAT6_TOTAL INTEGER," +
+                "CAT6_ER DOUBLE," +
+                "CAT7_TOTAL INTEGER," +
+                "CAT7_ER DOUBLE," +
                 "LAST_UPDATE DATETIME);");
     }
 
@@ -78,27 +88,33 @@ public class analysisDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean replaceData(SQLiteDatabase db, String[] data) {
+    public boolean replaceData(SQLiteDatabase db, int id, String user, double[] data) {
         Log.d(TAG, "replaceData");
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String update = formatter.format(Calendar.getInstance().getTimeInMillis());
         long res = -1;
-        if (data.length == 9) {
+        if (data.length == 17) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(USERID, data[0]);
-            contentValues.put(TOTAL_WORDS, data[1]);
-            contentValues.put(TOTAL_ERROR, data[2]);
-            contentValues.put(TOTAL_ERROR_RATE, data[3]);
-            contentValues.put(CAT_WORDS, data[4]);
-            contentValues.put(CAT_ERROR, data[5]);
-            contentValues.put(CAT_ERROR_RATE, data[6]);
-            contentValues.put(FIRST_ERROR, data[7]);
-            contentValues.put(FIRST_ERROR_RATE, data[8]);
-            contentValues.put(NUM_A_ERASE, data[9]);
-            contentValues.put(NUM_ONE_ERASE, data[10]);
-            contentValues.put(NUM_EAR, data[11]);
-            contentValues.put(NUM_KEY, data[12]);
+            contentValues.put(ID, id);
+            contentValues.put(USERID, user);
+            contentValues.put(WORD_TOTAL, data[0]);
+            contentValues.put(WORD_ERROR, data[1]);
+            contentValues.put(WORD_ER, roundD3(data[2]));
+            contentValues.put(NUM_A_ERASE, data[3]);
+            contentValues.put(NUM_ONE_ERASE, data[4]);
+            contentValues.put(NUM_EAR, data[5]);
+            contentValues.put(NUM_KEY, data[6]);
+            contentValues.put(CAT3_TOTAL, data[7]);
+            contentValues.put(CAT3_ER, roundD3(data[8]));
+            contentValues.put(CAT4_TOTAL, data[9]);
+            contentValues.put(CAT4_ER, roundD3(data[10]));
+            contentValues.put(CAT5_TOTAL, data[11]);
+            contentValues.put(CAT5_ER, roundD3(data[12]));
+            contentValues.put(CAT6_TOTAL, data[13]);
+            contentValues.put(CAT6_ER, roundD3(data[14]));
+            contentValues.put(CAT7_TOTAL, data[15]);
+            contentValues.put(CAT7_ER, roundD3(data[16]));
             contentValues.put(DATE, update);
             res = db.replace(TABLE_DIAGNOSTIC,
                     null, contentValues);
@@ -108,5 +124,18 @@ public class analysisDBHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    private String roundD3(double datum) {
+        String result = String.valueOf(Math.round(datum * 1000) / (double) 1000);
+        return result;
+    }
+
+    private double getRate(int datum, int datum1) {
+        double res = -1;
+        if (datum1 != 0) {
+            res = datum / (double) datum1;
+        }
+        return res;
     }
 }

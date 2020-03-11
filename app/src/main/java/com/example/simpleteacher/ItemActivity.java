@@ -25,6 +25,7 @@ import com.example.simpleteacher.asyncTask.ReadDiagnosticURLTask;
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
 import com.example.simpleteacher.asyncTask.ReadResultURLTask;
 import com.example.simpleteacher.asyncTask.ReadTrainingURLTask;
+import com.example.simpleteacher.asyncTask.fillDiagAnalysisTask;
 import com.example.simpleteacher.asyncTask.initFirstWordListsTask;
 import com.example.simpleteacher.helper.analysisDBHelper;
 import com.example.simpleteacher.helper.userDBHelper;
@@ -37,15 +38,17 @@ import com.example.simpleteacher.main.FragmentSync;
 import com.example.simpleteacher.main.MainFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemActivity extends AppCompatActivity {
-    private final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
+    public final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
             "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
             "Planet1", "Planet2", "Planet3", "Planet4","Planet5", "Planet6", "Planet7", "Planet8", "Planet9",
             "Planet10", "Planet11", "Planet12", "Planet13", "Planet14", "Planet15","Planet16","Planet17","Planet18",
             "Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24", "Planet25", "Planet26", "Planet27", "Planet28", "Planet29",
             "Alien1","Alien2","Alien3","Alien4","Alien5","Alien6","Alien7","Alien8","Alien9","Alien10","Alien11",
-            "Alien12","Alien13","Alien14","Alien15","Alien16","Alien17","Alien18","Alien14","Alien15","Alien16","Alien17","Alien18",
+            "Alien12","Alien13","Alien14","Alien15","Alien16","Alien17","Alien18",
             "Alien19","Alien20","Alien21","Alien22"};
     private final String[] ADM1 = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5"};
     private final String[] AUN1 = {"Ufo6", "Ufo7", "Ufo8"};
@@ -164,6 +167,7 @@ public class ItemActivity extends AppCompatActivity {
 
         updateFragView();
         updateUI();
+        setDiagnosticDB(admin);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -266,6 +270,12 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
         d.show();
+    }
+
+    public void setDiagnosticDB(String[] ids) {
+        Log.d(TAG, "setDiagnosticDB(): ");
+        fillDiagAnalysisTask diagAnlysis = new fillDiagAnalysisTask(this, ids);
+        diagAnlysis.execute();
     }
 
     public void setTrainingDB(String stName) {
@@ -407,7 +417,7 @@ public class ItemActivity extends AppCompatActivity {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                     " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
             // TODO
-            res = c.getCount() + 1;
+            res = c.getCount();
             Log.d(TAG, "getNumTotalWords: " + res);
             c.close();
         }
@@ -422,9 +432,9 @@ public class ItemActivity extends AppCompatActivity {
         int countAll = cAll.getCount();
         if (countAll != 0) {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'" +
+                    " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
                     " AND (REPEAT_COUNT == 4)", null);
-            res = c.getCount() + 1;
+            res = c.getCount();
             Log.d(TAG, "getNumTotallyWrongWords: " + res);
             c.close();
         }
@@ -441,7 +451,7 @@ public class ItemActivity extends AppCompatActivity {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                     " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
             int categorisedWord = getNumCategorizedWords(c);
-            res = categorisedWord + 1;
+            res = categorisedWord;
             Log.d(TAG, "getNumTotalWords: " + res);
             c.close();
         }
@@ -456,10 +466,10 @@ public class ItemActivity extends AppCompatActivity {
         int countAll = cAll.getCount();
         if (countAll != 0) {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'" +
+                    " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
                     " AND (REPEAT_COUNT == 4)", null);
             int categorisedWord = getNumCategorizedWords(c);
-            res = categorisedWord + 1;
+            res = categorisedWord;
             Log.d(TAG, "getNumTotallyWrongWords: " + res);
             c.close();
         }
@@ -467,6 +477,23 @@ public class ItemActivity extends AppCompatActivity {
         return res;
     }
 
+    // wrong wrote at the first time && easy words inclusive
+    public int getNumFirstWrongWordsInCategory(String stName) {
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
+                    " AND (REPEAT_COUNT == 1)", null);
+            int categorisedWord = getNumCategorizedWords(c);
+            res = categorisedWord;
+            Log.d(TAG, "getNumTotallyWrongWords: " + res);
+            c.close();
+        }
+        cAll.close();
+        return res;
+    }
 
     public int getNumEraseOne(String stName) {
         Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +

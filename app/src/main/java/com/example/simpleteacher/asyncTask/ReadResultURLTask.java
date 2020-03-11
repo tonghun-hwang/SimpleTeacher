@@ -115,7 +115,6 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
     }
 
     @Override
