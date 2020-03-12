@@ -28,6 +28,7 @@ import com.example.simpleteacher.asyncTask.ReadDiagnosticURLTask;
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
 import com.example.simpleteacher.asyncTask.ReadResultURLTask;
 import com.example.simpleteacher.asyncTask.ReadTrainingURLTask;
+import com.example.simpleteacher.asyncTask.TrainingAnalysisTask;
 import com.example.simpleteacher.asyncTask.fillDiagAnalysisTask;
 import com.example.simpleteacher.asyncTask.initFirstWordListsTask;
 import com.example.simpleteacher.helper.analysisDBHelper;
@@ -180,6 +181,7 @@ public class ItemActivity extends AppCompatActivity {
         updateFragView();
         updateUI();
         setDiagnosticDB(admin);
+        getTrainingCSV(admin);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -288,6 +290,12 @@ public class ItemActivity extends AppCompatActivity {
         Log.d(TAG, "setDiagnosticDB(): ");
         fillDiagAnalysisTask diagAnlysis = new fillDiagAnalysisTask(this, ids);
         diagAnlysis.execute();
+    }
+
+    private void getTrainingCSV(String[] ids) {
+        Log.d(TAG, "getTrainingCSV(): ");
+        TrainingAnalysisTask trainAnlysis = new TrainingAnalysisTask(this, ids);
+        trainAnlysis.execute();
     }
 
     public void setTrainingDB(String stName) {
