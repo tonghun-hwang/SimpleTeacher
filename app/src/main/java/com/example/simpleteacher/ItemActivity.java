@@ -185,7 +185,7 @@ public class ItemActivity extends AppCompatActivity {
 
         updateFragView();
         updateUI();
-        setDiagnosticDB(admin);
+        //setDiagnosticDB(admin);
         getTrainingCSV(admin);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -440,7 +440,7 @@ public class ItemActivity extends AppCompatActivity {
         int countAll = cAll.getCount();
         if (countAll != 0) {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
+                    " WHERE EVENT = '" + mData.TRAIN_INC + "'", null);
             // TODO
             res = c.getCount();
             Log.d(TAG, "getNumTotalWords: " + res);
@@ -474,7 +474,7 @@ public class ItemActivity extends AppCompatActivity {
         int countAll = cAll.getCount();
         if (countAll != 0) {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
-                    " WHERE EVENT = '" + mData.TRAIN_ALL + "'", null);
+                    " WHERE EVENT = '" + mData.TRAIN_INC + "'", null);
             int categorisedWord = getNumCategorizedWords(c);
             res = categorisedWord;
             Log.d(TAG, "getNumTotalWords: " + res);
