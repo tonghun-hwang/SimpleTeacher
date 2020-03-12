@@ -40,7 +40,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private ItemActivity mParent;
     private Fragment fragmentSync;
     private List<String> mUrlList;
-    private final int MAX_SESSION = 0;
+    private final int MAX_SESSION = 16;
 
     public ReadTrainingURLTask(ItemActivity parent, String[] idList/*, String fileName*/) {
         mParent = parent;
@@ -118,7 +118,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     protected void onPreExecute() {
         Log.d(TAG, "onPreExcute(): readTrainingURLTask");
         super.onPreExecute();
-        mParent.updateSyncFragView();
+        //mParent.updateSyncFragView();
     }
 
     @Override
