@@ -63,6 +63,7 @@ public class Data extends Application {
     public boolean postExeBoth;
 
     public static final String TRAIN_ALL = "next";
+    public static final String TRAIN_INC = "incWIdx";
     public static final String TRAIN_TOT_WRONG = "nextDismissMistake";
     public static final String TRAIN_WRONG = "mistakeDlg";
     public static final String TRAIN_KEYBOARD = "pushChar";
