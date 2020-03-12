@@ -21,6 +21,9 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
     public static final String WORD_TOTAL = "WORD_TOTAL";
     public static final String WORD_ERROR = "WORD_ERROR";
     public static final String WORD_ER = "WORD_ER";
+    public static final String WORD_CAT_TOTAL = "WORD_CAT_TOTAL";
+    public static final String WORD_CAT_ERROR = "WORD_CAT_ERROR";
+    public static final String WORD_CAT_ER = "WORD_CAT_ER";
     public static final String NUM_A_ERASE = "NUM_A_ERASE";
     public static final String NUM_ONE_ERASE = "NUM_ONE_ERASE";
     public static final String NUM_EAR = "NUM_EAR";
@@ -57,6 +60,9 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 "WORD_TOTAL INTEGER," +
                 "WORD_ERROR INTEGER," +
                 "WORD_ER DOUBLE," +
+                "WORD_CAT_TOTAL INTEGER," +
+                "WORD_CAT_ERROR INTEGER," +
+                "WORD_CAT_ER DOUBLE," +
                 "NUM_A_ERASE INTEGER," +
                 "NUM_ONE_ERASE INTEGER," +
                 "NUM_EAR INTEGER," +
@@ -71,17 +77,20 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String update = formatter.format(Calendar.getInstance().getTimeInMillis());
         long res = -1;
-        if (data.length == 17) {
+        if (data.length == 8) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(ID, id);
             contentValues.put(USERID, user);
             contentValues.put(WORD_TOTAL, data[0]);
             contentValues.put(WORD_ERROR, data[1]);
-            contentValues.put(WORD_ER, roundD3(data[2]));
-            contentValues.put(NUM_A_ERASE, data[3]);
-            contentValues.put(NUM_ONE_ERASE, data[4]);
-            contentValues.put(NUM_EAR, data[5]);
-            contentValues.put(NUM_KEY, data[6]);
+            contentValues.put(WORD_ER, getRateD3(data[1], data[0]));
+            contentValues.put(WORD_CAT_TOTAL, data[2]);
+            contentValues.put(WORD_CAT_ERROR, data[3]);
+            contentValues.put(WORD_CAT_ER, getRateD3(data[3], data[2]));
+            contentValues.put(NUM_A_ERASE, data[4]);
+            contentValues.put(NUM_ONE_ERASE, data[5]);
+            contentValues.put(NUM_EAR, data[6]);
+            contentValues.put(NUM_KEY, data[7]);
             contentValues.put(DATE, update);
             res = db.replace(tableName,
                     null, contentValues);
@@ -91,6 +100,11 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    private String getRateD3(double numerator, double denominator) {
+        double rate = numerator / denominator;
+        return roundD3(rate);
     }
 
     public List<String[]> getDataList(SQLiteDatabase db, int sessionBlock) {
@@ -105,6 +119,9 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 "WORD_TOTAL",
                 "WORD_ERROR",
                 "WORD_ER",
+                "WORD_CAT_TOTAL",
+                "WORD_CAT_ERROR",
+                "WORD_CAT_ER",
                 "NUM_A_ERASE",
                 "NUM_ONE_ERASE",
                 "NUM_EAR",
@@ -116,8 +133,8 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 + tableName, null);
         c.moveToFirst();
         do {
-            String[] data = new String[20];
-            for (int i = 0; i < 20; i++) {
+            String[] data = new String[13];
+            for (int i = 0; i < 13; i++) {
                 data[i] = c.getString(i);
             }
             dataList.add(data);

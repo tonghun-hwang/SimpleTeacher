@@ -32,6 +32,7 @@ import com.example.simpleteacher.asyncTask.TrainingAnalysisTask;
 import com.example.simpleteacher.asyncTask.fillDiagAnalysisTask;
 import com.example.simpleteacher.asyncTask.initFirstWordListsTask;
 import com.example.simpleteacher.helper.analysisDBHelper;
+import com.example.simpleteacher.helper.analysisTrainingDBHelper;
 import com.example.simpleteacher.helper.userDBHelper;
 import com.example.simpleteacher.helper.userResultDBHelper;
 import com.example.simpleteacher.helper.userTrainingDBHelper;
@@ -96,10 +97,12 @@ public class ItemActivity extends AppCompatActivity {
     public userDBHelper mUserDBHelper;
     public userTrainingDBHelper mUserTrainingDBHelper;
     public analysisDBHelper mAnalysisDBHelper;
+    public analysisTrainingDBHelper mAnalysisTrainingDBHelper;
     public SQLiteDatabase mWDB = null;
     public SQLiteDatabase mUserDB = null;
     public SQLiteDatabase mUserTrainingDB = null;
     public SQLiteDatabase mAnalysisDB = null;
+    public SQLiteDatabase mAnalysisTrainingDB = null;
 
     public static userResultDBHelper resultDBHelper;
     public static SQLiteDatabase resultDB = null;
@@ -164,6 +167,8 @@ public class ItemActivity extends AppCompatActivity {
         // analysis.db
         mAnalysisDBHelper = new analysisDBHelper(this, 1);
         mAnalysisDB = mAnalysisDBHelper.getWritableDatabase();
+        mAnalysisTrainingDBHelper = new analysisTrainingDBHelper(this, 1);
+        mAnalysisTrainingDB = mAnalysisTrainingDBHelper.getWritableDatabase();
 
         remoteDBUserData = ItemActivity.pref.getString("dbUser", "");
         severUserData = ItemActivity.pref.getString("userData", "");

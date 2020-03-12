@@ -96,8 +96,8 @@ public class FragmentSync extends Fragment {
         btnSync.setOnClickListener((new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mParent.readResultURL(mParent.mID, mParent.mReadResultURLTask);
                 mParent.readTrainingURL(mParent.mID, mParent.mReadTrainingUrlTask);
+                mParent.readResultURL(mParent.mID, mParent.mReadResultURLTask);
             }
         }
         ));

@@ -39,11 +39,15 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
         String resultName;
         String res = "OK!";
         int total = 0;
-        double[] data = new double[17];
+        double[] data = new double[8];
 
         for (int i = 0; i < mIds.length; i++) {
             try {
-                for (int j = 0; j < 16; j++) {
+                for (int k = 0; k < data.length; k++) {
+                    data[k] = 0;
+                }
+
+                for (int j = 1; j <= 5; j++) {
                     /* result of buttons */
                     dbName = "training_" + mIds[i] + "_" + j + ".db";
                     mParent.mUserTrainingDBHelper = new userTrainingDBHelper(mContext, dbName, mIds[i], 1);
@@ -54,25 +58,26 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mUserTrainingDB.close();
                         mParent.mUserTrainingDBHelper.close();
 
-                        dbName = "training_" + mIds[i] + "_0ps.db";
+                        dbName = "training_" + mIds[i] + "_" + j + "ps.db";
                         mParent.mUserTrainingDBHelper = new userTrainingDBHelper(mContext, dbName, mIds[i], 1);
                         mParent.mUserTrainingDB = mParent.mUserTrainingDBHelper.getWritableDatabase();
                     }
 
-                    data[0] = mParent.getNumTotalWords(mIds[i]); // all words
-                    data[1] = mParent.getNumTotallyWrongWordsInCategory(mIds[i]); // wrong words
-                    data[2] = mParent.getNumTotallyWrongWords(mIds[i]);
-                    data[3] = mParent.getNumEraseAll(mIds[i]); // cat wrong words
-                    data[4] = mParent.getNumEraseOne(mIds[i]); // cat wrong words
-                    data[5] = mParent.getNumButtonEar(mIds[i]); // cat wrong words
-                    data[6] = 0;
+                    data[0] += mParent.getNumTotalWords(mIds[i]);
+                    data[1] += mParent.getNumTotallyWrongWords(mIds[i]);
+                    data[2] += mParent.getNumTotalWordsInCategory(mIds[i]);
+                    data[3] += mParent.getNumTotallyWrongWordsInCategory(mIds[i]); // wrong words
+                    data[4] += mParent.getNumEraseAll(mIds[i]);
+                    data[5] += mParent.getNumEraseOne(mIds[i]);
+                    data[6] += mParent.getNumButtonEar(mIds[i]);
+                    data[7] += mParent.getNumPushChar(mIds[i]);
                 }
 
                 /* replace the database */
-                if (mParent.mAnalysisDB != null || !mParent.mAnalysisDB.isOpen()) {
-                    mParent.mAnalysisDB = mParent.mAnalysisDBHelper.getWritableDatabase();
+                if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
+                    mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
                 }
-                mParent.mAnalysisDBHelper.replaceData(mParent.mAnalysisDB, i, mIds[i], data);
+                mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, 1);
 
             } catch (Exception e) {
                 String err = e.getStackTrace().toString();
@@ -98,12 +103,12 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
     protected void onPostExecute(String result) {
         Log.d(TAG, "onPostExecute(): " + result);
         String envPath = Environment.getExternalStorageDirectory().toString();
-        String outputFile = envPath + "/HOT-T/diagnosticSummary.csv";
+        String outputFile = envPath + "/HOT-T/trainingSummary1.csv";
 
-        if (mParent.mAnalysisDB != null || !mParent.mAnalysisDB.isOpen()) {
-            mParent.mAnalysisDB = mParent.mAnalysisDBHelper.getWritableDatabase();
+        if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
+            mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
         }
-        dataList = mParent.mAnalysisDBHelper.getDataList(mParent.mAnalysisDB);
+        dataList = mParent.mAnalysisTrainingDBHelper.getDataList(mParent.mAnalysisTrainingDB, 1);
 
         mParent.writeCSVFile(outputFile, dataList);
     }
