@@ -96,8 +96,15 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
                     }
                 }
-
-
+                if (mParent.mUserTrainingDB != null) {
+                    if (mParent.mUserTrainingDB.isOpen()) {
+                        mParent.mUserTrainingDB.close();
+                    }
+                }
+                if (mParent.mUserTrainingDBHelper != null) {
+                    mParent.mUserTrainingDBHelper.close();
+                    mParent.mUserTrainingDBHelper = null;
+                }
             } catch (Exception e) {
                 String err = e.getStackTrace().toString();
                 Log.d(TAG, "error: " + err);
