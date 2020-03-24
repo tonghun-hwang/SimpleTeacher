@@ -30,30 +30,61 @@
                 <FrameLayout
                     android:id="@+id/fragment1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="120dp">
 
                 </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/fragment2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="450dp">
 
                 </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/fragment3"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="250dp">
 
                 </FrameLayout>
 
-                <FrameLayout
-                    android:id="@+id/fragment4"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="120dp">
 
-                </FrameLayout>
+                    <Button
+                        android:id="@+id/btn_sync"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="clickSync"
+                        android:text="Sync"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtUpdated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="00-00-0000 00:00:00"
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toEndOf="@+id/btn_sync"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtIsConnected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="0"
+                        android:text="Connecting..."
+                        android:textColor="#000000"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toEndOf="@+id/btn_sync"
+                        app:layout_constraintTop_toBottomOf="@+id/txtUpdated" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
         </ScrollView>
