@@ -167,10 +167,10 @@ public class ItemActivity extends AppCompatActivity {
         mWDBHelper = new wordDBHelper(this, BASE_DATABASE_NAME);
         initWordList();
 
-        updateFragView();
+        updateFragView(0, null);
         updateUI();
 
-        getTrainingCSV();
+        //getTrainingCSV();
 
         initUI();
 
@@ -196,7 +196,7 @@ public class ItemActivity extends AppCompatActivity {
                 getSessionCategory(mData.nameStudent);
                 setTrainingDB(mData.nameStudent);
 
-                updateFragView();
+                updateFragView(0, strText);
             }
         });
     }
@@ -249,7 +249,7 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void updateFragView() {
+    public void updateFragView(int sessionBlock, String studID) {
         Log.d(TAG, "updateNoteFragView()");
         getSessionCategory(mData.nameStudent);
 
@@ -259,7 +259,7 @@ public class ItemActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
 
         if (mFrag != null) {
-            mFrag.filledData(mData);
+            mFrag.filledDataFromDB(sessionBlock, studID);
             mFrag.generateGraph(mData);
 
             FragmentManager fm = getSupportFragmentManager();

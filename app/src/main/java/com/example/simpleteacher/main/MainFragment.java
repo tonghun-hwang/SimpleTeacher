@@ -64,19 +64,16 @@ public class MainFragment extends Fragment {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.btnOneFive){
+                if (checkedId == R.id.btnOneFive){
                     mData.mSessionBlock = 0;
-                    activity.updateFragView();
                 } else if(checkedId == R.id.btnSixTen){
                     mData.mSessionBlock = 1;
-                    activity.updateFragView();
                 } else if(checkedId == R.id.btnElevenFifteen){
                     mData.mSessionBlock = 2;
-                    activity.updateFragView();
                 } else if(checkedId == R.id.btnSixteen){
                     mData.mSessionBlock = 3;
-                    activity.updateFragView();
                 }
+                activity.updateFragView(mData.mSessionBlock, activity.strText);
             }
         });
     }
