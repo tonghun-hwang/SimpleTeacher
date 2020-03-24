@@ -73,6 +73,7 @@ public class MainFragment extends Fragment {
                 } else if(checkedId == R.id.btnSixteen){
                     mData.mSessionBlock = 3;
                 }
+                activity.getSessionCat(mData.mSessionBlock, activity.strText);
                 activity.updateFragView(mData.mSessionBlock, activity.strText);
             }
         });

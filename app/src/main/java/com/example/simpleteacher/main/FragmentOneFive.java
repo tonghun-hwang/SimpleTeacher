@@ -70,6 +70,7 @@ public class FragmentOneFive extends Fragment {
     public void filledDataFromDB(int sesBlock, String studID) {
         String tableName = "training_s" + (sesBlock + 1);
 
+        errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
         numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
         numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
         numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
@@ -80,6 +81,12 @@ public class FragmentOneFive extends Fragment {
         if (studID == null) {
             initValues();
             return;
+        }
+
+        if (sesBlock >= 0 && sesBlock < 3) {
+            errorCategory.setText(mParent.sesCategory);
+        } else {
+            errorCategory.setText("--");
         }
 
         if (mParent.mAnalysisTrainingDB == null || !mParent.mAnalysisTrainingDB.isOpen()) {
@@ -118,11 +125,6 @@ public class FragmentOneFive extends Fragment {
             if (mParent.mAnalysisTrainingDB.isOpen()) {
                 mParent.mAnalysisTrainingDB.close();
             }
-        }
-
-        if (sesBlock >= 0 && sesBlock < 3) {
-            errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
-            errorCategory.setText(mData.errorcategory[sesBlock]);
         }
     }
 

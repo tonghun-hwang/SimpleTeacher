@@ -119,6 +119,7 @@ public class ItemActivity extends AppCompatActivity {
     public Button btnGetDiagnostic;
     public TextView txtUpdate;
     private String teacherID;
+    public String sesCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,10 +181,12 @@ public class ItemActivity extends AppCompatActivity {
                 String dbName;
                 String host;
                 String url;
-                mData.mSessionBlock = 0;
 
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
+
+                TextView nameStudent = findViewById(R.id.idStudent);
+                nameStudent.setText(strText);
 
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
 
@@ -193,10 +196,10 @@ public class ItemActivity extends AppCompatActivity {
 
                 mData.setDaten();
                 Log.i(TAG, "ID "+ strText + " is read.");
-                getSessionCategory(mData.nameStudent);
                 setTrainingDB(mData.nameStudent);
 
-                updateFragView(0, strText);
+                getSessionCat(mData.mSessionBlock, strText);
+                updateFragView(mData.mSessionBlock, strText);
             }
         });
     }
@@ -251,7 +254,6 @@ public class ItemActivity extends AppCompatActivity {
 
     public void updateFragView(int sessionBlock, String studID) {
         Log.d(TAG, "updateNoteFragView()");
-        getSessionCategory(mData.nameStudent);
 
         mData.calDaten();
 
@@ -338,6 +340,38 @@ public class ItemActivity extends AppCompatActivity {
 
     public String getID(String[] strArr, int ind){
         return strArr[ind];
+    }
+
+    public String getSessionCat(int sesBlock, String stName) {
+        Log.d(TAG, "getSessionCategory(): ");
+
+        String dbName = "result_" + stName + ".db";
+
+        resultDBHelper = new userResultDBHelper(this, dbName,1);
+        if (resultDB == null || !resultDB.isOpen()) {
+            Log.d(TAG, "readable database open: ");
+            resultDB = resultDBHelper.getReadableDatabase();
+        }
+
+        Cursor c = resultDB.rawQuery("SELECT * FROM "
+                + userResultDBHelper.RESULT_DIAG_MAIN
+                + " ORDER BY ERROR_RATE DESC", null);
+        Log.d(TAG, "getSessionCategory(): "+ c.moveToFirst());
+
+        if ( c == null) {
+            Log.d(TAG, "cursor is null "); // => cursor : c.moveToFirst() return false is because cursor is empty but not null (query was successful).
+        } else if (c != null && c.getCount() > 0) {
+            c.moveToPosition(sesBlock);
+            sesCategory = c.getString(c.getColumnIndex("CATEGORY_MAIN"));
+            c.close();
+        }
+        if (resultDB != null) {
+            if (resultDB.isOpen()) {
+                Log.d(TAG, "getSessionCategory() closed ");
+                resultDB.close();
+            }
+        }
+        return sesCategory;
     }
 
     public void getSessionCategory(String stName) {
