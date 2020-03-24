@@ -115,7 +115,8 @@ public class ItemActivity extends AppCompatActivity {
     private Context mContext;
     public String[] mID;
     public int mIDlength;
-    private FragmentOneFive mFrag;
+    private FragmentOneFive mFrag2;
+    private FragmentLastGraph mFrag3;
     public Button btnGetDiagnostic;
     public TextView txtUpdate;
     private String teacherID;
@@ -257,17 +258,22 @@ public class ItemActivity extends AppCompatActivity {
 
         mData.calDaten();
 
-        mFrag = (FragmentOneFive)
+        mFrag2 = (FragmentOneFive)
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
+        mFrag3 = (FragmentLastGraph)
+                getSupportFragmentManager().findFragmentById(R.id.fragment3);
 
-        if (mFrag != null) {
-            mFrag.filledDataFromDB(sessionBlock, studID);
-            mFrag.generateGraphFromDB(sessionBlock, studID);
+        if (mFrag2 != null && mFrag3 != null) {
+            mFrag2.filledDataFromDB(sessionBlock, studID);
+            mFrag2.generateGraphFromDB(sessionBlock, studID);
+
+            mFrag3.generateGraphFromDB(studID);
 
             FragmentManager fm = getSupportFragmentManager();
             Log.i("Fragments open", "Fragment are called");
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment2, mFrag);
+            fragmentTransaction.replace(R.id.fragment2, mFrag2);
+            fragmentTransaction.replace(R.id.fragment3, mFrag3);
             fragmentTransaction.commit();
         }
     }
