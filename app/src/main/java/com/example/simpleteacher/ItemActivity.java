@@ -172,8 +172,6 @@ public class ItemActivity extends AppCompatActivity {
         updateFragView(0, null);
         updateUI();
 
-        //getTrainingCSV();
-
         initUI();
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -234,6 +232,10 @@ public class ItemActivity extends AppCompatActivity {
 
     public void clickGetDiagnostic(View view) {
         setDiagnosticDB(mID);
+    }
+
+    public void clickAnalyzeTraining(View view) {
+        getTrainingCSV();
     }
 
     public void setStatus(String status){

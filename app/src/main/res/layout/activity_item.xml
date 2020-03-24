@@ -88,10 +88,21 @@
                         android:id="@+id/btn_getDiag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="24dp"
                         android:onClick="clickGetDiagnostic"
                         android:text="get_Diagonitic"
                         android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/btn_analyzeTraining"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/btn_analyzeTraining"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:onClick="clickAnalyzeTraining"
+                        android:text="Analyze Training"
+                        android:visibility="visible"
                         app:layout_constraintStart_toEndOf="@+id/txtUpdated"
                         app:layout_constraintTop_toTopOf="parent" />
 
