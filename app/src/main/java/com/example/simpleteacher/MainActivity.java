@@ -1,5 +1,6 @@
 package com.example.simpleteacher;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -36,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         tchDBHelper = new teacherDBHelper(this, 1);
-        tchDB = tchDBHelper.getReadableDatabase();
 
         final Intent intent = new Intent(this, ItemActivity.class);
         id = (EditText) findViewById(R.id.ID);
@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String tableName = "teacherInfo";
                 String tchID = id.getText().toString();
+
+                if (tchDB == null || !tchDB.isOpen()) {
+                    tchDB = tchDBHelper.getReadableDatabase();
+                }
                 Cursor c = tchDB.rawQuery("SELECT * FROM "
                                 + tableName
                                 + " WHERE TEACHER_ID = '" + tchID + "'"

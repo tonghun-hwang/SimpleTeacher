@@ -74,7 +74,7 @@ public class Data extends Application {
     public static final String TRAIN_BUTTON_EAR = "btEar";
     private static final String TAG = "Data";
 
-    public int mSessionBlock;
+    public int mSessionBlock = 0;
 
     @Override
     public void onCreate(){
