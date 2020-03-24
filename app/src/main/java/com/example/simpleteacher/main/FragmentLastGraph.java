@@ -1,6 +1,7 @@
 package com.example.simpleteacher.main;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -50,7 +51,16 @@ public class FragmentLastGraph extends Fragment {
                              Bundle savedInstanceState) {
 
         inf = inflater.inflate(R.layout.fragment_lastgraph, container, false);
+        generateGraphFromDB(null);
 
+        return inf;
+    }
+
+    public void generateGraphFromDB(String studID) {
+
+        if (studID == null) {
+            return;
+        }
         // // Chart Style // //
         chart = inf.findViewById(R.id.chart);
 
@@ -72,9 +82,43 @@ public class FragmentLastGraph extends Fragment {
         chart.setPinchZoom(true);
 
         List<Entry> entries = new ArrayList<>();
-        for(int i = 0; i < 16; i++){
-            entries.add(new Entry(i+1, (float) mData.prozTrainWrong[i]));
+
+        if (activity.mAnalysisTrainingDB == null || !activity.mAnalysisTrainingDB.isOpen()) {
+            activity.mAnalysisTrainingDB = activity.mAnalysisTrainingDBHelper.getWritableDatabase();
         }
+
+        String tableName = "training_s1";
+        String column;
+        float data;
+        int tableMax = 3;
+        int loopMax = 5;
+
+        for (int j = 0; j < tableMax; j++) {
+            tableName = "training_s" + (j + 1);
+            Cursor c = activity.mAnalysisTrainingDB.rawQuery("SELECT * FROM " + tableName
+                            + " WHERE USERID = '" + studID + "'"
+                    , null);
+
+            int cursorCount = c.getCount();
+            if (cursorCount == 1) {
+                c.moveToFirst();
+                for (int i = 1; i <= loopMax; i++) {
+                    int index = j * 5 + i;
+                    column = "WORD_T" + index;
+                    data = c.getFloat(c.getColumnIndex(column));
+                    entries.add(new Entry(index, data));
+                }
+            } else {
+                for (int i = 1; i <= loopMax; i++) {
+                    int index = j * 5 + i;
+                    entries.add(new Entry(index, 0));
+                }
+            }
+            c.close();
+        }
+        // TODO: setup data of session 16
+        entries.add(new Entry(16, 0));
+
         // X Axis
         ValueFormatter xAxisFormatter = new DayAxisValueFormatter(chart);
         XAxis xAxis = chart.getXAxis();
@@ -113,10 +157,6 @@ public class FragmentLastGraph extends Fragment {
         LineData lineData = new LineData(lineDataSet);
         chart.setData(lineData);
 
-
-
-
-
         Description description = new Description();
         description.setText("");
 
@@ -124,7 +164,6 @@ public class FragmentLastGraph extends Fragment {
         chart.setDrawGridBackground(false);
         chart.setDescription(description);
         chart.invalidate();
-        return  inf;
     }
 
     public class DayAxisValueFormatter extends ValueFormatter {
