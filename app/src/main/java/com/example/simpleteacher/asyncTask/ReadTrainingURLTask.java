@@ -125,8 +125,10 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readTrainingURLTask");
         Log.d(TAG, "onPostExcute(): readCode: " + result);
-        String Status = "OK: ";
-        if (result > 0) {
+        String Status;
+        if (result == HttpURLConnection.HTTP_OK) {
+            Status = "OK: ";
+        } else {
             Status = "Fail: ";
         }
 

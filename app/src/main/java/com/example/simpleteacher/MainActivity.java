@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.simpleteacher.main.FragmentSync;
-
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {

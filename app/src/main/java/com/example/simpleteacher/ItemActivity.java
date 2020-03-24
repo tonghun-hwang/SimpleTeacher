@@ -14,8 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.simpleteacher.asyncTask.CheckInfoURLTask;
 import com.example.simpleteacher.asyncTask.ReadDiagnosticURLTask;
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
 import com.example.simpleteacher.asyncTask.ReadResultURLTask;
@@ -39,7 +42,6 @@ import com.example.simpleteacher.helper.userTrainingDBHelper;
 import com.example.simpleteacher.helper.wordDBHelper;
 import com.example.simpleteacher.main.FragmentLastGraph;
 import com.example.simpleteacher.main.FragmentOneFive;
-import com.example.simpleteacher.main.FragmentSync;
 import com.example.simpleteacher.main.MainFragment;
 import com.opencsv.CSVWriter;
 
@@ -49,6 +51,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,6 +92,8 @@ public class ItemActivity extends AppCompatActivity {
 
     public static final int READ_PERMITION_REQUEST_CODE = 200;
     public static final int WRITE_PERMITION_REQUEST_CODE = 300;
+
+    private int HTTP_CONNECTION_TIMEOUT = 2500;
 
     public static final int INTRODUCTION = 0;
     public static final int TRIAL = 1;
@@ -130,7 +138,9 @@ public class ItemActivity extends AppCompatActivity {
     public String[] mID;
     public int mIDlength;
     private FragmentOneFive mFrag;
-    private FragmentSync mFragSync;
+    public Button btnSync;
+    public TextView txtUpdate;
+    public TextView txtConnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,15 +188,14 @@ public class ItemActivity extends AppCompatActivity {
         mWDBHelper = new wordDBHelper(this, BASE_DATABASE_NAME);
         initWordList();
 
-        mFrag = (FragmentOneFive)
-                getSupportFragmentManager().findFragmentById(R.id.fragment2);
-        mFragSync = (FragmentSync)
-                getSupportFragmentManager().findFragmentById(R.id.fragment4);
-
         updateFragView();
         updateUI();
         //setDiagnosticDB(admin);
         getTrainingCSV(admin);
+
+        txtUpdate = findViewById(R.id.txtUpdated);
+        txtUpdate.setText(pref.getString("syncDate", "00-00-0000 00:00:00"));
+        checkConnection();
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -216,6 +225,23 @@ public class ItemActivity extends AppCompatActivity {
         });
     }
 
+    public void checkConnection() {
+        String host = pref.getString("host", "");
+        String urlName = host + "/PERSONAL_DATA/userInfo.db";
+        Log.d(TAG, "checkURL: " + urlName);
+
+        CheckInfoURLTask checkTask = new CheckInfoURLTask(this, urlName);
+        checkTask.execute();
+    }
+
+    public void clickSync(View view) {
+        if (txtUpdate != null) {
+            txtUpdate.setText("Synchronization...");
+        }
+        readTrainingURL(mID, mReadTrainingUrlTask);
+        readResultURL(mID, mReadResultURLTask);
+    }
+
     public void setStatus(String status){
 
         Log.i(TAG, "set a status: " + status);
@@ -230,8 +256,8 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment1, new MainFragment());
         fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
         fragmentTransaction.replace(R.id.fragment3, new FragmentLastGraph());
-        fragmentTransaction.replace(R.id.fragment4, new FragmentSync());
         fragmentTransaction.commit();
+
     }
 
     public void updateFragView() {
@@ -251,23 +277,6 @@ public class ItemActivity extends AppCompatActivity {
             Log.i("Fragments open", "Fragment are called");
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             fragmentTransaction.replace(R.id.fragment2, mFrag);
-            fragmentTransaction.commit();
-        }
-    }
-
-    public void updateSyncFragView() {
-        Log.d(TAG, "updateSzncFragView()");
-
-        mFragSync = (FragmentSync)
-                getSupportFragmentManager().findFragmentById(R.id.fragment4);
-
-        if (mFragSync != null) {
-
-            mFragSync.syncOnPressed();
-            FragmentManager fm = getSupportFragmentManager();
-            Log.i("Fragments open", "Fragment are called");
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment4, mFragSync);
             fragmentTransaction.commit();
         }
     }
