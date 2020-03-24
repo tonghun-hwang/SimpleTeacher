@@ -1,6 +1,8 @@
 package com.example.simpleteacher;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,42 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.simpleteacher.helper.teacherDBHelper;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
-
 public class MainActivity extends AppCompatActivity {
-    private static final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
-            "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
-            "Planet1", "Planet2", "Planet3", "Planet4","Planet5", "Planet6", "Planet7", "Planet8", "Planet9",
-            "Planet10", "Planet11", "Planet12", "Planet13", "Planet14", "Planet15","Planet16","Planet17","Planet18",
-            "Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24", "Planet25", "Planet26", "Planet27", "Planet28", "Planet29",
-            "Alien1","Alien2","Alien3","Alien4","Alien5","Alien6","Alien7","Alien8","Alien9","Alien10","Alien11",
-            "Alien12","Alien13","Alien14","Alien15","Alien16","Alien17","Alien18", "Alien19","Alien20","Alien21","Alien22"};
-    private static final String[] ADM1 = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5"};
-    private static final String[] AUN1 = {"Ufo6", "Ufo7", "Ufo8"};
-    private static final String[] ASB1 = {"Ufo9", "Ufo10", "Ufo11", "Ufo12"};
-    private static final String[] BSR1 = {"Komet1", "Komet2", "Komet3"};
-    private static final String[] BBH1 = {"Komet4", "Komet5", "Komet6", "Komet7"};
-    private static final String[] ASE2 = {"Planet1", "Planet2", "Planet3", "Planet4"};
-    private static final String[] ABR2 = {"Planet5", "Planet6", "Planet7", "Planet8", "Planet9"};
-    private static final String[] AFT2 = {"Planet10", "Planet11", "Planet12", "Planet13", "Planet14",
-            "Planet15","Planet16","Planet17","Planet18"};
-    private static final String[] ABT2 = {"Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24"};
-    private static final String[] ASH2 = {"Planet25", "Planet26", "Planet27", "Planet28", "Planet29"};
-    private static final String[] BLR2 = {"Alien1","Alien2","Alien3","Alien4","Alien5"};
-    private static final String[] BJN2 = {"Alien6","Alien7","Alien8","Alien9","Alien10","Alien11"};
-    private static final String[] BWR2 = {"Alien12","Alien13"};
-    private static final String[] BBM2 = {"Alien14","Alien15","Alien16","Alien17","Alien18"};
-    private static final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
 
     private String TAG = "MainActivity";
-    public ItemActivity itemActivity;
-    public HashMap<String, String> account = new HashMap<String, String>();
     public EditText id;
     public EditText password;
     public Button btnLogin;
     private Data mData;
+    private teacherDBHelper tchDBHelper;
+    private SQLiteDatabase tchDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,23 +34,9 @@ public class MainActivity extends AppCompatActivity {
         } catch(ClassCastException e){
             Log.d("Data class", "Dataclass error");
         }
-        //ID and Password for teachers
-        account.put("admin", "admin1");
-        account.put("ADM1", "mda1");
-        account.put("AUN1", "nua1");
-        account.put("ASB1", "bsa1");
-        account.put("BSR1", "rsb1");
-        account.put("BBH1", "hbb1");
-        account.put("ASE2", "esa2");
-        account.put("ABR2", "rba2");
-        account.put("AFT2", "tfa2");
-        account.put("ABT2", "tba2");
-        account.put("ASH2", "hsa2");
-        account.put("BLR2", "rlb2");
-        account.put("BJN2", "njb2");
-        account.put("BWR2", "rwb2");
-        account.put("BBM2", "mbb2");
-        account.put("BBG2", "gbb2");
+
+        tchDBHelper = new teacherDBHelper(this, 1);
+        tchDB = tchDBHelper.getReadableDatabase();
 
         final Intent intent = new Intent(this, ItemActivity.class);
         id = (EditText) findViewById(R.id.ID);
@@ -81,66 +46,38 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (account.containsKey(id.getText().toString())){
-                    if (account.get(id.getText().toString()).equals(password.getText().toString())){
-                        if( id.getText().toString().equals("admin")){
-                            intent.putExtra("ID", admin);
-                            intent.putExtra("length", admin.length);
-                        } else if( id.getText().toString().equals("ADM1")){
-                            intent.putExtra("ID", ADM1);
-                            intent.putExtra("length", ADM1.length);
-                        } else if( id.getText().toString().equals("AUN1")){
-                            intent.putExtra("ID", AUN1);
-                            intent.putExtra("length", AUN1.length);
-                        } else if( id.getText().toString().equals("ASB1")){
-                            intent.putExtra("ID", ASB1);
-                            intent.putExtra("length", ASB1.length);
-                        } else if( id.getText().toString().equals("BSR1")){
-                            intent.putExtra("ID", BSR1);
-                            intent.putExtra("length", BSR1.length);
-                        } else if( id.getText().toString().equals("BBH1")){
-                            intent.putExtra("ID", BBH1);
-                            intent.putExtra("length", BBH1.length);
-                        } else if( id.getText().toString().equals("ASE2")){
-                            intent.putExtra("ID", ASE2);
-                            intent.putExtra("length", ASE2.length);
-                        } else if( id.getText().toString().equals("ABR2")){
-                            intent.putExtra("ID", ABR2);
-                            intent.putExtra("length", ABR2.length);
-                        } else if( id.getText().toString().equals("AFT2")){
-                            intent.putExtra("ID", AFT2);
-                            intent.putExtra("length", AFT2.length);
-                        } else if( id.getText().toString().equals("ABT2")){
-                            intent.putExtra("ID", ABT2);
-                            intent.putExtra("length", ABT2.length);
-                        } else if( id.getText().toString().equals("ASH2")){
-                            intent.putExtra("ID", ASH2);
-                            intent.putExtra("length", ASH2.length);
-                        } else if( id.getText().toString().equals("BLR2")){
-                            intent.putExtra("ID", BLR2);
-                            intent.putExtra("length", BLR2.length);
-                        } else if( id.getText().toString().equals("BJN2")){
-                            intent.putExtra("ID", BJN2);
-                            intent.putExtra("length", BJN2.length);
-                        } else if( id.getText().toString().equals("BWR2")){
-                            intent.putExtra("ID", BWR2);
-                            intent.putExtra("length", BWR2.length);
-                        } else if( id.getText().toString().equals("BBM2")){
-                            intent.putExtra("ID", BBM2);
-                            intent.putExtra("length", BBM2.length);
-                        } else if( id.getText().toString().equals("BBG2")){
-                            intent.putExtra("ID", BBG2);
-                            intent.putExtra("length", BBG2.length);
-                        }
+                String tableName = "teacherInfo";
+                String tchID = id.getText().toString();
+                Cursor c = tchDB.rawQuery("SELECT * FROM "
+                                + tableName
+                                + " WHERE TEACHER_ID = '" + tchID + "'"
+                        , null);
+                if (c.getCount() == 1) {
+                    c.moveToFirst();
+                    String pw = c.getString(c.getColumnIndex("TEACHER_PW"));
+                    if(pw.equals(password.getText().toString())) {
+                        String students = c.getString(c.getColumnIndex("STUDENTS"));
+                        String[] stud = students.split(", ");
+                        intent.putExtra("ID", tchID);
+                        intent.putExtra("STUDENTS", stud);
+
                         id.setText(null);
                         password.setText(null);
-                        startActivity(intent);
 
+                        startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "Passwort ist falsch", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "ID ist falsch", Toast.LENGTH_SHORT).show();
+                }
+
+                c.close();
+                if (tchDB != null) {
+                    if (tchDB.isOpen()) {
+                        tchDB.close();
+                    }
+
                 }
             }
         });

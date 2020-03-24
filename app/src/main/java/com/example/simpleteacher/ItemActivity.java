@@ -61,31 +61,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static android.view.View.VISIBLE;
+
 public class ItemActivity extends AppCompatActivity {
-    public final String[] admin = {"Admin1","Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5","Ufo6", "Ufo7", "Ufo8",
-            "Ufo9", "Ufo10", "Ufo11", "Ufo12","Komet1", "Komet2", "Komet3", "Komet4", "Komet5", "Komet6", "Komet7",
-            "Planet1", "Planet2", "Planet3", "Planet4","Planet5", "Planet6", "Planet7", "Planet8", "Planet9",
-            "Planet10", "Planet11", "Planet12", "Planet13", "Planet14", "Planet15","Planet16","Planet17","Planet18",
-            "Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24", "Planet25", "Planet26", "Planet27", "Planet28", "Planet29",
-            "Alien1","Alien2","Alien3","Alien4","Alien5","Alien6","Alien7","Alien8","Alien9","Alien10","Alien11",
-            "Alien12","Alien13","Alien14","Alien15","Alien16","Alien17","Alien18",
-            "Alien19","Alien20","Alien21","Alien22"};
-    private final String[] ADM1 = {"Ufo1", "Ufo2", "Ufo3", "Ufo4", "Ufo5"};
-    private final String[] AUN1 = {"Ufo6", "Ufo7", "Ufo8"};
-    private final String[] ASB1 = {"Ufo9", "Ufo10", "Ufo11", "Ufo12"};
-    private final String[] BSR1 = {"Komet1", "Komet2", "Komet3"};
-    private final String[] BBH1 = {"Komet4", "Komet5", "Komet6", "Komet7"};
-    private final String[] ASE2 = {"Planet1", "Planet2", "Planet3", "Planet4"};
-    private final String[] ABR2 = {"Planet5", "Planet6", "Planet7", "Planet8", "Planet9"};
-    private final String[] AFT2 = {"Planet10", "Planet11", "Planet12", "Planet13", "Planet14",
-            "Planet15","Planet16","Planet17","Planet18"};
-    private final String[] ABT2 = {"Planet19", "Planet20", "Planet21", "Planet22", "Planet23", "Planet24"};
-    private final String[] ASH2 = {"Planet25", "Planet26", "Planet27", "Planet28", "Planet29"};
-    private final String[] BLR2 = {"Alien1","Alien2","Alien3","Alien4","Alien5"};
-    private final String[] BJN2 = {"Alien6","Alien7","Alien8","Alien9","Alien10","Alien11"};
-    private final String[] BWR2 = {"Alien12","Alien13"};
-    private final String[] BBM2 = {"Alien14","Alien15","Alien16","Alien17","Alien18"};
-    private final String[] BBG2 = {"Alien19","Alien20","Alien21","Alien22"};
     Intent secondIntent;
     RadioGroup radioGroup;
     public String strText, status;
@@ -138,17 +116,18 @@ public class ItemActivity extends AppCompatActivity {
     public String[] mID;
     public int mIDlength;
     private FragmentOneFive mFrag;
-    public Button btnSync;
+    public Button btnGetDiagnostic;
     public TextView txtUpdate;
-    public TextView txtConnect;
+    private String teacherID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         secondIntent = getIntent();
-        mID = secondIntent.getStringArrayExtra("ID");
-        mIDlength = secondIntent.getIntExtra("length", mID.length);
+        teacherID = secondIntent.getStringExtra("ID");
+        mID = secondIntent.getStringArrayExtra("STUDENTS");
+        mIDlength = mID.length;
         mContext = ItemActivity.this;
 
         try {
@@ -159,7 +138,7 @@ public class ItemActivity extends AppCompatActivity {
 
         pref = getApplicationContext().getSharedPreferences("Mypref", 0);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, secondIntent.getStringArrayExtra("ID"));
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mID);
 
         ListView listview = (ListView) findViewById(R.id.student_list) ;
         listview.setAdapter(adapter);
@@ -190,12 +169,10 @@ public class ItemActivity extends AppCompatActivity {
 
         updateFragView();
         updateUI();
-        //setDiagnosticDB(admin);
-        getTrainingCSV(admin);
 
-        txtUpdate = findViewById(R.id.txtUpdated);
-        txtUpdate.setText(pref.getString("syncDate", "00-00-0000 00:00:00"));
-        checkConnection();
+        getTrainingCSV();
+
+        initUI();
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -220,9 +197,18 @@ public class ItemActivity extends AppCompatActivity {
                 setTrainingDB(mData.nameStudent);
 
                 updateFragView();
-                updateUI();
             }
         });
+    }
+
+    private void initUI() {
+        btnGetDiagnostic = findViewById(R.id.btn_getDiag);
+        txtUpdate = findViewById(R.id.txtUpdated);
+        txtUpdate.setText(pref.getString("syncDate", "00-00-0000 00:00:00"));
+        checkConnection();
+        if (teacherID.equals("admin")) {
+            btnGetDiagnostic.setVisibility(VISIBLE);
+        }
     }
 
     public void checkConnection() {
@@ -242,6 +228,10 @@ public class ItemActivity extends AppCompatActivity {
         readResultURL(mID, mReadResultURLTask);
     }
 
+    public void clickGetDiagnostic(View view) {
+        setDiagnosticDB(mID);
+    }
+
     public void setStatus(String status){
 
         Log.i(TAG, "set a status: " + status);
@@ -257,7 +247,6 @@ public class ItemActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment2, new FragmentOneFive());
         fragmentTransaction.replace(R.id.fragment3, new FragmentLastGraph());
         fragmentTransaction.commit();
-
     }
 
     public void updateFragView() {
@@ -306,9 +295,9 @@ public class ItemActivity extends AppCompatActivity {
         diagAnlysis.execute();
     }
 
-    private void getTrainingCSV(String[] ids) {
+    private void getTrainingCSV() {
         Log.d(TAG, "getTrainingCSV(): ");
-        TrainingAnalysisTask trainAnlysis = new TrainingAnalysisTask(this, ids);
+        TrainingAnalysisTask trainAnlysis = new TrainingAnalysisTask(this, mID);
         trainAnlysis.execute();
     }
 
@@ -621,7 +610,7 @@ public class ItemActivity extends AppCompatActivity {
         if (tempTask != null) {
             return;
         }
-        tempTask = new ReadTrainingURLTask(this, admin);
+        tempTask = new ReadTrainingURLTask(this, mID);
         tempTask.execute((Void) null);
     }
 
@@ -631,7 +620,7 @@ public class ItemActivity extends AppCompatActivity {
         if (tempTask != null) {
             return;
         }
-        tempTask = new ReadDiagnosticURLTask(this, admin);
+        tempTask = new ReadDiagnosticURLTask(this, mID);
         tempTask.execute((Void) null);
     }
 
@@ -642,7 +631,7 @@ public class ItemActivity extends AppCompatActivity {
             Log.d(TAG, "tempTask is not null ");
             return;
         }
-        tempTask = new ReadResultURLTask(this, admin);
+        tempTask = new ReadResultURLTask(this, mID);
         tempTask.execute((Void) null);
     }
 
