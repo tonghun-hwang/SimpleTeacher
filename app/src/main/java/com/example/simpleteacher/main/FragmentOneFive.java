@@ -54,14 +54,14 @@ public class FragmentOneFive extends Fragment {
         inf = inflater.inflate(R.layout.fragment_onefive, container, false);
 
         filledDataFromDB(0, null);
-        generateGraph(mData);
+        generateGraphFromDB(0, null);
 
         return inf;
     }
     public void initValues () {
         numAllWords.setText("0");
-        numProzWrongAll.setText("0.0");
-        numProzWrongError.setText("0.0");
+        numProzWrongAll.setText("0.00%");
+        numProzWrongError.setText("0.00%");
         numNochmal.setText("0");
         numARadierer.setText("0");
         numALLRadierer.setText("0");
@@ -154,9 +154,10 @@ public class FragmentOneFive extends Fragment {
         numALLRadierer.setText(Integer.toString(mData.arrAllErase[sesBlock]));
     }
 
-    public void generateGraph(Data data) {
-        mData = data;
-        int sesBlock = mData.mSessionBlock;
+    public void generateGraphFromDB(int sesBlock, String studID) {
+        if (studID == null) {
+            return;
+        }
         // category 3)
         // grafik a
         grafikA = inf.findViewById(R.id.chart1);
@@ -188,9 +189,31 @@ public class FragmentOneFive extends Fragment {
             loopMax = 1;
         }
         Log.d(TAG, " aaa" + sesBlock);
-        for (int i = 0; i < loopMax; i++) {
-            int index = sesBlock * 5 + i;
-            entriesA.add(new Entry(index + 1, (float) mData.trainAll[index]));
+        if (mParent.mAnalysisTrainingDB == null || !mParent.mAnalysisTrainingDB.isOpen()) {
+            mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
+        }
+
+        String tableName = "training_s" + (sesBlock + 1);
+        Cursor c = mParent.mAnalysisTrainingDB.rawQuery("SELECT * FROM " + tableName
+                        + " WHERE USERID = '" + studID + "'"
+                , null);
+        String column;
+        float data;
+        int cursorCount = c.getCount();
+        if (cursorCount == 1) {
+           c.moveToFirst();
+            for (int i = 0; i < loopMax; i++) {
+                int index = sesBlock * 5 + i + 1;
+
+                column = "WORD_T" + index;
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesA.add(new Entry(index, data));
+            }
+        } else {
+            for (int i = 0; i < loopMax; i++) {
+                int index = sesBlock * 5 + i + 1;
+                entriesA.add(new Entry(index, 0));
+            }
         }
 
         // X Axis
@@ -264,9 +287,19 @@ public class FragmentOneFive extends Fragment {
 
         List<Entry> entriesB = new ArrayList<>();
 
-        for (int i = 0; i < loopMax; i++) {
-            int index = sesBlock * 5 + i;
-            entriesB.add(new Entry(index + 1, (float) mData.prozTrainWrong[index]));
+        if (cursorCount == 1) {
+            c.moveToFirst();
+            for (int i = 0; i < loopMax; i++) {
+                int index = sesBlock * 5 + i + 1;
+                column = "WORD_T" + index + "_ERROR";
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesB.add(new Entry(index, data));
+            }
+        } else {
+            for (int i = 0; i < loopMax; i++) {
+                int index = sesBlock * 5 + i + 1;
+                entriesB.add(new Entry(index, 0));
+            }
         }
 
         // X Axis
@@ -342,9 +375,19 @@ public class FragmentOneFive extends Fragment {
 
         List<Entry> entriesC = new ArrayList<>();
 
-        for (int i = 0; i < loopMax; i++) {
-            int index = sesBlock * 5 + i;
-            entriesC.add(new Entry(index + 1, (float) mData.prozTrainWrongError[index]));
+        if (cursorCount == 1) {
+            c.moveToFirst();
+            for (int i = 0; i < loopMax; i++) {
+                int index = sesBlock * 5 + i + 1;
+                column = "WORD_T" + index + "_ER";
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesC.add(new Entry(index, data));
+            }
+        } else {
+            for (int i = 0; i < loopMax; i++) {
+                int index = sesBlock * 5 + i + 1;
+                entriesC.add(new Entry(index, 0));
+            }
         }
 
         // X Axis

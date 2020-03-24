@@ -260,7 +260,7 @@ public class ItemActivity extends AppCompatActivity {
 
         if (mFrag != null) {
             mFrag.filledDataFromDB(sessionBlock, studID);
-            mFrag.generateGraph(mData);
+            mFrag.generateGraphFromDB(sessionBlock, studID);
 
             FragmentManager fm = getSupportFragmentManager();
             Log.i("Fragments open", "Fragment are called");
