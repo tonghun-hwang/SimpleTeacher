@@ -1,6 +1,7 @@
 package com.example.simpleteacher.main;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,18 +33,17 @@ public class FragmentOneFive extends Fragment {
     private TextView errorCategory, numAllWords, numProzWrongAll, numProzWrongError, numNochmal, numARadierer, numALLRadierer;
     private LineChart grafikA, grafikB, grafikC;
 
-
     public FragmentOneFive() {
         // Required empty public constructor
     }
 
-    private ItemActivity activity;
+    private ItemActivity mParent;
     private Data mData;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         //이 메소드가 호출될떄는 프래그먼트가 엑티비티위에 올라와있는거니깐 getActivity메소드로 엑티비티참조가능
-        activity = (ItemActivity) getActivity();
+        mParent = (ItemActivity) context;
         mData = (Data) getActivity().getApplication();
     }
 
@@ -53,10 +53,77 @@ public class FragmentOneFive extends Fragment {
                              Bundle savedInstanceState) {
         inf = inflater.inflate(R.layout.fragment_onefive, container, false);
 
-        filledData(mData);
+        filledDataFromDB(0, null);
         generateGraph(mData);
 
         return inf;
+    }
+    public void initValues () {
+        numAllWords.setText("0");
+        numProzWrongAll.setText("0.0");
+        numProzWrongError.setText("0.0");
+        numNochmal.setText("0");
+        numARadierer.setText("0");
+        numALLRadierer.setText("0");
+    }
+
+    public void filledDataFromDB(int sesBlock, String studID) {
+        String tableName = "training_s" + (sesBlock + 1);
+
+        numAllWords = (TextView) inf.findViewById(R.id.numAllWords);
+        numProzWrongAll = (TextView) inf.findViewById(R.id.prozWrongAll);
+        numProzWrongError = (TextView) inf.findViewById(R.id.prozWrongError);
+        numNochmal = (TextView) inf.findViewById(R.id.numNochmal);
+        numARadierer = (TextView) inf.findViewById(R.id.numARadierer);
+        numALLRadierer = (TextView) inf.findViewById(R.id.numAllesRadierer);
+
+        if (studID == null) {
+            initValues();
+            return;
+        }
+
+        if (mParent.mAnalysisTrainingDB == null || !mParent.mAnalysisTrainingDB.isOpen()) {
+            mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
+        }
+
+        Cursor c = mParent.mAnalysisTrainingDB.rawQuery("SELECT * FROM " + tableName
+                        + " WHERE USERID = '" + studID + "'"
+                , null);
+        if (c.getCount() == 1) {
+            c.moveToFirst();
+            numAllWords.setText(
+                    c.getString(c.getColumnIndex("WORD_TOTAL")));
+
+            double percent = c.getDouble(c.getColumnIndex("WORD_ER")) * 100;
+            String txtPercent = String.format("%.2f%%", percent);
+            numProzWrongAll.setText(txtPercent);
+
+            percent = c.getDouble(c.getColumnIndex("WORD_CAT_ER")) * 100;
+            txtPercent = String.format("%.2f%%", percent);
+            numProzWrongError.setText(txtPercent);
+
+            numNochmal.setText(
+                    c.getString(c.getColumnIndex("NUM_EAR")));
+            numARadierer.setText(
+                    c.getString(c.getColumnIndex("NUM_ONE_ERASE")));
+            numALLRadierer.setText(
+                    c.getString(c.getColumnIndex("NUM_A_ERASE")));
+        } else {
+            initValues();
+            return;
+        }
+
+        c.close();
+        if (mParent.mAnalysisTrainingDB != null) {
+            if (mParent.mAnalysisTrainingDB.isOpen()) {
+                mParent.mAnalysisTrainingDB.close();
+            }
+        }
+
+        if (sesBlock >= 0 && sesBlock < 3) {
+            errorCategory = (TextView) inf.findViewById(R.id.errorcategory);
+            errorCategory.setText(mData.errorcategory[sesBlock]);
+        }
     }
 
     public void filledData(Data data) {
