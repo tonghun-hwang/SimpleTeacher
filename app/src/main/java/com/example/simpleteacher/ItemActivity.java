@@ -168,10 +168,7 @@ public class ItemActivity extends AppCompatActivity {
         // TODO : use strText
         mWDBHelper = new wordDBHelper(this, BASE_DATABASE_NAME);
         initWordList();
-
-        updateFragView(0, null);
         updateUI();
-
         initUI();
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -257,8 +254,6 @@ public class ItemActivity extends AppCompatActivity {
 
     public void updateFragView(int sessionBlock, String studID) {
         Log.d(TAG, "updateNoteFragView()");
-
-        mData.calDaten();
 
         mFrag2 = (FragmentOneFive)
                 getSupportFragmentManager().findFragmentById(R.id.fragment2);
