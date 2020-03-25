@@ -18,7 +18,8 @@
 
         </ListView>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -88,12 +89,12 @@
                         android:id="@+id/btn_getDiag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
                         android:onClick="clickGetDiagnostic"
                         android:text="get_Diagonitic"
                         android:visibility="invisible"
-                        app:layout_constraintStart_toEndOf="@+id/btn_analyzeTraining"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_sync" />
 
                     <Button
                         android:id="@+id/btn_analyzeTraining"
@@ -106,10 +107,20 @@
                         app:layout_constraintStart_toEndOf="@+id/txtUpdated"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <Button
+                        android:id="@+id/btn_getBitmap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:onClick="getScreenShot"
+                        android:text="Screenshot"
+                        app:layout_constraintStart_toEndOf="@+id/btn_analyzeTraining"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.pdf.PdfDocument;
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -23,6 +29,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -45,10 +52,13 @@ import com.example.simpleteacher.main.FragmentOneFive;
 import com.example.simpleteacher.main.MainFragment;
 import com.opencsv.CSVWriter;
 
+import org.w3c.dom.Document;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
@@ -777,6 +787,99 @@ public class ItemActivity extends AppCompatActivity {
             Log.e(TAG, "IO Exception");
             e3.printStackTrace();
         }
+    }
+
+    public void getScreenShot(View view) {
+        /* get bitmap from view */
+        View v1 = getWindow().getDecorView().getRootView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v1.setDefaultFocusHighlightEnabled(true);
+        } else {
+            v1.setDrawingCacheEnabled(true);
+        }
+        Bitmap bmp = getBitmapFromView(v1);
+
+        try {
+            /* create output jpg file */
+            String envPath = Environment.getExternalStorageDirectory().toString();
+            String hottPdfPath = envPath + "/HOT-T/bitmap/";
+            File folder = new File(hottPdfPath);
+            if (!folder.exists()) {
+                boolean success = folder.mkdir();
+            }
+            String imagefile = strText + "_" + (mData.mSessionBlock + 1) + ".jpg";
+
+            FileOutputStream outputStream = (FileOutputStream) getOutputStream("bitmap", imagefile);
+            int quality = 100;
+            bmp.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            convertToPdf();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap getBitmapFromView(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(),
+                view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    public void convertToPdf() {
+        // create a new document
+        PdfDocument document = new PdfDocument();
+
+        int width = getWindowManager().getDefaultDisplay().getWidth();
+        int height = getWindowManager().getDefaultDisplay().getHeight();
+        // crate a page description
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(width, height, 1).create();
+
+        // start a page
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        // draw something on the page
+        View content = getWindow().getDecorView().getRootView();
+        content.draw(page.getCanvas());
+
+        // finish the page
+        document.finishPage(page);
+        // add more pages
+        // write the document content
+        try {
+            String fileName = strText + "_" + mData.mSessionBlock + ".pdf";
+            document.writeTo(getOutputStream("pdf", fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // close the document
+        document.close();
+    }
+
+    private OutputStream getOutputStream(String folderName, String imagefile) {
+        /* create output jpg file */
+        String envPath = Environment.getExternalStorageDirectory().toString();
+        String hottPdfPath = envPath + "/HOT-T/" + folderName + "/";
+        File folder = new File(hottPdfPath);
+        if (!folder.exists()) {
+            boolean success = folder.mkdir();
+        }
+        String imagePath = hottPdfPath + imagefile;
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(imagePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return outputStream;
     }
 
     public void onStop() {
