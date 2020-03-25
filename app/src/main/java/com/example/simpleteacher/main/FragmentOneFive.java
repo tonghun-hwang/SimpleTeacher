@@ -102,11 +102,11 @@ public class FragmentOneFive extends Fragment {
                     c.getString(c.getColumnIndex("WORD_TOTAL")));
 
             double percent = c.getDouble(c.getColumnIndex("WORD_ER")) * 100;
-            String txtPercent = String.format("%.2f%%", percent);
+            String txtPercent = String.format("%.1f%%", percent);
             numProzWrongAll.setText(txtPercent);
 
             percent = c.getDouble(c.getColumnIndex("WORD_CAT_ER")) * 100;
-            txtPercent = String.format("%.2f%%", percent);
+            txtPercent = String.format("%.1f%%", percent);
             numProzWrongError.setText(txtPercent);
 
             numNochmal.setText(

@@ -57,7 +57,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="181dp"
+                android:layout_width="182dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:baselineAligned="true"
@@ -73,7 +73,7 @@
                 android:baselineAligned="true"
                 android:text="    a) Anzahl geschriebener Wörter:"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView"
@@ -83,7 +83,7 @@
                 android:baselineAligned="true"
                 android:text="    b) Proz. Fehlerant. insgesamt*: "
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,12 +92,12 @@
                 android:baselineAligned="false"
                 android:text="    c) Proz. Fehlerant. Zielkategorie*: "
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="vertical">
@@ -116,7 +116,7 @@
                 android:layout_weight="0"
                 android:text="0000"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/prozWrongAll"
@@ -125,7 +125,7 @@
                 android:layout_weight="0"
                 android:text="0000"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/prozWrongError"
@@ -134,7 +134,7 @@
                 android:layout_weight="0"
                 android:text="0000"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -159,7 +159,7 @@
                 android:layout_weight="0"
                 android:text="d) Nochmal-Hören:"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -168,7 +168,7 @@
                 android:layout_weight="0"
                 android:text="e) A-Radierer: "
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -176,11 +176,11 @@
                 android:layout_weight="0"
                 android:text="f) Alles-Radierer:"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="vertical">
@@ -200,7 +200,7 @@
                 android:layout_weight="0"
                 android:text="0000"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/numARadierer"
@@ -209,7 +209,7 @@
                 android:layout_weight="0"
                 android:text="0000"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/numAllesRadierer"
@@ -218,7 +218,7 @@
                 android:layout_weight="0"
                 android:text="0000"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
