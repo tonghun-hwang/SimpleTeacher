@@ -893,13 +893,15 @@ public class ItemActivity extends AppCompatActivity {
                 numPage = i * 4 + (j + 1);
 
                 // crate a page description
-                pageInfo = new PdfDocument.PageInfo.Builder(width, height, numPage).create();
+                pageInfo = new PdfDocument.PageInfo.Builder(width, height, numPage)
+                        .setContentRect(new Rect(80, 160, width, height))
+                        .create();
 
                 // start a page
                 page = document.startPage(pageInfo);
 
                 // draw something on the page
-                content = getWindow().getDecorView().getRootView();
+                content = (View) findViewById(R.id.scroll);
                 content.draw(page.getCanvas());
 
                 // finish the page
