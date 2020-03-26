@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,6 +132,7 @@ public class ItemActivity extends AppCompatActivity {
     public TextView txtUpdate;
     private String teacherID;
     public String sesCategory;
+    private ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +154,7 @@ public class ItemActivity extends AppCompatActivity {
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mID);
 
-        ListView listview = (ListView) findViewById(R.id.student_list) ;
+        listview = (ListView) findViewById(R.id.student_list) ;
         listview.setAdapter(adapter);
 
         if (is_Started == false) {
@@ -817,7 +819,7 @@ public class ItemActivity extends AppCompatActivity {
             outputStream.flush();
             outputStream.close();
 
-            convertToPdf();
+            convertAllToPdf();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -832,6 +834,67 @@ public class ItemActivity extends AppCompatActivity {
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
+    }
+
+    public void convertAllToPdf() {
+        // create a new document
+        PdfDocument document = new PdfDocument();
+
+        PdfDocument.PageInfo pageInfo;
+        View content;
+        PdfDocument.Page page;
+
+        RadioButton[] sesBlockCheck = new RadioButton[] {
+                findViewById(R.id.btnOneFive),
+                findViewById(R.id.btnSixTen),
+                findViewById(R.id.btnElevenFifteen),
+                findViewById(R.id.btnSixteen)
+        };
+        RadioGroup sesBlockGroup = findViewById(R.id.radioGroup);
+
+        int width = getWindowManager().getDefaultDisplay().getWidth();
+        int height = getWindowManager().getDefaultDisplay().getHeight();
+        int maxPage;
+        int numPage;
+
+        for (int i = 0; i < mIDlength; i++) {
+            listview.performItemClick(
+                    listview.getAdapter().getView(i, null, null),
+                    i,
+                    listview.getAdapter().getItemId(i));
+
+            int maxBotton = sesBlockCheck.length;
+            for (int j = 0; j < maxBotton; j++) {
+                sesBlockGroup.clearCheck();
+                sesBlockCheck[j].setChecked(true);
+                numPage = i * 4 + (j + 1);
+
+                // crate a page description
+                pageInfo = new PdfDocument.PageInfo.Builder(width, height, numPage).create();
+
+                // start a page
+                page = document.startPage(pageInfo);
+
+                // draw something on the page
+                content = getWindow().getDecorView().getRootView();
+                content.draw(page.getCanvas());
+
+                // finish the page
+                document.finishPage(page);
+            }
+        }
+
+        // write the document content
+        try {
+            String fileName = teacherID + ".pdf";
+            String folderName = "pdf/" + teacherID;
+            document.writeTo(getOutputStream(folderName, fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // close the document
+        document.close();
     }
 
     public void convertToPdf() {
