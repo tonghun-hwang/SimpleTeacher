@@ -75,6 +75,18 @@ public class MainFragment extends Fragment {
                 }
                 activity.getSessionCat(mData.mSessionBlock, activity.strText);
                 activity.updateFragView(mData.mSessionBlock, activity.strText);
+
+                TextView sessions = activity.findViewById(R.id.txtSessions);
+                if (mData.mSessionBlock != 3) {
+                    int sessionStart = (mData.mSessionBlock * 5 + 1);
+                    int sessionEnd = (mData.mSessionBlock * 5 + 5);
+                    String sessionRange = sessionStart + " - " + sessionEnd;
+                    sessions.setText(sessionRange);
+                } else if (mData.mSessionBlock == 3) {
+                    int sessionStart = (mData.mSessionBlock * 5 + 1);
+                    String sessionRange = String.valueOf(sessionStart);
+                    sessions.setText(sessionRange);
+                }
             }
         });
     }

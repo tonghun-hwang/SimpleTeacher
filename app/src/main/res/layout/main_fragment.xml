@@ -57,12 +57,13 @@
         android:id="@+id/radioGroup"
         android:layout_width="370dp"
         android:layout_height="34dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
         android:checkedButton="@id/btnOneFive"
         android:orientation="horizontal"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3">
+        app:layout_constraintStart_toEndOf="@id/txtSessions"
+        app:layout_constraintTop_toBottomOf="@+id/idStudent">
 
         <RadioButton
             android:id="@+id/btnOneFive"
@@ -97,5 +98,16 @@
             android:text="16"
             android:textSize="20sp" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/txtSessions"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/idStudent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
