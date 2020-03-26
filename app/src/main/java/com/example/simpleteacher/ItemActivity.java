@@ -77,7 +77,8 @@ import static android.view.View.VISIBLE;
 public class ItemActivity extends AppCompatActivity {
     Intent secondIntent;
     RadioGroup radioGroup;
-    public String strText, status;
+    public String strText;
+    public int status;
 
     public static final int READ_PERMITION_REQUEST_CODE = 200;
     public static final int WRITE_PERMITION_REQUEST_CODE = 300;
@@ -235,6 +236,7 @@ public class ItemActivity extends AppCompatActivity {
         if (txtUpdate != null) {
             txtUpdate.setText("Synchronization...");
         }
+        setStatus(0);
         readTrainingURL(mID, mReadTrainingUrlTask);
         readResultURL(mID, mReadResultURLTask);
     }
@@ -247,10 +249,19 @@ public class ItemActivity extends AppCompatActivity {
         getTrainingCSV();
     }
 
-    public void setStatus(String status){
-
+    public void setStatus(int stat){
         Log.i(TAG, "set a status: " + status);
-        this.status = status;
+        status = stat;
+    }
+
+    public void increaseStatus(int stat){
+        Log.i(TAG, "increase a status: " + status);
+        status += stat;
+    }
+
+    public int getStatus() {
+        Log.i(TAG, "get a status: " + status);
+        return status;
     }
 
     public void updateUI() {

@@ -5,11 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.MainActivity;
+import com.example.simpleteacher.R;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,6 +36,7 @@ import java.util.List;
  * the user.
  */
 public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
+    private static final int TRAINING_ID = 1;
     private final String TAG = "Main.ReadTrainingURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     // private final String mFile;
@@ -132,12 +135,18 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
             Status = "Fail: ";
         }
 
-        SharedPreferences.Editor editor = mParent.pref.edit();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String update = formatter.format(Calendar.getInstance().getTimeInMillis());
-        editor.putString("syncDate", Status + update);
-        editor.commit();
-        mParent.setStatus(Status + update);
+        mParent.increaseStatus(TRAINING_ID);
+        if (mParent.getStatus() == 3) {
+            SharedPreferences.Editor editor = mParent.pref.edit();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String update = formatter.format(Calendar.getInstance().getTimeInMillis());
+            editor.putString("syncDate", Status + update);
+            editor.commit();
+
+            TextView txtUpdate = mParent.findViewById(R.id.txtUpdated);
+            txtUpdate.setText(Status + update);
+        }
+
         /*if (fragmentSync.txtUpdate != null) {
             fragmentSync.txtUpdate.setText(Status + update);
             fragmentSync.postTrain();
