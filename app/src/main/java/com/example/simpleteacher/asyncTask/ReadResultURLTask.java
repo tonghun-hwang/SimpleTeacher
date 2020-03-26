@@ -88,9 +88,8 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected Integer doInBackground(Void... params) {
-        Log.d(TAG, "doInBackground()11111: ReadURLTask");
+        Log.d(TAG, "doInBackground(): ReadURLTask");
         // TODO: attempt authentication against a network service.
-        Log.d(TAG, "aaaaaa 0");
 
         int res = 0;
         int index = 0;
@@ -99,7 +98,6 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
             String mUrl = iter.next();
             try {
                 res = readURL(mUrl, index);
-                Log.d(TAG, "aaaaaa 00");
                 if (res != HttpURLConnection.HTTP_OK) {
                     readLocalDB();
                     return res;
@@ -163,19 +161,15 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
                 return new PasswordAuthentication ("hottsportwiss@gmail.com", "Sportwiss2019".toCharArray());
             }
         });
-        Log.d(TAG, "aaaaaa 1");
         File file = new File(mParent.getDatabasePath(mDBList.get(index)).toString());
         int responseCode = 0;
-        Log.d(TAG, "aaaaaa 2");
         try {
             URL url = new URL(urlName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
             responseCode = conn.getResponseCode();
-            Log.d(TAG, "aaaaaa 3");
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 try {
-                    Log.d(TAG, "aaaaaa 3");
                     InputStream in = conn.getInputStream();
                     copyInputStreamToFile(in, file);
                     in.close();
@@ -194,7 +188,6 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     }
 
     private void copyInputStreamToFile(InputStream in, File file) throws IOException {
-        Log.d(TAG, "aaaaaa 5");
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             int read;
             byte[] bytes = new byte[1024];
