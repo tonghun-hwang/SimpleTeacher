@@ -328,7 +328,7 @@ public class FragmentOneFive extends Fragment {
         yRAxisB.setDrawAxisLine(false);
         yRAxisB.setDrawGridLines(false);
 
-        LineDataSet lineDataSetB = new LineDataSet(entriesB, "Prozentualer Fehleranteil insgesamt*");
+        LineDataSet lineDataSetB = new LineDataSet(entriesB, "Proz. Fehleranteil insgesamt*");
         lineDataSetB.setLineWidth(2f);
         lineDataSetB.setCircleRadius(3f);
         lineDataSetB.setCircleColor(Color.parseColor("#FFA1B4DC"));
@@ -416,7 +416,7 @@ public class FragmentOneFive extends Fragment {
         yRAxisC.setDrawAxisLine(false);
         yRAxisC.setDrawGridLines(false);
 
-        LineDataSet lineDataSetC = new LineDataSet(entriesC, "Prozentualer Fehleranteil Zielkategorie");
+        LineDataSet lineDataSetC = new LineDataSet(entriesC, "Proz. Fehleranteil Zielkategorie*");
         lineDataSetC.setLineWidth(2f);
         lineDataSetC.setCircleRadius(3f);
         lineDataSetC.setCircleColor(Color.parseColor("#FFA1B4DC"));
