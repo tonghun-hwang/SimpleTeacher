@@ -187,7 +187,7 @@ public class Data extends Application {
     }
 
     public void calDaten(){
-        Log.i(TAG, "calculate the data aaaaa");
+        Log.i(TAG, "calculate the data");
 
         // prozTrainWrong
         for(int i = 0; i < 16; i++){

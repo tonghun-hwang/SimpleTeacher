@@ -190,7 +190,7 @@ public class FragmentOneFive extends Fragment {
         if (sesBlock == 3) {
             loopMax = 1;
         }
-        Log.d(TAG, " aaa" + sesBlock);
+        Log.d(TAG, "sesBlock: " + sesBlock);
         if (mParent.mAnalysisTrainingDB == null || !mParent.mAnalysisTrainingDB.isOpen()) {
             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
         }
