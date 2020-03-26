@@ -1,11 +1,14 @@
 package com.example.simpleteacher.asyncTask;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.MainActivity;
+import com.example.simpleteacher.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,7 +18,9 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +29,7 @@ import java.util.List;
  * the user.
  */
 public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
+    private static final int RESULT_ID = 2;
     private final String TAG = "Main.ReadResultURL";
     private final int HTTP_CONNECTION_TIMEOUT = 2500;
     private ItemActivity mParent;
@@ -100,6 +106,7 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
                 }
             } catch (Exception e) {
                 e.getStackTrace();
+                return -100;
             } finally {
                 index++;
             }
@@ -120,7 +127,26 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(final Integer result) {
         Log.d(TAG, "onPostExcute(): readResultURLTask");
-        //mParent.updateFragView();
+
+        String Status;
+        if (result == HttpURLConnection.HTTP_OK) {
+            Status = "OK: ";
+        } else {
+            Status = "Fail: ";
+        }
+
+        mParent.increaseStatus(RESULT_ID);
+        int stat = mParent.getStatus();
+        if (stat == 3) {
+            SharedPreferences.Editor editor = mParent.pref.edit();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String update = formatter.format(Calendar.getInstance().getTimeInMillis());
+            editor.putString("syncDate", Status + update);
+            editor.commit();
+
+            TextView txtUpdate = mParent.findViewById(R.id.txtUpdated);
+            txtUpdate.setText(Status + update);
+        }
     }
 
     @Override
