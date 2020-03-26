@@ -194,9 +194,6 @@ public class ItemActivity extends AppCompatActivity {
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
 
-                TextView nameStudent = findViewById(R.id.idStudent);
-                nameStudent.setText(strText);
-
                 Toast.makeText(getApplicationContext(), "ID: " + strText, Toast.LENGTH_SHORT).show();
 
                 mData.setNameStudent(strText);
@@ -209,6 +206,21 @@ public class ItemActivity extends AppCompatActivity {
 
                 getSessionCat(mData.mSessionBlock, strText);
                 updateFragView(mData.mSessionBlock, strText);
+
+                /* setUp main fragment */
+                TextView nameStudent = findViewById(R.id.idStudent);
+                nameStudent.setText(strText);
+                TextView sessions = findViewById(R.id.txtSessions);
+                if (mData.mSessionBlock != 3) {
+                    int sessionStart = (mData.mSessionBlock * 5 + 1);
+                    int sessionEnd = (mData.mSessionBlock * 5 + 5);
+                    String sessionRange = sessionStart + " - " + sessionEnd;
+                    sessions.setText(sessionRange);
+                } else if (mData.mSessionBlock == 3) {
+                    int sessionStart = (mData.mSessionBlock * 5 + 1);
+                    String sessionRange = String.valueOf(sessionStart);
+                    sessions.setText(sessionRange);
+                }
             }
         });
     }
