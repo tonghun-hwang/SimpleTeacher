@@ -808,8 +808,10 @@ public class ItemActivity extends AppCompatActivity {
                 boolean success = folder.mkdir();
             }
             String imagefile = strText + "_" + (mData.mSessionBlock + 1) + ".jpg";
+            String folderName = "bitmap/" + teacherID;
 
-            FileOutputStream outputStream = (FileOutputStream) getOutputStream("bitmap", imagefile);
+            FileOutputStream outputStream
+                    = (FileOutputStream) getOutputStream(folderName, imagefile);
             int quality = 100;
             bmp.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
             outputStream.flush();
@@ -854,7 +856,8 @@ public class ItemActivity extends AppCompatActivity {
         // write the document content
         try {
             String fileName = strText + "_" + mData.mSessionBlock + ".pdf";
-            document.writeTo(getOutputStream("pdf", fileName));
+            String folderName = "pdf/" + teacherID;
+            document.writeTo(getOutputStream(folderName, fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -863,7 +866,7 @@ public class ItemActivity extends AppCompatActivity {
         document.close();
     }
 
-    private OutputStream getOutputStream(String folderName, String imagefile) {
+    private OutputStream getOutputStream(String folderName, String fileName) {
         /* create output jpg file */
         String envPath = Environment.getExternalStorageDirectory().toString();
         String hottPdfPath = envPath + "/HOT-T/" + folderName + "/";
@@ -871,11 +874,11 @@ public class ItemActivity extends AppCompatActivity {
         if (!folder.exists()) {
             boolean success = folder.mkdir();
         }
-        String imagePath = hottPdfPath + imagefile;
+        String filePath = hottPdfPath + fileName;
 
         FileOutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream(imagePath);
+            outputStream = new FileOutputStream(filePath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
