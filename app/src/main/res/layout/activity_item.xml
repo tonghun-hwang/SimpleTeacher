@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:onClick="getScreenShot"
-                        android:text="Screenshot"
+                        android:text="Extract_PDF"
                         app:layout_constraintStart_toEndOf="@+id/btn_analyzeTraining"
                         app:layout_constraintTop_toTopOf="parent" />
 
