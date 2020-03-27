@@ -205,7 +205,7 @@ public class FragmentOneFive extends Fragment {
         if (cursorCount == 1) {
            c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
-                int index = sesBlock * 5 + i + 1;
+                int index = i + 1;
 
                 column = "WORD_T" + index;
                 data = c.getFloat(c.getColumnIndex(column));
@@ -292,7 +292,7 @@ public class FragmentOneFive extends Fragment {
         if (cursorCount == 1) {
             c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
-                int index = sesBlock * 5 + i + 1;
+                int index = i + 1;
                 column = "WORD_T" + index + "_ERROR";
                 data = c.getFloat(c.getColumnIndex(column));
                 entriesB.add(new Entry(index, data));
@@ -380,7 +380,7 @@ public class FragmentOneFive extends Fragment {
         if (cursorCount == 1) {
             c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
-                int index = sesBlock * 5 + i + 1;
+                int index = i + 1;
                 column = "WORD_T" + index + "_ER";
                 data = c.getFloat(c.getColumnIndex(column));
                 entriesC.add(new Entry(index, data));

@@ -103,7 +103,7 @@ public class FragmentLastGraph extends Fragment {
             if (cursorCount == 1) {
                 c.moveToFirst();
                 for (int i = 1; i <= loopMax; i++) {
-                    int index = j * 5 + i;
+                    int index = i;
                     column = "WORD_T" + index;
                     data = c.getFloat(c.getColumnIndex(column));
                     entries.add(new Entry(index, data));
