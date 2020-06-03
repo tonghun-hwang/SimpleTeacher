@@ -99,6 +99,9 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         }
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
                     } else if (j == 16) {
+                        for (int k = 10; k < 18; k ++) {
+                            data[k] = 0;
+                        }
                         sessionBlock = 4;
 
                         /* replace the database */
