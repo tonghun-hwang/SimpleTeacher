@@ -47,7 +47,6 @@ public class FragmentOneFive extends Fragment {
         mData = (Data) getActivity().getApplication();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,6 +57,7 @@ public class FragmentOneFive extends Fragment {
 
         return inf;
     }
+
     public void initValues () {
         numAllWords.setText("0");
         numProzWrongAll.setText("0.00%");
@@ -264,7 +264,6 @@ public class FragmentOneFive extends Fragment {
         grafikA.setDescription(descriptionA);
         grafikA.invalidate();
 
-
         //grafikB
 
         grafikB = inf.findViewById(R.id.chart2);
@@ -314,7 +313,6 @@ public class FragmentOneFive extends Fragment {
         xAxisB.setLabelCount(5);
         xAxisB.setValueFormatter(xAxisFormatterB);
 
-
         // Y left axis
         YAxis yLAxisB = grafikB.getAxisLeft();
         yLAxisB.setTextColor(Color.BLACK);
@@ -342,7 +340,6 @@ public class FragmentOneFive extends Fragment {
         LineData lineData = new LineData(lineDataSetB);
         grafikB.setData(lineData);
 
-
         Description descriptionB = new Description();
         descriptionB.setText("");
 
@@ -350,7 +347,6 @@ public class FragmentOneFive extends Fragment {
         grafikB.setDrawGridBackground(false);
         grafikB.setDescription(descriptionB);
         grafikB.invalidate();
-
 
         //grafikC
 
@@ -402,7 +398,6 @@ public class FragmentOneFive extends Fragment {
         xAxisC.setLabelCount(5);
         xAxisC.setValueFormatter(xAxisFormatterC);
 
-
         // Y left axis
         YAxis yLAxisC = grafikC.getAxisLeft();
         yLAxisC.setTextColor(Color.BLACK);
@@ -430,7 +425,6 @@ public class FragmentOneFive extends Fragment {
         LineData lineDataC = new LineData(lineDataSetC);
         grafikC.setData(lineDataC);
 
-
         Description descriptionC = new Description();
         descriptionC.setText("");
 
@@ -439,7 +433,6 @@ public class FragmentOneFive extends Fragment {
         grafikC.setDescription(descriptionC);
         grafikC.invalidate();
     }
-
 
     public class DayAxisValueFormatter extends ValueFormatter {
         private final BarLineChartBase<?> chart;
