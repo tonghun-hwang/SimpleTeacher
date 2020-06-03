@@ -13,7 +13,7 @@
 
         <ListView
             android:id="@+id/student_list"
-            android:layout_width="105dp"
+            android:layout_width="126dp"
             android:layout_height="match_parent">
 
         </ListView>
