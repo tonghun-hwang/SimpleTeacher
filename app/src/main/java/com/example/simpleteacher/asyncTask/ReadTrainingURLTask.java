@@ -53,7 +53,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     private List<String> getUrlList(String[] idList) {
         List<String> urlList = new ArrayList<String>();
         for (int i = 0; i < idList.length; i++) {
-            for (int j = 0; j < MAX_SESSION; j++) {
+            for (int j = 0; j <= MAX_SESSION; j++) {
                 String url = getURLName(idList[i], j);
                 urlList.add(url);
             }
