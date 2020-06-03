@@ -41,8 +41,10 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
         int total = 0;
         double[] data = new double[18];
         int sessionBlock;
+        int offset = 0;
 
         for (int i = 0; i < mIds.length; i++) {
+            offset = 0;
             try {
                 for (int k = 0; k < data.length; k++) {
                     data[k] = 0;
@@ -68,9 +70,9 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     data[1] += mParent.getNumTotallyWrongWords(mIds[i]);
 
                     data[2] += mParent.getNumTotalWordsInCategory(mIds[i]);
-                    data[(j * 2) + 6] = mParent.getNumTotalWordsInCategory(mIds[i]);
+                    data[(j * 2) + 6 - offset] = mParent.getNumTotalWordsInCategory(mIds[i]);
                     data[3] += mParent.getNumTotallyWrongWordsInCategory(mIds[i]); // wrong words
-                    data[(j * 2) + 7] = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
+                    data[(j * 2) + 7 - offset] = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
 
                     data[4] += mParent.getNumEraseAll(mIds[i]);
                     data[5] += mParent.getNumEraseOne(mIds[i]);
@@ -80,14 +82,18 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     if (j % 5 == 0) {
                         if (j < 0 && j <= 5) {
                             sessionBlock = 1;
+                            offset = 10;
                         } else if (j > 5 && j <= 10) {
                             sessionBlock = 2;
+                            offset = 20;
                         } else if (j > 10 && j <= 15) {
                             sessionBlock = 3;
+                            offset = 30;
                         } else if (j == 16) {
                             sessionBlock = 4;
                         } else {
                             sessionBlock = 1;
+                            offset = 10;
                         }
                         /* replace the database */
                         if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
@@ -95,15 +101,16 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         }
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
                     }
-                }
-                if (mParent.mUserTrainingDB != null) {
-                    if (mParent.mUserTrainingDB.isOpen()) {
-                        mParent.mUserTrainingDB.close();
+
+                    if (mParent.mUserTrainingDB != null) {
+                        if (mParent.mUserTrainingDB.isOpen()) {
+                            mParent.mUserTrainingDB.close();
+                        }
                     }
-                }
-                if (mParent.mUserTrainingDBHelper != null) {
-                    mParent.mUserTrainingDBHelper.close();
-                    mParent.mUserTrainingDBHelper = null;
+                    if (mParent.mUserTrainingDBHelper != null) {
+                        mParent.mUserTrainingDBHelper.close();
+                        mParent.mUserTrainingDBHelper = null;
+                    }
                 }
             } catch (Exception e) {
                 String err = e.getStackTrace().toString();
@@ -115,10 +122,9 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mUserTrainingDB.close();
                     }
                 }
-                if (mParent.mAnalysisDB != null) {
-                    if (mParent.mAnalysisDB.isOpen()) {
-                        mParent.mAnalysisDB.close();
-                    }
+                if (mParent.mUserTrainingDBHelper != null) {
+                    mParent.mUserTrainingDBHelper.close();
+                    mParent.mUserTrainingDBHelper = null;
                 }
             }
         }
