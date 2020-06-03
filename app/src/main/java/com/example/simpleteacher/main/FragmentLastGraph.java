@@ -90,7 +90,7 @@ public class FragmentLastGraph extends Fragment {
         String tableName = "training_s1";
         String column;
         float data;
-        int tableMax = 3;
+        int tableMax = 4;
         int loopMax = 5;
 
         for (int j = 0; j < tableMax; j++) {
@@ -100,14 +100,21 @@ public class FragmentLastGraph extends Fragment {
                     , null);
 
             int cursorCount = c.getCount();
-            if (cursorCount == 1) {
+            if (cursorCount == 1 && j < 3) {
                 c.moveToFirst();
                 for (int i = 1; i <= loopMax; i++) {
-                    int index = i;
-                    column = "WORD_T" + index;
+                    int index = i + j * 5;
+                    column = "WORD_T" + i;
                     data = c.getFloat(c.getColumnIndex(column));
                     entries.add(new Entry(index, data));
                 }
+            } else if (cursorCount == 1 && j == 3) {
+                c.moveToFirst();
+                int i = 1;
+                int index = 16;
+                column = "WORD_T" + i;
+                data = c.getFloat(c.getColumnIndex(column));
+                entries.add(new Entry(index, data));
             } else {
                 for (int i = 1; i <= loopMax; i++) {
                     int index = j * 5 + i;
