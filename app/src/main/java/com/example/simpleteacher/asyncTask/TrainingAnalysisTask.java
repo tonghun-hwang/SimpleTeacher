@@ -89,12 +89,18 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         } else if (j > 10 && j <= 15) {
                             sessionBlock = 3;
                             offset = 30;
-                        } else if (j == 16) {
-                            sessionBlock = 4;
                         } else {
                             sessionBlock = 1;
                             offset = 10;
                         }
+                        /* replace the database */
+                        if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
+                            mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
+                        }
+                        mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
+                    } else if (j == 16) {
+                        sessionBlock = 4;
+
                         /* replace the database */
                         if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
                             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
