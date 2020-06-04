@@ -39,7 +39,10 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
         String resultName;
         String res = "OK!";
         int total = 0;
-        double[] data = new double[18];
+        int totalerr = 0;
+        int cat = 0;
+        int caterr = 0;
+        double[] data = new double[23];
         int sessionBlock;
         int offset = 0;
 
@@ -51,6 +54,10 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         for (int k = 0; k < data.length; k++) {
                             data[k] = 0;
                         }
+                        total = 0;
+                        totalerr = 0;
+                        cat = 0;
+                        caterr = 0;
                     }
                     /* result of buttons */
                     dbName = "training_" + mIds[i] + "_" + j + ".db";
@@ -67,13 +74,29 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mUserTrainingDB = mParent.mUserTrainingDBHelper.getWritableDatabase();
                     }
 
-                    data[0] += mParent.getNumTotalWords(mIds[i]);
-                    data[1] += mParent.getNumTotallyWrongWords(mIds[i]);
+                    totalerr = mParent.getNumTotallyWrongWords(mIds[i]);
+                    cat = mParent.getNumTotalWordsInCategory(mIds[i]);
+                    caterr = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
 
-                    data[2] += mParent.getNumTotalWordsInCategory(mIds[i]);
-                    data[(j * 2) + 6 - offset] = mParent.getNumTotalWordsInCategory(mIds[i]);
-                    data[3] += mParent.getNumTotallyWrongWordsInCategory(mIds[i]); // wrong words
-                    data[(j * 2) + 7 - offset] = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
+                    data[0] += total;
+                    data[1] += totalerr;
+
+                    data[2] += cat;
+                    data[(j * 3) + 5 - offset] = cat;
+
+                    data[3] += caterr; // wrong words
+
+                    if (total != 0) {
+                        data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
+                    } else {
+                        data[(j * 3) + 6 - offset] = 0;
+                    }
+
+                    if (cat != 0) {
+                        data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
+                    } else {
+                        data[(j * 3) + 7 - offset] = 0;
+                    }
 
                     data[4] += mParent.getNumEraseAll(mIds[i]);
                     data[5] += mParent.getNumEraseOne(mIds[i]);
@@ -83,19 +106,19 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     if (j % 5 == 0) {
                         if (j < 0 && j <= 5) {
                             sessionBlock = 1;
-                            offset = 10;
+                            offset = 15;
                         } else if (j > 5 && j <= 10) {
                             sessionBlock = 2;
-                            offset = 20;
+                            offset = 30;
                         } else if (j > 10 && j <= 15) {
                             sessionBlock = 3;
-                            offset = 30;
+                            offset = 45;
                         } else {
                             sessionBlock = 1;
-                            offset = 10;
+                            offset = 15;
                         }
                         /* replace the database */
-                        if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
+                        if (mParent.mAnalysisTrainingDB == null || !mParent.mAnalysisTrainingDB.isOpen()) {
                             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
                         }
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
@@ -104,7 +127,7 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         sessionBlock = 4;
 
                         /* replace the database */
-                        if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
+                        if (mParent.mAnalysisTrainingDB == null || !mParent.mAnalysisTrainingDB.isOpen()) {
                             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
                         }
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
@@ -130,9 +153,16 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mUserTrainingDB.close();
                     }
                 }
+
                 if (mParent.mUserTrainingDBHelper != null) {
                     mParent.mUserTrainingDBHelper.close();
                     mParent.mUserTrainingDBHelper = null;
+                }
+
+                if (mParent.mAnalysisTrainingDB != null) {
+                    if (mParent.mAnalysisTrainingDB.isOpen()) {
+                        mParent.mAnalysisTrainingDB.close();
+                    }
                 }
             }
         }

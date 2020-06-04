@@ -107,7 +107,7 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String update = formatter.format(Calendar.getInstance().getTimeInMillis());
         long res = -1;
-        if (data.length == 18) {
+        if (data.length == 23) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(ID, id);
             contentValues.put(USERID, user);
@@ -122,20 +122,20 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
             contentValues.put(NUM_EAR, data[6]);
             contentValues.put(NUM_KEY, data[7]);
             contentValues.put(WORD_T1, data[8]);
-            contentValues.put(WORD_T1_ERROR, data[9]);
-            contentValues.put(WORD_T1_ER, getRateD3(data[9], data[8]));
-            contentValues.put(WORD_T2, data[10]);
-            contentValues.put(WORD_T2_ERROR, data[11]);
-            contentValues.put(WORD_T2_ER, getRateD3(data[11], data[10]));
-            contentValues.put(WORD_T3, data[12]);
-            contentValues.put(WORD_T3_ERROR, data[13]);
-            contentValues.put(WORD_T3_ER, getRateD3(data[13], data[12]));
-            contentValues.put(WORD_T4, data[14]);
-            contentValues.put(WORD_T4_ERROR, data[15]);
-            contentValues.put(WORD_T4_ER, getRateD3(data[15], data[14]));
-            contentValues.put(WORD_T5, data[16]);
-            contentValues.put(WORD_T5_ERROR, data[17]);
-            contentValues.put(WORD_T5_ER, getRateD3(data[17], data[16]));
+            contentValues.put(WORD_T1_ERROR, roundD1(data[9]));
+            contentValues.put(WORD_T1_ER, roundD1(data[10]));
+            contentValues.put(WORD_T2, data[11]);
+            contentValues.put(WORD_T2_ERROR, roundD1(data[12]));
+            contentValues.put(WORD_T2_ER, roundD1(data[13]));
+            contentValues.put(WORD_T3, data[14]);
+            contentValues.put(WORD_T3_ERROR, roundD1(data[15]));
+            contentValues.put(WORD_T3_ER, roundD1(data[16]));
+            contentValues.put(WORD_T4, data[17]);
+            contentValues.put(WORD_T4_ERROR, roundD1(data[18]));
+            contentValues.put(WORD_T4_ER, roundD1(data[19]));
+            contentValues.put(WORD_T5, data[20]);
+            contentValues.put(WORD_T5_ERROR, roundD1(data[21]));
+            contentValues.put(WORD_T5_ER, roundD1(data[22]));
             contentValues.put(DATE, update);
             res = db.replace(tableName,
                     null, contentValues);
@@ -231,6 +231,11 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
 
     private String roundD3(double datum) {
         String result = String.valueOf(Math.round(datum * 1000) / (double) 1000);
+        return result;
+    }
+
+    private String roundD1(double datum) {
+        String result = String.valueOf(Math.round(datum * 10) / (double) 10);
         return result;
     }
 }
