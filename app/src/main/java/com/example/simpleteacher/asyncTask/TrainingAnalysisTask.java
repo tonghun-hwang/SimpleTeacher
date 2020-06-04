@@ -79,11 +79,10 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     caterr = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
 
                     data[0] += total;
+                    data[(j * 3) + 5 - offset] = total;
+
                     data[1] += totalerr;
-
                     data[2] += cat;
-                    data[(j * 3) + 5 - offset] = cat;
-
                     data[3] += caterr; // wrong words
 
                     if (total != 0) {
