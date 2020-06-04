@@ -46,11 +46,12 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
         for (int i = 0; i < mIds.length; i++) {
             offset = 0;
             try {
-                for (int k = 0; k < data.length; k++) {
-                    data[k] = 0;
-                }
-
                 for (int j = 1; j <= 16; j++) {
+                    if (j % 5 == 1 ) {
+                        for (int k = 0; k < data.length; k++) {
+                            data[k] = 0;
+                        }
+                    }
                     /* result of buttons */
                     dbName = "training_" + mIds[i] + "_" + j + ".db";
                     mParent.mUserTrainingDBHelper = new userTrainingDBHelper(mContext, dbName, mIds[i], 1);
@@ -98,10 +99,8 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
                         }
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, i, mIds[i], data, sessionBlock);
+
                     } else if (j == 16) {
-                        for (int k = 10; k < 18; k ++) {
-                            data[k] = 0;
-                        }
                         sessionBlock = 4;
 
                         /* replace the database */
