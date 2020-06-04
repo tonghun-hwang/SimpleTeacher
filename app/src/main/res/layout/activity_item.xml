@@ -89,32 +89,43 @@
                         android:id="@+id/btn_getDiag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:onClick="clickGetDiagnostic"
-                        android:text="get_Diagonitic"
+                        android:text="Analyze Diagonitic"
                         android:visibility="invisible"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_sync" />
+                        app:layout_constraintStart_toEndOf="@+id/btn_analyzeTraining"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_getBitmap" />
 
                     <Button
                         android:id="@+id/btn_analyzeTraining"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
                         android:onClick="clickAnalyzeTraining"
                         android:text="Analyze Training"
                         android:visibility="visible"
-                        app:layout_constraintStart_toEndOf="@+id/txtUpdated"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_sync" />
 
                     <Button
                         android:id="@+id/btn_getBitmap"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="24dp"
                         android:onClick="getScreenShot"
-                        android:text="Extract_PDF"
-                        app:layout_constraintStart_toEndOf="@+id/btn_analyzeTraining"
+                        android:text="Get PDF"
+                        app:layout_constraintStart_toEndOf="@+id/txtUpdated"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/btn_getAllPDF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:onClick="convertAllToPdf"
+                        android:text="Get PDF All"
+                        app:layout_constraintStart_toEndOf="@+id/btn_getBitmap"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

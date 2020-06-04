@@ -842,7 +842,7 @@ public class ItemActivity extends AppCompatActivity {
             outputStream.flush();
             outputStream.close();
 
-            convertAllToPdf();
+            convertToPdf();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -859,7 +859,7 @@ public class ItemActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    public void convertAllToPdf() {
+    public void convertAllToPdf(View view) {
         // create a new document
         PdfDocument document = new PdfDocument();
 
@@ -943,7 +943,7 @@ public class ItemActivity extends AppCompatActivity {
         // add more pages
         // write the document content
         try {
-            String fileName = strText + "_" + mData.mSessionBlock + ".pdf";
+            String fileName = strText + "_" + (mData.mSessionBlock + 1) + ".pdf";
             String folderName = "pdf/" + teacherID;
             document.writeTo(getOutputStream(folderName, fileName));
         } catch (IOException e) {
