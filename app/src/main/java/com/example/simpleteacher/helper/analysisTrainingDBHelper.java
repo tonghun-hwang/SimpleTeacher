@@ -30,19 +30,19 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
     public static final String NUM_KEY = "NUM_KEY";
     public static final String WORD_T1 = "WORD_T1";
     public static final String WORD_T1_ERROR = "WORD_T1_ERROR";
-    public static final String WORD_T1_ER = "WORD_T1_ER";
+    public static final String WORD_T1_ERCAT = "WORD_T1_ERCAT";
     public static final String WORD_T2 = "WORD_T2";
     public static final String WORD_T2_ERROR = "WORD_T2_ERROR";
-    public static final String WORD_T2_ER = "WORD_T2_ER";
+    public static final String WORD_T2_ERCAT = "WORD_T2_ERCAT";
     public static final String WORD_T3 = "WORD_T3";
     public static final String WORD_T3_ERROR = "WORD_T3_ERROR";
-    public static final String WORD_T3_ER = "WORD_T3_ER";
+    public static final String WORD_T3_ERCAT = "WORD_T3_ERCAT";
     public static final String WORD_T4 = "WORD_T4";
     public static final String WORD_T4_ERROR = "WORD_T4_ERROR";
-    public static final String WORD_T4_ER = "WORD_T4_ER";
+    public static final String WORD_T4_ERCAT = "WORD_T4_ERCAT";
     public static final String WORD_T5 = "WORD_T5";
     public static final String WORD_T5_ERROR = "WORD_T5_ERROR";
-    public static final String WORD_T5_ER = "WORD_T5_ER";
+    public static final String WORD_T5_ERCAT = "WORD_T5_ERCAT";
     public static final String DATE = "LAST_UPDATE";
 
     private static final String TAG = "Main.userDBHelper";
@@ -84,19 +84,19 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 "NUM_KEY INTEGER," +
                 "WORD_T1 INTEGER," +
                 "WORD_T1_ERROR INTEGER," +
-                "WORD_T1_ER DOUBLE," +
+                "WORD_T1_ERCAT DOUBLE," +
                 "WORD_T2 INTEGER," +
                 "WORD_T2_ERROR INTEGER," +
-                "WORD_T2_ER DOUBLE," +
+                "WORD_T2_ERCAT DOUBLE," +
                 "WORD_T3 INTEGER," +
                 "WORD_T3_ERROR INTEGER," +
-                "WORD_T3_ER DOUBLE," +
+                "WORD_T3_ERCAT DOUBLE," +
                 "WORD_T4 INTEGER," +
                 "WORD_T4_ERROR INTEGER," +
-                "WORD_T4_ER DOUBLE," +
+                "WORD_T4_ERCAT DOUBLE," +
                 "WORD_T5 INTEGER," +
                 "WORD_T5_ERROR INTEGER," +
-                "WORD_T5_ER DOUBLE," +
+                "WORD_T5_ERCAT DOUBLE," +
                 "LAST_UPDATE DATETIME);");
     }
 
@@ -123,19 +123,19 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
             contentValues.put(NUM_KEY, data[7]);
             contentValues.put(WORD_T1, data[8]);
             contentValues.put(WORD_T1_ERROR, roundD1(data[9]));
-            contentValues.put(WORD_T1_ER, roundD1(data[10]));
+            contentValues.put(WORD_T1_ERCAT, roundD1(data[10]));
             contentValues.put(WORD_T2, data[11]);
             contentValues.put(WORD_T2_ERROR, roundD1(data[12]));
-            contentValues.put(WORD_T2_ER, roundD1(data[13]));
+            contentValues.put(WORD_T2_ERCAT, roundD1(data[13]));
             contentValues.put(WORD_T3, data[14]);
             contentValues.put(WORD_T3_ERROR, roundD1(data[15]));
-            contentValues.put(WORD_T3_ER, roundD1(data[16]));
+            contentValues.put(WORD_T3_ERCAT, roundD1(data[16]));
             contentValues.put(WORD_T4, data[17]);
             contentValues.put(WORD_T4_ERROR, roundD1(data[18]));
-            contentValues.put(WORD_T4_ER, roundD1(data[19]));
+            contentValues.put(WORD_T4_ERCAT, roundD1(data[19]));
             contentValues.put(WORD_T5, data[20]);
             contentValues.put(WORD_T5_ERROR, roundD1(data[21]));
-            contentValues.put(WORD_T5_ER, roundD1(data[22]));
+            contentValues.put(WORD_T5_ERCAT, roundD1(data[22]));
             contentValues.put(DATE, update);
             res = db.replace(tableName,
                     null, contentValues);
@@ -173,19 +173,19 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 "NUM_KEY",
                 "WORD_T1",
                 "WORD_T1_ERROR",
-                "WORD_T1_ER",
+                "WORD_T1_ERCAT",
                 "WORD_T2",
                 "WORD_T2_ERROR",
-                "WORD_T2_ER",
+                "WORD_T2_ERCAT",
                 "WORD_T3",
                 "WORD_T3_ERROR",
-                "WORD_T3_ER",
+                "WORD_T3_ERCAT",
                 "WORD_T4",
                 "WORD_T4_ERROR",
-                "WORD_T4_ER",
+                "WORD_T4_ERCAT",
                 "WORD_T5",
                 "WORD_T5_ERROR",
-                "WORD_T5_ER",
+                "WORD_T5_ERCAT",
                 "LAST_UPDATE"
         };
         dataList.add(columnName);

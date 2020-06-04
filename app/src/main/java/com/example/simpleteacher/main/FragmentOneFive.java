@@ -379,7 +379,7 @@ public class FragmentOneFive extends Fragment {
             c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
                 int index = i + 1;
-                column = "WORD_T" + index + "_ER";
+                column = "WORD_T" + index + "_ERCAT";
                 data = c.getFloat(c.getColumnIndex(column));
                 entriesC.add(new Entry(index, data));
             }
