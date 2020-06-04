@@ -911,6 +911,14 @@ public class ItemActivity extends AppCompatActivity {
 
         // write the document content
         try {
+            /* create output jpg file */
+            String envPath = Environment.getExternalStorageDirectory().toString();
+            String hottPdfPath = envPath + "/HOT-T/pdf/";
+            File folder = new File(hottPdfPath);
+            if (!folder.exists()) {
+                boolean success = folder.mkdir();
+            }
+
             String fileName = teacherID + ".pdf";
             String folderName = "pdf/" + teacherID;
             document.writeTo(getOutputStream(folderName, fileName));
@@ -943,6 +951,14 @@ public class ItemActivity extends AppCompatActivity {
         // add more pages
         // write the document content
         try {
+            /* create output jpg file */
+            String envPath = Environment.getExternalStorageDirectory().toString();
+            String hottPdfPath = envPath + "/HOT-T/pdf/";
+            File folder = new File(hottPdfPath);
+            if (!folder.exists()) {
+                boolean success = folder.mkdir();
+            }
+
             String fileName = strText + "_" + (mData.mSessionBlock + 1) + ".pdf";
             String folderName = "pdf/" + teacherID;
             document.writeTo(getOutputStream(folderName, fileName));
