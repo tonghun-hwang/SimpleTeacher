@@ -98,8 +98,10 @@ public class FragmentOneFive extends Fragment {
                 , null);
         if (c.getCount() == 1) {
             c.moveToFirst();
-            numAllWords.setText(
-                    c.getString(c.getColumnIndex("WORD_TOTAL")));
+            String numAllWordsString = c.getString(c.getColumnIndex("WORD_TOTAL"))
+                    + " (" + c.getString(c.getColumnIndex("WORD_CAT_TOTAL"))
+                    + ")";
+            numAllWords.setText(numAllWordsString);
 
             double percent = c.getDouble(c.getColumnIndex("WORD_ER")) * 100;
             String txtPercent = String.format("%.1f%%", percent);
