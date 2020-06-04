@@ -140,7 +140,7 @@ public class FragmentLastGraph extends Fragment {
         // Y left axis
         YAxis yLAxis = chart.getAxisLeft();
         yLAxis.setTextColor(Color.BLACK);
-        yLAxis.setAxisMaximum(100f);
+        yLAxis.setAxisMaximum(150f);
         yLAxis.setAxisMinimum(0f);
         yLAxis.enableGridDashedLine(10f, 10f, 0f);
 

@@ -234,7 +234,7 @@ public class FragmentOneFive extends Fragment {
         // Y left axis
         YAxis yLAxisA = grafikA.getAxisLeft();
         yLAxisA.setTextColor(Color.BLACK);
-        yLAxisA.setAxisMaximum(100f);
+        yLAxisA.setAxisMaximum(150f);
         yLAxisA.setAxisMinimum(0f);
         yLAxisA.enableGridDashedLine(10f, 10f, 2f);
 
