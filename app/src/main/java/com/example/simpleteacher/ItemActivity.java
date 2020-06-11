@@ -131,7 +131,7 @@ public class ItemActivity extends AppCompatActivity {
     private FragmentLastGraph mFrag3;
     public Button btnGetDiagnostic;
     public TextView txtUpdate;
-    private String teacherID;
+    public String teacherID;
     public String sesCategory;
     private ListView listview;
 

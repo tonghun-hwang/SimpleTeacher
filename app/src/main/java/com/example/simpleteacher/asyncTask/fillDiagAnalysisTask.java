@@ -11,6 +11,8 @@ import com.example.simpleteacher.ItemActivity;
 import com.example.simpleteacher.helper.userResultDBHelper;
 import com.example.simpleteacher.helper.userTrainingDBHelper;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,5 +144,89 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
         dataList = mParent.mAnalysisDBHelper.getDataList(mParent.mAnalysisDB);
 
         mParent.writeCSVFile(outputFile, dataList);
+        extractSubCategory();
+    }
+
+    public void extractSubCategory() {
+        try {
+            /* create output jpg file */
+            String envPath = Environment.getExternalStorageDirectory().toString();
+            String hottDiagPath = envPath + "/HOT-T/diag/";
+            File csvFolder = new File(hottDiagPath);
+            if (!csvFolder.exists()) {
+                boolean success = csvFolder.mkdir();
+            }
+
+            String folderName = mParent.teacherID;
+
+            String folderPath = hottDiagPath + folderName + "/";
+            File folder = new File(folderPath);
+            if (!folder.exists()) {
+                boolean success = folder.mkdir();
+            }
+
+            for (int i = 0; i < mParent.mIDlength; i ++) {
+                String fileName = mParent.mID[i] + ".csv";
+                String filePath = folderPath + fileName;
+                mParent.writeCSVFile(filePath, getDataList(mParent.mID[i]));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<String[]> getDataList(String userName) {
+        Log.d(TAG, "getDataList");
+        String dbName = "result_" + userName + ".db";
+
+        userResultDBHelper subResultDBHelper = new userResultDBHelper(mParent, dbName,1);
+        SQLiteDatabase subResultDB = subResultDBHelper.getReadableDatabase();
+        if (subResultDB == null || !subResultDB.isOpen()) {
+            Log.d(TAG, "readable database open: ");
+            subResultDB = subResultDBHelper.getReadableDatabase();
+        }
+
+        Cursor c = subResultDB.rawQuery("SELECT * FROM "
+                + userResultDBHelper.RESULT_DIAG_DETAIL
+                + " ORDER BY ERROR_RATE DESC", null);
+
+        if (c == null) {
+            Log.d(TAG, "cursor is null "); // => cursor : c.moveToFirst() return false is because cursor is empty but not null (query was successful).
+        }
+
+        long res = -1;
+        List<String[]> dataList = new ArrayList<String[]>();
+        String[] columnName = new String[] {
+                "ID",
+                "SESSION",
+                "CATEGORY_MAIN",
+                "CATEGORY_SUB",
+                "NUM_ERROR",
+                "NUM_TOTAL",
+                "ERROR_RATE",
+                "LAST_UPDATE"
+        };
+        dataList.add(columnName);
+        c.moveToFirst();
+        if (c.getCount() == 0) {
+            return dataList;
+        }
+        do {
+            String[] data = new String[8];
+            for (int i = 0; i < 8; i++) {
+                data[i] = c.getString(i);
+            }
+            dataList.add(data);
+        } while (c.moveToNext());
+        c.close();
+
+        if (subResultDB != null) {
+            if(subResultDB.isOpen()) {
+                subResultDB.close();
+            }
+        }
+
+        return dataList;
     }
 }
