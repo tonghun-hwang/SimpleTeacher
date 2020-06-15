@@ -178,14 +178,15 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
 
     private void writeCSV(int sessionBlock) {
         String envPath = Environment.getExternalStorageDirectory().toString();
-        String outputFile = envPath + "/HOT-T/trainingSummary" + sessionBlock + ".csv";
+        String filePath = envPath + "/HOT-T";
+        String outputFile = envPath + "/trainingSummary" + sessionBlock + ".csv";
 
         if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
         }
         dataList = mParent.mAnalysisTrainingDBHelper.getDataList(mParent.mAnalysisTrainingDB, sessionBlock);
 
-        mParent.writeCSVFile(outputFile, dataList);
+        mParent.writeCSVFile(filePath, outputFile, dataList);
     }
 
 }

@@ -319,7 +319,7 @@ public class LastSessionAnalysisTask extends AsyncTask <String, Void, String> {
             for (int i = 0; i < mParent.mIDlength; i ++) {
                 String fileName = mParent.mID[i] + ".csv";
                 String filePath = folderPath + fileName;
-                mParent.writeCSVFile(filePath, getDataList(mParent.mID[i]));
+                mParent.writeCSVFile(folderPath, filePath, getDataList(mParent.mID[i]));
             }
 
         } catch (Exception e) {
