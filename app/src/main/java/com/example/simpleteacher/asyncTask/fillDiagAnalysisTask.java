@@ -190,7 +190,7 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
 
         Cursor c = subResultDB.rawQuery("SELECT * FROM "
                 + userResultDBHelper.RESULT_DIAG_DETAIL
-                + " ORDER BY ERROR_RATE DESC", null);
+                , null);
 
         if (c == null) {
             Log.d(TAG, "cursor is null "); // => cursor : c.moveToFirst() return false is because cursor is empty but not null (query was successful).
