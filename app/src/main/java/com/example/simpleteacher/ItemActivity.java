@@ -778,7 +778,7 @@ public class ItemActivity extends AppCompatActivity {
         initFirstWordListThread4.execute(urlPath, csvPath);
     }
 
-    public void writeCSVFile(String fileName, List<String[]> dataList) {
+    public void writeCSVFile(String filePath, String fileName, List<String[]> dataList) {
         Log.d(TAG, "writeCSVFile: " + fileName);
         boolean permissionGranted = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -793,7 +793,7 @@ public class ItemActivity extends AppCompatActivity {
             System.out.println("permission Granted: " + permissionGranted);
         }
 
-        File fileFolder = new File(fileName.substring(0, fileName.length() -15));
+        File fileFolder = new File(filePath);
         if (!fileFolder.exists()) {
             fileFolder.mkdirs();
         }

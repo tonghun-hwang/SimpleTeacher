@@ -136,14 +136,15 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
     protected void onPostExecute(String result) {
         Log.d(TAG, "onPostExecute(): " + result);
         String envPath = Environment.getExternalStorageDirectory().toString();
-        String outputFile = envPath + "/HOT-T/diagnosticSummary.csv";
+        String filePath = envPath + "/HOT-T/";
+        String outputFile = envPath + "diagnosticSummary.csv";
 
         if (mParent.mAnalysisDB != null || !mParent.mAnalysisDB.isOpen()) {
             mParent.mAnalysisDB = mParent.mAnalysisDBHelper.getWritableDatabase();
         }
         dataList = mParent.mAnalysisDBHelper.getDataList(mParent.mAnalysisDB);
 
-        mParent.writeCSVFile(outputFile, dataList);
+        mParent.writeCSVFile(filePath, outputFile, dataList);
         extractSubCategory();
     }
 
@@ -168,7 +169,7 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
             for (int i = 0; i < mParent.mIDlength; i ++) {
                 String fileName = mParent.mID[i] + ".csv";
                 String filePath = folderPath + fileName;
-                mParent.writeCSVFile(filePath, getDataList(mParent.mID[i]));
+                mParent.writeCSVFile(folderPath, filePath, getDataList(mParent.mID[i]));
             }
 
         } catch (Exception e) {
