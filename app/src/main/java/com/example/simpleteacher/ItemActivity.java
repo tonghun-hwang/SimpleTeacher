@@ -35,6 +35,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.simpleteacher.asyncTask.CheckInfoURLTask;
+import com.example.simpleteacher.asyncTask.LastSessionAnalysisTask;
 import com.example.simpleteacher.asyncTask.ReadDiagnosticURLTask;
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
 import com.example.simpleteacher.asyncTask.ReadResultURLTask;
@@ -45,6 +46,7 @@ import com.example.simpleteacher.asyncTask.initFirstWordListsTask;
 import com.example.simpleteacher.helper.analysisDBHelper;
 import com.example.simpleteacher.helper.analysisTrainingDBHelper;
 import com.example.simpleteacher.helper.userDBHelper;
+import com.example.simpleteacher.helper.userLastSessionDBHelper;
 import com.example.simpleteacher.helper.userResultDBHelper;
 import com.example.simpleteacher.helper.userTrainingDBHelper;
 import com.example.simpleteacher.helper.wordDBHelper;
@@ -95,11 +97,13 @@ public class ItemActivity extends AppCompatActivity {
     public userDBHelper mUserDBHelper;
     public userTrainingDBHelper mUserTrainingDBHelper;
     public analysisDBHelper mAnalysisDBHelper;
+    public userLastSessionDBHelper mLastSDBHelper;
     public analysisTrainingDBHelper mAnalysisTrainingDBHelper;
     public SQLiteDatabase mWDB = null;
     public SQLiteDatabase mUserDB = null;
     public SQLiteDatabase mUserTrainingDB = null;
     public SQLiteDatabase mAnalysisDB = null;
+    public SQLiteDatabase mLastSDB = null;
     public SQLiteDatabase mAnalysisTrainingDB = null;
 
     public static userResultDBHelper resultDBHelper;
@@ -257,6 +261,11 @@ public class ItemActivity extends AppCompatActivity {
         setDiagnosticDB(mID);
     }
 
+    public void clickGetLastSession(View view) {
+       Log.d(TAG, "clickGetLastSession");
+        setLastSessionDB(mID);
+    }
+
     public void clickAnalyzeTraining(View view) {
         getTrainingCSV();
     }
@@ -333,6 +342,12 @@ public class ItemActivity extends AppCompatActivity {
         Log.d(TAG, "setDiagnosticDB(): ");
         fillDiagAnalysisTask diagAnlysis = new fillDiagAnalysisTask(this, ids);
         diagAnlysis.execute();
+    }
+
+    public void setLastSessionDB(String[] ids) {
+        Log.d(TAG, "setLastSessionDB(): ");
+        LastSessionAnalysisTask lastAnalysis= new LastSessionAnalysisTask(this, ids);
+        lastAnalysis.execute();
     }
 
     private void getTrainingCSV() {
