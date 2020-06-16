@@ -552,6 +552,40 @@ public class ItemActivity extends AppCompatActivity {
         return res;
     }
 
+    // wrong wrote at the first time && easy words inclusive
+    public int getNumSecondWrongWords(String stName) {
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
+                    " AND (REPEAT_COUNT == 3)", null);
+            res = c.getCount();
+            Log.d(TAG, "getNumTotallyWrongWords: " + res);
+            c.close();
+        }
+        cAll.close();
+        return res;
+    }
+
+    // wrong wrote at the first time && easy words inclusive
+    public int getNumFirstWrongWords(String stName) {
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
+                    " AND (REPEAT_COUNT == 2)", null);
+            res = c.getCount();
+            Log.d(TAG, "getNumTotallyWrongWords: " + res);
+            c.close();
+        }
+        cAll.close();
+        return res;
+    }
+
     // all words inclusive error category
     public int getNumTotalWordsInCategory(String stName) {
         int res = 0;
@@ -588,6 +622,25 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     // wrong wrote at the first time && easy words inclusive
+    public int getNumSecondWrongWordsInCategory(String stName) {
+        int res = 0;
+        Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
+        int countAll = cAll.getCount();
+        if (countAll != 0) {
+            Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
+                    " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
+                    " AND (REPEAT_COUNT == 3)", null);
+            int categorisedWord = getNumCategorizedWords(c);
+            res = categorisedWord;
+            Log.d(TAG, "getNumTotallyWrongWords: " + res);
+            c.close();
+        }
+        cAll.close();
+        return res;
+    }
+
+
+    // wrong wrote at the first time && easy words inclusive
     public int getNumFirstWrongWordsInCategory(String stName) {
         int res = 0;
         Cursor cAll = mUserTrainingDB.rawQuery("SELECT * FROM " + stName, null);
@@ -595,7 +648,7 @@ public class ItemActivity extends AppCompatActivity {
         if (countAll != 0) {
             Cursor c = mUserTrainingDB.rawQuery("SELECT * FROM " + stName +
                     " WHERE EVENT = '" + mData.TRAIN_TOT_WRONG + "'" +
-                    " AND (REPEAT_COUNT == 1)", null);
+                    " AND (REPEAT_COUNT == 2)", null);
             int categorisedWord = getNumCategorizedWords(c);
             res = categorisedWord;
             Log.d(TAG, "getNumTotallyWrongWords: " + res);
