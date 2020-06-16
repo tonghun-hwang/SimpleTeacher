@@ -76,8 +76,8 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
 
                     /* get the errors at first third trial */
                     totalerr = mParent.getNumFirstWrongWords(mIds[i]);
-                    cat = mParent.getNumFirstWrongWordsInCategory(mIds[i]);
-                    caterr = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
+                    cat = mParent.getNumTotalWordsInCategory(mIds[i]);
+                    caterr = mParent.getNumFirstWrongWordsInCategory(mIds[i]);
 
                     data[0] += total;
                     data[(j * 3) + 5 - offset] = total;
