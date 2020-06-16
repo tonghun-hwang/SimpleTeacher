@@ -96,8 +96,8 @@ public class FragmentOneFive extends Fragment {
         Cursor c = mParent.mAnalysisTrainingDB.rawQuery("SELECT * FROM " + tableName
                         + " WHERE USERID = '" + studID + "'"
                 , null);
-        if (c.getCount() == 1) {
-            c.moveToFirst();
+        if (c.getCount() == 3) {
+            c.moveToPosition(0);
             String numAllWordsString = c.getString(c.getColumnIndex("WORD_TOTAL"))
                     + " (" + c.getString(c.getColumnIndex("WORD_CAT_TOTAL"))
                     + ")";
@@ -289,6 +289,8 @@ public class FragmentOneFive extends Fragment {
         grafikB.setPinchZoom(true);
 
         List<Entry> entriesB = new ArrayList<>();
+        List<Entry> entriesB2 = new ArrayList<>();
+        List<Entry> entriesB3 = new ArrayList<>();
 
         if (cursorCount == 3) {
             c.moveToFirst();
@@ -297,6 +299,22 @@ public class FragmentOneFive extends Fragment {
                 column = "WORD_T" + index + "_ERROR";
                 data = c.getFloat(c.getColumnIndex(column));
                 entriesB.add(new Entry(index, data));
+            }
+
+            c.moveToNext();
+            for (int i = 0; i < loopMax; i++) {
+                int index = i + 1;
+                column = "WORD_T" + index + "_ERROR";
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesB2.add(new Entry(index, data));
+            }
+
+            c.moveToNext();
+            for (int i = 0; i < loopMax; i++) {
+                int index = i + 1;
+                column = "WORD_T" + index + "_ERROR";
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesB3.add(new Entry(index, data));
             }
         } else {
             for (int i = 0; i < loopMax; i++) {
@@ -328,18 +346,42 @@ public class FragmentOneFive extends Fragment {
         yRAxisB.setDrawAxisLine(false);
         yRAxisB.setDrawGridLines(false);
 
-        LineDataSet lineDataSetB = new LineDataSet(entriesB, "Proz. Fehleranteil insgesamt*");
+        LineDataSet lineDataSetB = new LineDataSet(entriesB, "First");
         lineDataSetB.setLineWidth(2f);
         lineDataSetB.setCircleRadius(3f);
-        lineDataSetB.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSetB.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSetB.setCircleColor(Color.parseColor("#FFA41D13"));
+        lineDataSetB.setColor(Color.parseColor("#FFA41D13"));
         lineDataSetB.setDrawCircleHole(true);
         lineDataSetB.setDrawCircles(true);
         lineDataSetB.setDrawHorizontalHighlightIndicator(false);
         lineDataSetB.setDrawHighlightIndicators(false);
         lineDataSetB.setDrawValues(true);
 
+        LineDataSet lineDataSetB2 = new LineDataSet(entriesB2, "Second");
+        lineDataSetB2.setLineWidth(2f);
+        lineDataSetB2.setCircleRadius(3f);
+        lineDataSetB2.setCircleColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSetB2.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSetB2.setDrawCircleHole(true);
+        lineDataSetB2.setDrawCircles(true);
+        lineDataSetB2.setDrawHorizontalHighlightIndicator(false);
+        lineDataSetB2.setDrawHighlightIndicators(false);
+        lineDataSetB2.setDrawValues(true);
+
+        LineDataSet lineDataSetB3 = new LineDataSet(entriesB3, "Third");
+        lineDataSetB3.setLineWidth(2f);
+        lineDataSetB3.setCircleRadius(3f);
+        lineDataSetB3.setCircleColor(Color.parseColor("#FFA3C072"));
+        lineDataSetB3.setColor(Color.parseColor("#FFA3C072"));
+        lineDataSetB3.setDrawCircleHole(true);
+        lineDataSetB3.setDrawCircles(true);
+        lineDataSetB3.setDrawHorizontalHighlightIndicator(false);
+        lineDataSetB3.setDrawHighlightIndicators(false);
+        lineDataSetB3.setDrawValues(true);
+
         LineData lineData = new LineData(lineDataSetB);
+        lineData.addDataSet(lineDataSetB2);
+        lineData.addDataSet(lineDataSetB3);
         grafikB.setData(lineData);
 
         Description descriptionB = new Description();
@@ -374,6 +416,8 @@ public class FragmentOneFive extends Fragment {
         grafikC.setPinchZoom(true);
 
         List<Entry> entriesC = new ArrayList<>();
+        List<Entry> entriesC2 = new ArrayList<>();
+        List<Entry> entriesC3 = new ArrayList<>();
 
         if (cursorCount == 3) {
             c.moveToFirst();
@@ -382,6 +426,22 @@ public class FragmentOneFive extends Fragment {
                 column = "WORD_T" + index + "_ERCAT";
                 data = c.getFloat(c.getColumnIndex(column));
                 entriesC.add(new Entry(index, data));
+            }
+
+            c.moveToNext();
+            for (int i = 0; i < loopMax; i++) {
+                int index = i + 1;
+                column = "WORD_T" + index + "_ERCAT";
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesC2.add(new Entry(index, data));
+            }
+
+            c.moveToNext();
+            for (int i = 0; i < loopMax; i++) {
+                int index = i + 1;
+                column = "WORD_T" + index + "_ERCAT";
+                data = c.getFloat(c.getColumnIndex(column));
+                entriesC3.add(new Entry(index, data));
             }
         } else {
             for (int i = 0; i < loopMax; i++) {
@@ -413,18 +473,43 @@ public class FragmentOneFive extends Fragment {
         yRAxisC.setDrawAxisLine(false);
         yRAxisC.setDrawGridLines(false);
 
-        LineDataSet lineDataSetC = new LineDataSet(entriesC, "Proz. Fehleranteil Zielkategorie*");
+        LineDataSet lineDataSetC = new LineDataSet(entriesC, "First");
         lineDataSetC.setLineWidth(2f);
         lineDataSetC.setCircleRadius(3f);
-        lineDataSetC.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSetC.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSetC.setCircleColor(Color.parseColor("#FFA41D13"));
+        lineDataSetC.setColor(Color.parseColor("#FFA41D13"));
         lineDataSetC.setDrawCircleHole(true);
         lineDataSetC.setDrawCircles(true);
         lineDataSetC.setDrawHorizontalHighlightIndicator(false);
         lineDataSetC.setDrawHighlightIndicators(false);
         lineDataSetC.setDrawValues(true);
 
+        LineDataSet lineDataSetC2 = new LineDataSet(entriesC2, "Second");
+        lineDataSetC2.setLineWidth(2f);
+        lineDataSetC2.setCircleRadius(3f);
+        lineDataSetC2.setCircleColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSetC2.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSetC2.setDrawCircleHole(true);
+        lineDataSetC2.setDrawCircles(true);
+        lineDataSetC2.setDrawHorizontalHighlightIndicator(false);
+        lineDataSetC2.setDrawHighlightIndicators(false);
+        lineDataSetC2.setDrawValues(true);
+
+        LineDataSet lineDataSetC3 = new LineDataSet(entriesC3, "Third");
+        lineDataSetC3.setLineWidth(2f);
+        lineDataSetC3.setCircleRadius(3f);
+        lineDataSetC3.setCircleColor(Color.parseColor("#FFA3C072"));
+        lineDataSetC3.setColor(Color.parseColor("#FFA3C072"));
+        lineDataSetC3.setDrawCircleHole(true);
+        lineDataSetC3.setDrawCircles(true);
+        lineDataSetC3.setDrawHorizontalHighlightIndicator(false);
+        lineDataSetC3.setDrawHighlightIndicators(false);
+        lineDataSetC3.setDrawValues(true);
+
         LineData lineDataC = new LineData(lineDataSetC);
+        lineDataC.addDataSet(lineDataSetC2);
+        lineDataC.addDataSet(lineDataSetC3);
+
         grafikC.setData(lineDataC);
 
         Description descriptionC = new Description();

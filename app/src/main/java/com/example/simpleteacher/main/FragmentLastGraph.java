@@ -82,6 +82,8 @@ public class FragmentLastGraph extends Fragment {
         chart.setPinchZoom(true);
 
         List<Entry> entries = new ArrayList<>();
+        List<Entry> entries2 = new ArrayList<>();
+        List<Entry> entries3 = new ArrayList<>();
 
         if (activity.mAnalysisTrainingDB == null || !activity.mAnalysisTrainingDB.isOpen()) {
             activity.mAnalysisTrainingDB = activity.mAnalysisTrainingDBHelper.getWritableDatabase();
@@ -101,20 +103,44 @@ public class FragmentLastGraph extends Fragment {
 
             int cursorCount = c.getCount();
             if (cursorCount == 3 && j < 3) {
+                int index;
                 c.moveToFirst();
                 for (int i = 1; i <= loopMax; i++) {
-                    int index = i + j * 5;
+                    index = i + j * 5;
                     column = "WORD_T" + i + "_ERROR";
                     data = c.getFloat(c.getColumnIndex(column));
                     entries.add(new Entry(index, data));
+                }
+                c.moveToNext();
+                for (int i = 1; i <= loopMax; i++) {
+                    index = i + j * 5;
+                    column = "WORD_T" + i + "_ERROR";
+                    data = c.getFloat(c.getColumnIndex(column));
+                    entries2.add(new Entry(index, data));
+                }
+                c.moveToNext();
+                for (int i = 1; i <= loopMax; i++) {
+                    index = i + j * 5;
+                    column = "WORD_T" + i + "_ERROR";
+                    data = c.getFloat(c.getColumnIndex(column));
+                    entries3.add(new Entry(index, data));
                 }
             } else if (cursorCount == 3 && j == 3) {
                 c.moveToFirst();
                 int i = 1;
                 int index = 16;
                 column = "WORD_T" + i + "_ERROR";
+
                 data = c.getFloat(c.getColumnIndex(column));
                 entries.add(new Entry(index, data));
+
+                c.moveToNext();
+                data = c.getFloat(c.getColumnIndex(column));
+                entries2.add(new Entry(index, data));
+
+                c.moveToNext();
+                data = c.getFloat(c.getColumnIndex(column));
+                entries3.add(new Entry(index, data));
             } else {
                 for (int i = 1; i <= loopMax; i++) {
                     int index = j * 5 + i;
@@ -150,18 +176,42 @@ public class FragmentLastGraph extends Fragment {
         yRAxis.setDrawAxisLine(false);
         yRAxis.setDrawGridLines(false);
 
-        LineDataSet lineDataSet = new LineDataSet(entries, "Prozentualer Fehleranteil pro Trainingseinheit");
+        LineDataSet lineDataSet = new LineDataSet(entries, "First");
         lineDataSet.setLineWidth(2f);
         lineDataSet.setCircleRadius(3f);
-        lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSet.setCircleColor(Color.parseColor("#FFA41D13"));
+        lineDataSet.setColor(Color.parseColor("#FFA41D13"));
         lineDataSet.setDrawCircleHole(true);
         lineDataSet.setDrawCircles(true);
         lineDataSet.setDrawHorizontalHighlightIndicator(false);
         lineDataSet.setDrawHighlightIndicators(false);
         lineDataSet.setDrawValues(true);
 
+        LineDataSet lineDataSet2 = new LineDataSet(entries2, "Second");
+        lineDataSet2.setLineWidth(2f);
+        lineDataSet2.setCircleRadius(3f);
+        lineDataSet2.setCircleColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSet2.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSet2.setDrawCircleHole(true);
+        lineDataSet2.setDrawCircles(true);
+        lineDataSet2.setDrawHorizontalHighlightIndicator(false);
+        lineDataSet2.setDrawHighlightIndicators(false);
+        lineDataSet2.setDrawValues(true);
+
+        LineDataSet lineDataSet3 = new LineDataSet(entries3, "Third");
+        lineDataSet3.setLineWidth(2f);
+        lineDataSet3.setCircleRadius(3f);
+        lineDataSet3.setCircleColor(Color.parseColor("#FFA3C072"));
+        lineDataSet3.setColor(Color.parseColor("#FFA3C072"));
+        lineDataSet3.setDrawCircleHole(true);
+        lineDataSet3.setDrawCircles(true);
+        lineDataSet3.setDrawHorizontalHighlightIndicator(false);
+        lineDataSet3.setDrawHighlightIndicators(false);
+        lineDataSet3.setDrawValues(true);
+
         LineData lineData = new LineData(lineDataSet);
+        lineData.addDataSet(lineDataSet2);
+        lineData.addDataSet(lineDataSet3);
         chart.setData(lineData);
 
         Description description = new Description();
