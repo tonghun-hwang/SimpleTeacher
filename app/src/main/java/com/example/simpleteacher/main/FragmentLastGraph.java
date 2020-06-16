@@ -104,7 +104,7 @@ public class FragmentLastGraph extends Fragment {
                 c.moveToFirst();
                 for (int i = 1; i <= loopMax; i++) {
                     int index = i + j * 5;
-                    column = "WORD_T" + i;
+                    column = "WORD_T" + i + "_ERROR";
                     data = c.getFloat(c.getColumnIndex(column));
                     entries.add(new Entry(index, data));
                 }
@@ -112,7 +112,7 @@ public class FragmentLastGraph extends Fragment {
                 c.moveToFirst();
                 int i = 1;
                 int index = 16;
-                column = "WORD_T" + i;
+                column = "WORD_T" + i + "_ERROR";
                 data = c.getFloat(c.getColumnIndex(column));
                 entries.add(new Entry(index, data));
             } else {
@@ -140,7 +140,7 @@ public class FragmentLastGraph extends Fragment {
         // Y left axis
         YAxis yLAxis = chart.getAxisLeft();
         yLAxis.setTextColor(Color.BLACK);
-        yLAxis.setAxisMaximum(150f);
+        yLAxis.setAxisMaximum(100f);
         yLAxis.setAxisMinimum(0f);
         yLAxis.enableGridDashedLine(10f, 10f, 0f);
 
