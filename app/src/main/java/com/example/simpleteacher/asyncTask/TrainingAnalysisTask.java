@@ -42,7 +42,7 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
         int totalerr = 0;
         int cat = 0;
         int caterr = 0;
-        double[] data = new double[23];
+        double[] data = new double[24];
         int sessionBlock;
         int offset = 0;
 
@@ -102,6 +102,8 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     data[5] += mParent.getNumEraseOne(mIds[i]);
                     data[6] += mParent.getNumButtonEar(mIds[i]);
                     data[7] += mParent.getNumPushChar(mIds[i]);
+
+                    data[23] = 1;
 
                     if (j % 5 == 0) {
                         if (j < 0 && j <= 5) {
@@ -198,6 +200,8 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     data[6] += mParent.getNumButtonEar(mIds[i]);
                     data[7] += mParent.getNumPushChar(mIds[i]);
 
+                    data[23] = 2;
+
                     if (j % 5 == 0) {
                         if (j < 0 && j <= 5) {
                             sessionBlock = 1;
@@ -292,6 +296,8 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                     data[5] += mParent.getNumEraseOne(mIds[i]);
                     data[6] += mParent.getNumButtonEar(mIds[i]);
                     data[7] += mParent.getNumPushChar(mIds[i]);
+
+                    data[23] = 3;
 
                     if (j % 5 == 0) {
                         if (j < 0 && j <= 5) {

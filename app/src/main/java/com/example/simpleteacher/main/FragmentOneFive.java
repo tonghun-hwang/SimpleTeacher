@@ -204,7 +204,7 @@ public class FragmentOneFive extends Fragment {
         String column;
         float data;
         int cursorCount = c.getCount();
-        if (cursorCount == 1) {
+        if (cursorCount == 3) {
            c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
                 int index = i + 1;
@@ -290,7 +290,7 @@ public class FragmentOneFive extends Fragment {
 
         List<Entry> entriesB = new ArrayList<>();
 
-        if (cursorCount == 1) {
+        if (cursorCount == 3) {
             c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
                 int index = i + 1;
@@ -375,7 +375,7 @@ public class FragmentOneFive extends Fragment {
 
         List<Entry> entriesC = new ArrayList<>();
 
-        if (cursorCount == 1) {
+        if (cursorCount == 3) {
             c.moveToFirst();
             for (int i = 0; i < loopMax; i++) {
                 int index = i + 1;

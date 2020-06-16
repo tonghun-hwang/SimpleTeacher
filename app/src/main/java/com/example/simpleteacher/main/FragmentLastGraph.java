@@ -100,7 +100,7 @@ public class FragmentLastGraph extends Fragment {
                     , null);
 
             int cursorCount = c.getCount();
-            if (cursorCount == 1 && j < 3) {
+            if (cursorCount == 3 && j < 3) {
                 c.moveToFirst();
                 for (int i = 1; i <= loopMax; i++) {
                     int index = i + j * 5;
@@ -108,7 +108,7 @@ public class FragmentLastGraph extends Fragment {
                     data = c.getFloat(c.getColumnIndex(column));
                     entries.add(new Entry(index, data));
                 }
-            } else if (cursorCount == 1 && j == 3) {
+            } else if (cursorCount == 3 && j == 3) {
                 c.moveToFirst();
                 int i = 1;
                 int index = 16;

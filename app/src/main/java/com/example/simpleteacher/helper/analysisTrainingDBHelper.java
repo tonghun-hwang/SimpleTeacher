@@ -43,6 +43,7 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
     public static final String WORD_T5 = "WORD_T5";
     public static final String WORD_T5_ERROR = "WORD_T5_ERROR";
     public static final String WORD_T5_ERCAT = "WORD_T5_ERCAT";
+    public static final String ERR_TRIAL = "ERR_TRIAL";
     public static final String DATE = "LAST_UPDATE";
 
     private static final String TAG = "Main.userDBHelper";
@@ -97,6 +98,7 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 "WORD_T5 INTEGER," +
                 "WORD_T5_ERROR INTEGER," +
                 "WORD_T5_ERCAT DOUBLE," +
+                "ERR_TRIAL INTEGER," +
                 "LAST_UPDATE DATETIME);");
     }
 
@@ -107,7 +109,7 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String update = formatter.format(Calendar.getInstance().getTimeInMillis());
         long res = -1;
-        if (data.length == 23) {
+        if (data.length == 24) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(ID, id);
             contentValues.put(USERID, user);
@@ -136,6 +138,7 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
             contentValues.put(WORD_T5, data[20]);
             contentValues.put(WORD_T5_ERROR, roundD1(data[21]));
             contentValues.put(WORD_T5_ERCAT, roundD1(data[22]));
+            contentValues.put(ERR_TRIAL, data[23]);
             contentValues.put(DATE, update);
             res = db.replace(tableName,
                     null, contentValues);
@@ -186,6 +189,7 @@ public class analysisTrainingDBHelper extends SQLiteOpenHelper {
                 "WORD_T5",
                 "WORD_T5_ERROR",
                 "WORD_T5_ERCAT",
+                "ERR_TRIAL",
                 "LAST_UPDATE"
         };
         dataList.add(columnName);
