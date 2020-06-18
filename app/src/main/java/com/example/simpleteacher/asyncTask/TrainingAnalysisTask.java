@@ -72,40 +72,44 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         dbName = "training_" + mIds[i] + "_" + j + "ps.db";
                         mParent.mUserTrainingDBHelper = new userTrainingDBHelper(mContext, dbName, mIds[i], 1);
                         mParent.mUserTrainingDB = mParent.mUserTrainingDBHelper.getWritableDatabase();
+                        total = mParent.getNumTotalWords(mIds[i]);
                     }
-
-                    /* get the errors at first third trial */
-                    totalerr = mParent.getNumFirstWrongWords(mIds[i]);
-                    cat = mParent.getNumTotalWordsInCategory(mIds[i]);
-                    caterr = mParent.getNumFirstWrongWordsInCategory(mIds[i]);
-
-                    data[0] += total;
-                    data[(j * 3) + 5 - offset] = total;
-
-                    data[1] += totalerr;
-                    data[2] += cat;
-                    data[3] += caterr; // wrong words
 
                     if (total != 0) {
-                        data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
-                    } else {
-                        data[(j * 3) + 6 - offset] = 0;
+                        /* get the errors at first third trial */
+                        totalerr = mParent.getNumFirstWrongWords(mIds[i]);
+                        cat = mParent.getNumTotalWordsInCategory(mIds[i]);
+                        caterr = mParent.getNumFirstWrongWordsInCategory(mIds[i]);
+
+                        data[0] += total;
+                        data[(j * 3) + 5 - offset] = total;
+
+                        data[1] += totalerr;
+                        data[2] += cat;
+                        data[3] += caterr; // wrong words
+
+                        if (total != 0) {
+                            data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
+                        } else {
+                            data[(j * 3) + 6 - offset] = 0;
+                        }
+
+                        if (cat != 0) {
+                            data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
+                        } else {
+                            data[(j * 3) + 7 - offset] = 0;
+                        }
+
+                        data[4] += mParent.getNumEraseAll(mIds[i]);
+                        data[5] += mParent.getNumEraseOne(mIds[i]);
+                        data[6] += mParent.getNumButtonEar(mIds[i]);
+                        data[7] += mParent.getNumPushChar(mIds[i]);
+
                     }
-
-                    if (cat != 0) {
-                        data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
-                    } else {
-                        data[(j * 3) + 7 - offset] = 0;
-                    }
-
-                    data[4] += mParent.getNumEraseAll(mIds[i]);
-                    data[5] += mParent.getNumEraseOne(mIds[i]);
-                    data[6] += mParent.getNumButtonEar(mIds[i]);
-                    data[7] += mParent.getNumPushChar(mIds[i]);
-
-                    data[23] = 1;
 
                     if (j % 5 == 0) {
+                        data[23] = 1;
+
                         if (j < 0 && j <= 5) {
                             sessionBlock = 1;
                             offset = 15;
@@ -126,6 +130,7 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, 3 * i, mIds[i], data, sessionBlock);
 
                     } else if (j == 16) {
+                        data[23] = 1;
                         sessionBlock = 4;
 
                         /* replace the database */
@@ -169,40 +174,42 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         dbName = "training_" + mIds[i] + "_" + j + "ps.db";
                         mParent.mUserTrainingDBHelper = new userTrainingDBHelper(mContext, dbName, mIds[i], 1);
                         mParent.mUserTrainingDB = mParent.mUserTrainingDBHelper.getWritableDatabase();
+                        total = mParent.getNumTotalWords(mIds[i]);
                     }
-
-                    /* get the errors at second trial */
-                    totalerr = mParent.getNumSecondWrongWords(mIds[i]);
-                    cat = mParent.getNumTotalWordsInCategory(mIds[i]);
-                    caterr = mParent.getNumSecondWrongWordsInCategory(mIds[i]);
-
-                    data[0] += total;
-                    data[(j * 3) + 5 - offset] = total;
-
-                    data[1] += totalerr;
-                    data[2] += cat;
-                    data[3] += caterr; // wrong words
 
                     if (total != 0) {
-                        data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
-                    } else {
-                        data[(j * 3) + 6 - offset] = 0;
+                        /* get the errors at second trial */
+                        totalerr = mParent.getNumSecondWrongWords(mIds[i]);
+                        cat = mParent.getNumTotalWordsInCategory(mIds[i]);
+                        caterr = mParent.getNumSecondWrongWordsInCategory(mIds[i]);
+
+                        data[0] += total;
+                        data[(j * 3) + 5 - offset] = total;
+
+                        data[1] += totalerr;
+                        data[2] += cat;
+                        data[3] += caterr; // wrong words
+
+                        if (total != 0) {
+                            data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
+                        } else {
+                            data[(j * 3) + 6 - offset] = 0;
+                        }
+
+                        if (cat != 0) {
+                            data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
+                        } else {
+                            data[(j * 3) + 7 - offset] = 0;
+                        }
+
+                        data[4] += mParent.getNumEraseAll(mIds[i]);
+                        data[5] += mParent.getNumEraseOne(mIds[i]);
+                        data[6] += mParent.getNumButtonEar(mIds[i]);
+                        data[7] += mParent.getNumPushChar(mIds[i]);
                     }
-
-                    if (cat != 0) {
-                        data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
-                    } else {
-                        data[(j * 3) + 7 - offset] = 0;
-                    }
-
-                    data[4] += mParent.getNumEraseAll(mIds[i]);
-                    data[5] += mParent.getNumEraseOne(mIds[i]);
-                    data[6] += mParent.getNumButtonEar(mIds[i]);
-                    data[7] += mParent.getNumPushChar(mIds[i]);
-
-                    data[23] = 2;
 
                     if (j % 5 == 0) {
+                        data[23] = 2;
                         if (j < 0 && j <= 5) {
                             sessionBlock = 1;
                             offset = 15;
@@ -223,6 +230,7 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, 3 * i + 1, mIds[i], data, sessionBlock);
 
                     } else if (j == 16) {
+                        data[23] = 2;
                         sessionBlock = 4;
 
                         /* replace the database */
@@ -267,39 +275,42 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         dbName = "training_" + mIds[i] + "_" + j + "ps.db";
                         mParent.mUserTrainingDBHelper = new userTrainingDBHelper(mContext, dbName, mIds[i], 1);
                         mParent.mUserTrainingDB = mParent.mUserTrainingDBHelper.getWritableDatabase();
+                        total = mParent.getNumTotalWords(mIds[i]);
                     }
-                    /* get the errors at third trial */
-                    totalerr = mParent.getNumTotallyWrongWords(mIds[i]);
-                    cat = mParent.getNumTotalWordsInCategory(mIds[i]);
-                    caterr = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
-
-                    data[0] += total;
-                    data[(j * 3) + 5 - offset] = total;
-
-                    data[1] += totalerr;
-                    data[2] += cat;
-                    data[3] += caterr; // wrong words
 
                     if (total != 0) {
-                        data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
-                    } else {
-                        data[(j * 3) + 6 - offset] = 0;
+                        /* get the errors at third trial */
+                        totalerr = mParent.getNumTotallyWrongWords(mIds[i]);
+                        cat = mParent.getNumTotalWordsInCategory(mIds[i]);
+                        caterr = mParent.getNumTotallyWrongWordsInCategory(mIds[i]);
+
+                        data[0] += total;
+                        data[(j * 3) + 5 - offset] = total;
+
+                        data[1] += totalerr;
+                        data[2] += cat;
+                        data[3] += caterr; // wrong words
+
+                        if (total != 0) {
+                            data[(j * 3) + 6 - offset] = (double) totalerr / total * 100;
+                        } else {
+                            data[(j * 3) + 6 - offset] = 0;
+                        }
+
+                        if (cat != 0) {
+                            data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
+                        } else {
+                            data[(j * 3) + 7 - offset] = 0;
+                        }
+
+                        data[4] += mParent.getNumEraseAll(mIds[i]);
+                        data[5] += mParent.getNumEraseOne(mIds[i]);
+                        data[6] += mParent.getNumButtonEar(mIds[i]);
+                        data[7] += mParent.getNumPushChar(mIds[i]);
                     }
-
-                    if (cat != 0) {
-                        data[(j * 3) + 7 - offset] = (double) caterr / cat * 100;
-                    } else {
-                        data[(j * 3) + 7 - offset] = 0;
-                    }
-
-                    data[4] += mParent.getNumEraseAll(mIds[i]);
-                    data[5] += mParent.getNumEraseOne(mIds[i]);
-                    data[6] += mParent.getNumButtonEar(mIds[i]);
-                    data[7] += mParent.getNumPushChar(mIds[i]);
-
-                    data[23] = 3;
 
                     if (j % 5 == 0) {
+                        data[23] = 3;
                         if (j < 0 && j <= 5) {
                             sessionBlock = 1;
                             offset = 15;
@@ -320,6 +331,7 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
                         mParent.mAnalysisTrainingDBHelper.replaceData(mParent.mAnalysisTrainingDB, 3 * i + 2, mIds[i], data, sessionBlock);
 
                     } else if (j == 16) {
+                        data[23] = 3;
                         sessionBlock = 4;
 
                         /* replace the database */
@@ -376,7 +388,7 @@ public class TrainingAnalysisTask extends AsyncTask <String, Void, String> {
     private void writeCSV(int sessionBlock) {
         String envPath = Environment.getExternalStorageDirectory().toString();
         String filePath = envPath + "/HOT-T";
-        String outputFile = envPath + "/trainingSummary" + sessionBlock + ".csv";
+        String outputFile = filePath + "/trainingSummary" + sessionBlock + ".csv";
 
         if (mParent.mAnalysisTrainingDB != null || !mParent.mAnalysisTrainingDB.isOpen()) {
             mParent.mAnalysisTrainingDB = mParent.mAnalysisTrainingDBHelper.getWritableDatabase();
