@@ -139,6 +139,17 @@
                         app:layout_constraintStart_toEndOf="@+id/btn_getDiag"
                         app:layout_constraintTop_toBottomOf="@+id/btn_getBitmap" />
 
+                    <Button
+                        android:id="@+id/btnGetResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:onClick="clickGetResults"
+                        android:text="getResult"
+                        app:layout_constraintStart_toEndOf="@+id/btn_getLastSes"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_getAllPDF" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
