@@ -100,7 +100,7 @@ public class LastSessionAnalysisTask extends AsyncTask <String, Void, String> {
                                             cat[0] = Integer.valueOf(temp[j].split(",")[2]);
                                             cat[1] = Integer.valueOf(temp[j].split(",")[3]);
                                             categoryErrorData.add(mParent.mWDBHelper.getCode(cat[0], cat[1]));
-                                        } else if ((letterIndex + 1) < index) {
+                                        } else if ((letterIndex + 1) > index) {
                                             cat[0] = Integer.valueOf(temp[j].split(",")[2]);
                                             cat[1] = Integer.valueOf(temp[j].split(",")[3]);
                                             categoryCorrectData.add(mParent.mWDBHelper.getCode(cat[0], cat[1]));
