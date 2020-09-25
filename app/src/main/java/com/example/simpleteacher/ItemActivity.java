@@ -35,6 +35,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.simpleteacher.asyncTask.CheckInfoURLTask;
+import com.example.simpleteacher.asyncTask.GetResultsTask;
 import com.example.simpleteacher.asyncTask.LastSessionAnalysisTask;
 import com.example.simpleteacher.asyncTask.ReadDiagnosticURLTask;
 import com.example.simpleteacher.asyncTask.ReadInfoURLTask;
@@ -139,6 +140,8 @@ public class ItemActivity extends AppCompatActivity {
     public String sesCategory;
     private ListView listview;
 
+    public long currentItemId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,6 +197,7 @@ public class ItemActivity extends AppCompatActivity {
                 String dbName;
                 String host;
                 String url;
+                currentItemId = id;
 
                 // get TextView's Text.
                 strText = (String) parent.getItemAtPosition(position);
@@ -264,6 +268,11 @@ public class ItemActivity extends AppCompatActivity {
     public void clickGetLastSession(View view) {
        Log.d(TAG, "clickGetLastSession");
         setLastSessionDB(mID);
+    }
+
+    public void clickGetResults(View view) {
+        Log.d(TAG, "clickGetResults");
+        getResults(mID);
     }
 
     public void clickAnalyzeTraining(View view) {
@@ -348,6 +357,12 @@ public class ItemActivity extends AppCompatActivity {
         Log.d(TAG, "setLastSessionDB(): ");
         LastSessionAnalysisTask lastAnalysis= new LastSessionAnalysisTask(this, ids);
         lastAnalysis.execute();
+    }
+
+    public void getResults(String[] ids) {
+        Log.d(TAG, "getResults(): ");
+        GetResultsTask results = new GetResultsTask(this, ids);
+        results.execute();
     }
 
     private void getTrainingCSV() {

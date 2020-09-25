@@ -44,7 +44,7 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
         int total = 0;
         double[] data = new double[17];
 
-        for (int i = 0; i < mIds.length; i++) {
+        for (int i = 14; i < mIds.length; i++) {
             try {
                 /* result of words' error rate */
                 resultName = "result_" + mIds[i] + ".db";
