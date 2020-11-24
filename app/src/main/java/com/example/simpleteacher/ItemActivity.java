@@ -34,6 +34,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.simpleteacher.asyncTask.AllSessionCategoryAnalysisTask;
 import com.example.simpleteacher.asyncTask.CheckInfoURLTask;
 import com.example.simpleteacher.asyncTask.GetResultsTask;
 import com.example.simpleteacher.asyncTask.LastSessionAnalysisTask;
@@ -46,6 +47,7 @@ import com.example.simpleteacher.asyncTask.fillDiagAnalysisTask;
 import com.example.simpleteacher.asyncTask.initFirstWordListsTask;
 import com.example.simpleteacher.helper.analysisDBHelper;
 import com.example.simpleteacher.helper.analysisTrainingDBHelper;
+import com.example.simpleteacher.helper.userCategorySessionDBHelper;
 import com.example.simpleteacher.helper.userDBHelper;
 import com.example.simpleteacher.helper.userLastSessionDBHelper;
 import com.example.simpleteacher.helper.userResultDBHelper;
@@ -99,12 +101,14 @@ public class ItemActivity extends AppCompatActivity {
     public userTrainingDBHelper mUserTrainingDBHelper;
     public analysisDBHelper mAnalysisDBHelper;
     public userLastSessionDBHelper mLastSDBHelper;
+    public userCategorySessionDBHelper mCSDBHelper;
     public analysisTrainingDBHelper mAnalysisTrainingDBHelper;
     public SQLiteDatabase mWDB = null;
     public SQLiteDatabase mUserDB = null;
     public SQLiteDatabase mUserTrainingDB = null;
     public SQLiteDatabase mAnalysisDB = null;
     public SQLiteDatabase mLastSDB = null;
+    public SQLiteDatabase mCSDB = null;
     public SQLiteDatabase mAnalysisTrainingDB = null;
 
     public static userResultDBHelper resultDBHelper;
@@ -270,6 +274,11 @@ public class ItemActivity extends AppCompatActivity {
         setLastSessionDB(mID);
     }
 
+    public void clickGetAllSession(View view) {
+        Log.d(TAG, "clickGetLastSession");
+        setAllSessionDB(mID);
+    }
+
     public void clickGetResults(View view) {
         Log.d(TAG, "clickGetResults");
         getResults(mID);
@@ -357,6 +366,12 @@ public class ItemActivity extends AppCompatActivity {
         Log.d(TAG, "setLastSessionDB(): ");
         LastSessionAnalysisTask lastAnalysis= new LastSessionAnalysisTask(this, ids);
         lastAnalysis.execute();
+    }
+
+    public void setAllSessionDB(String[] ids) {
+        Log.d(TAG, "setLastSessionDB(): ");
+        AllSessionCategoryAnalysisTask AllCategoryAnalysis= new AllSessionCategoryAnalysisTask(this, ids);
+        AllCategoryAnalysis.execute();
     }
 
     public void getResults(String[] ids) {
