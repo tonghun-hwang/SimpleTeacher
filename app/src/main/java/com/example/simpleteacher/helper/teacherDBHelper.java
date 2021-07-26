@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class teacherDBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "teacherID.db";
+    public static final String DATABASE_NAME = "teacherID_lb.db";
     public static final String TABLE_NAME = "teacherInfo";
     public static final String ID = "ID";
     public static final String TeacherID = "TEACHER_ID";

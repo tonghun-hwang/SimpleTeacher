@@ -69,7 +69,7 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         dbName = getDBName(stName, index);
         Log.d(TAG,"readResultDB: " + dbName);
         host = mParent.pref.getString("host", "");
-        url = host + "/HOT-T/Results/" + stName + "/" + dbName;
+        url = host + "/HOT-T/Results_LB/" + stName + "/" + dbName;
 
         return url;
     }
