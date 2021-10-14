@@ -242,7 +242,7 @@ public class ItemActivity extends AppCompatActivity {
         txtUpdate = findViewById(R.id.txtUpdated);
         txtUpdate.setText(pref.getString("syncDate", "00-00-0000 00:00:00"));
         checkConnection();
-        if (teacherID.equals("admin")) {
+        if (teacherID.equals("admin2")) {
             btnGetDiagnostic.setVisibility(VISIBLE);
         }
     }
