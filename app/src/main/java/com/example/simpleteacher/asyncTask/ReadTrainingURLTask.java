@@ -102,10 +102,11 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
             try {
                 res = readURL(mUrl);
                 if (res != HttpURLConnection.HTTP_OK) {
-                    int resPs = readURL(getPsDBName(mUrl));
-                    if (resPs != HttpURLConnection.HTTP_OK) {
-                        Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
-                    }
+                    Log.d(TAG, "doInBackground(): connect Filed");
+//                    int resPs = readURL(getPsDBName(mUrl));
+//                    if (resPs != HttpURLConnection.HTTP_OK) {
+//                        Log.d(TAG, "doInBackground(): ReadURLTask: res != HttpURLConnection.HTTP_OK");
+//                    }
                 }
             } catch (Exception e) {
                 e.getStackTrace();
@@ -114,7 +115,8 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
             }
         }
 
-        return res;
+        int isListFinished = mUrlList.size() - index;
+        return isListFinished;
     }
 
     @Override
@@ -130,21 +132,23 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
         Log.d(TAG, "onPostExcute(): readCode: " + result);
         String Status;
         if (result == HttpURLConnection.HTTP_OK) {
-            Status = "OK: ";
+            Status = "Finished training" ;
         } else {
-            Status = "Fail: ";
+            Status = "Failed to finish ";
         }
 
-        mParent.increaseStatus(TRAINING_ID);
-        if (mParent.getStatus() == 3) {
+        mParent.setStatus(TRAINING_ID);
+        if (mParent.getStatus() == TRAINING_ID) {
             SharedPreferences.Editor editor = mParent.pref.edit();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String update = formatter.format(Calendar.getInstance().getTimeInMillis());
-            editor.putString("syncDate", Status + update);
+            editor.putString("syncDate", update);
             editor.commit();
 
             TextView txtUpdate = mParent.findViewById(R.id.txtUpdated);
-            txtUpdate.setText(Status + update);
+            TextView txtConnected = mParent.findViewById(R.id.txtIsConnected);
+            txtUpdate.setText(update);
+            txtConnected.setText(Status);
         }
 
         /*if (fragmentSync.txtUpdate != null) {
@@ -160,7 +164,6 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
     }
 
     private int readURL(String stURL) {
-        Log.d(TAG, "readTrainingURL: " + stURL);
         /* authorization for the data storage */
         Authenticator.setDefault (new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -185,13 +188,17 @@ public class ReadTrainingURLTask extends AsyncTask<Void, Void, Integer> {
                     in.close();
                 } catch (Exception e) {
                     e.getStackTrace();
+                    Log.d(TAG, "readTrainingURL: " + stURL);
                     Log.d(TAG, e.toString());
                 } finally {
                     conn.disconnect();
                 }
+            } else {
+                conn.disconnect();
             }
 
         } catch (Exception e) {
+            Log.d(TAG, "readTrainingURL: " + stURL);
             e.getStackTrace();
             Log.d(TAG, e.toString());
         }
