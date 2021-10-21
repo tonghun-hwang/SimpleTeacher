@@ -261,8 +261,8 @@ public class ItemActivity extends AppCompatActivity {
             txtUpdate.setText("Synchronization...");
         }
         setStatus(0);
-        readTrainingURL(mID, mReadTrainingUrlTask);
         readResultURL(mID, mReadResultURLTask);
+        readTrainingURL(mID, mReadTrainingUrlTask);
     }
 
     public void clickGetDiagnostic(View view) {
