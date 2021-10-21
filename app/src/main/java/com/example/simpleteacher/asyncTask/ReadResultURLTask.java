@@ -70,6 +70,13 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         return url;
     }
 
+    private String getlocalDBFileName(String stURL) {
+        String[] fileNames = stURL.split("/");
+        String dbName = fileNames[fileNames.length - 1];
+        Log.d(TAG,  mParent.getDatabasePath(dbName).toString());
+        return mParent.getDatabasePath(dbName).toString();
+    }
+
     private List<String> getDBList(String[] idList) {
         List<String> dbList = new ArrayList<String>();
         for (int i = 0; i < idList.length; i++) {
@@ -97,19 +104,19 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         while(iter.hasNext()) {
             String mUrl = iter.next();
             try {
-                res = readURL(mUrl, index);
+                res = readURL(mUrl);
                 if (res != HttpURLConnection.HTTP_OK) {
-                    readLocalDB();
-                    return res;
+                    Log.d(TAG, "doInBackground(): connect Filed");
                 }
             } catch (Exception e) {
                 e.getStackTrace();
-                return -100;
             } finally {
                 index++;
             }
         }
-        return res;
+
+        int isListFinished = mUrlList.size() - index;
+        return isListFinished;
     }
 
     private void readLocalDB() {
@@ -127,23 +134,24 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         Log.d(TAG, "onPostExcute(): readResultURLTask");
 
         String Status;
-        if (result == HttpURLConnection.HTTP_OK) {
-            Status = "OK: ";
+        if (result == 0) {
+            Status = "Finished result" ;
         } else {
-            Status = "Fail: ";
+            Status = "Failed to finish ";
         }
 
-        mParent.increaseStatus(RESULT_ID);
-        int stat = mParent.getStatus();
-        if (stat == 3) {
+        mParent.setStatus(RESULT_ID);
+        if (mParent.getStatus() == RESULT_ID) {
             SharedPreferences.Editor editor = mParent.pref.edit();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String update = formatter.format(Calendar.getInstance().getTimeInMillis());
-            editor.putString("syncDate", Status + update);
+            editor.putString("syncDate", update);
             editor.commit();
 
             TextView txtUpdate = mParent.findViewById(R.id.txtUpdated);
-            txtUpdate.setText(Status + update);
+            TextView txtConnected = mParent.findViewById(R.id.txtIsConnected);
+            txtUpdate.setText(update);
+            txtConnected.setText(Status);
         }
     }
 
@@ -152,8 +160,7 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
         mParent.mReadResultURLTask = null;
     }
 
-    private int readURL(String urlName, int index) {
-        Log.d(TAG, "readResultURL: " + urlName);
+    private int readURL(String urlName) {
 
         /* authorization for the data storage */
         Authenticator.setDefault (new Authenticator() {
@@ -161,26 +168,32 @@ public class ReadResultURLTask extends AsyncTask<Void, Void, Integer> {
                 return new PasswordAuthentication ("hottsportwiss@gmail.com", "Sportwiss2019".toCharArray());
             }
         });
-        File file = new File(mParent.getDatabasePath(mDBList.get(index)).toString());
         int responseCode = 0;
         try {
+            File file = new File(getlocalDBFileName(urlName));
+
             URL url = new URL(urlName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(HTTP_CONNECTION_TIMEOUT);
             responseCode = conn.getResponseCode();
+
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 try {
                     InputStream in = conn.getInputStream();
                     copyInputStreamToFile(in, file);
                     in.close();
                 } catch (Exception e) {
+                    Log.d(TAG, "readResultURL: " + urlName);
                     e.getStackTrace();
                     Log.d(TAG, e.toString());
                 } finally {
                     conn.disconnect();
                 }
+            } else {
+                conn.disconnect();
             }
         } catch (Exception e) {
+            Log.d(TAG, "readResultURL: " + urlName);
             e.getStackTrace();
             Log.d(TAG, e.toString());
         }
