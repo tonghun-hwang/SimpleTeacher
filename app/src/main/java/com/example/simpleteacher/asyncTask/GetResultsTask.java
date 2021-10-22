@@ -528,7 +528,7 @@ public class GetResultsTask extends AsyncTask <String, Void, String> {
                 boolean success = csvFolder.mkdir();
             }
 
-            String folderPath = hottDiagPath + "admin/";
+            String folderPath = hottDiagPath + mParent.teacherID + "/";
             File folder = new File(folderPath);
             if (!folder.exists()) {
                 boolean success = folder.mkdir();
