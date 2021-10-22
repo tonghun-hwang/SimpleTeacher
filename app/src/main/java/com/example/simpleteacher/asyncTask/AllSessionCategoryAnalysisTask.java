@@ -310,7 +310,7 @@ public class AllSessionCategoryAnalysisTask extends AsyncTask <String, Void, Str
                 boolean success = csvFolder.mkdir();
             }
 
-            String folderPath = hottDiagPath + "admin/";
+            String folderPath = hottDiagPath + mParent.teacherID + "/";
             File folder = new File(folderPath);
             if (!folder.exists()) {
                 boolean success = folder.mkdir();
