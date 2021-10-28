@@ -249,7 +249,7 @@ public class ItemActivity extends AppCompatActivity {
 
     public void checkConnection() {
         String host = pref.getString("host", "");
-        String urlName = host + "/PERSONAL_DATA/userInfo.db";
+        String urlName = host + "/PERSONAL_DATA/userInfo_lb.db";
         Log.d(TAG, "checkURL: " + urlName);
 
         CheckInfoURLTask checkTask = new CheckInfoURLTask(this, urlName);
@@ -824,7 +824,7 @@ public class ItemActivity extends AppCompatActivity {
         editor.putString("userData", host + "/PERSONAL_DATA/UserInfo.csv");
 
         editor.putString("dbCategory", host + "/PERSONAL_DATA/userCategory.db");
-        editor.putString("dbUser", host + "/PERSONAL_DATA/userInfo.db");
+        editor.putString("dbUser", host + "/PERSONAL_DATA/userInfo_lb.db");
 
         editor.commit();
     }

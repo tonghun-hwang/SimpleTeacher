@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class userDBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "userInfo.db";
+    public static final String DATABASE_NAME = "userInfo_lb.db";
     public static final String TABLE_NAME = "user_table";
     public static final String COL_0 = "ID";
     public static final String COL_1 = "USERID";
