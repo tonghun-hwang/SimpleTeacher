@@ -134,7 +134,7 @@ public class ReadInfoURLTask extends AsyncTask<Void, Void, Integer> {
             }
         });
 
-        File file = new File(mParent.getDatabasePath("userInfo.db").toString());
+        File file = new File(mParent.getDatabasePath("userInfo_lb.db").toString());
         int responseCode = 0;
 
         try {
