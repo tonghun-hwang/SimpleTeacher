@@ -137,7 +137,7 @@ public class fillDiagAnalysisTask extends AsyncTask <String, Void, String> {
         Log.d(TAG, "onPostExecute(): " + result);
         String envPath = Environment.getExternalStorageDirectory().toString();
         String filePath = envPath + "/HOT-T/";
-        String outputFile = filePath + "diagnosticSummary.csv";
+        String outputFile = filePath + "diagnosticSummary_lb.csv";
 
         if (mParent.mAnalysisDB != null || !mParent.mAnalysisDB.isOpen()) {
             mParent.mAnalysisDB = mParent.mAnalysisDBHelper.getWritableDatabase();
